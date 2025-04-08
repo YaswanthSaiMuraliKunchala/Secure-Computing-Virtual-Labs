@@ -1,0 +1,74 @@
+</div> <!-- End of main-container -->
+<hr>
+
+<footer class="footer mt-5 py-4 bg-light">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 mb-3 mb-md-0">
+        <h5 class="text-primary mb-3">Secured Computing Virtual Lab</h5>
+        <p class="text-muted">A comprehensive platform for learning cybersecurity concepts through hands-on experiments.</p>
+        <div class="d-flex mt-3">
+          <a href="https://www.kalasalingam.ac.in/" target="_blank" class="me-3 text-secondary">
+            <i class="fas fa-globe fa-lg"></i>
+          </a>
+          <a href="https://github.com/" target="_blank" class="me-3 text-secondary">
+            <i class="fab fa-github fa-lg"></i>
+          </a>
+          <a href="mailto:info@klu.ac.in" class="text-secondary">
+            <i class="fas fa-envelope fa-lg"></i>
+          </a>
+        </div>
+      </div>
+      <div class="col-md-4 mb-3 mb-md-0">
+        <h5 class="text-primary mb-3">Quick Links</h5>
+        <ul class="list-unstyled">
+          <li class="mb-2"><a href="/" class="text-decoration-none text-secondary"><i class="fas fa-home me-2"></i>Home</a></li>
+          <li class="mb-2"><a href="/experiments" class="text-decoration-none text-secondary"><i class="fas fa-flask me-2"></i>Experiments</a></li>
+          <li class="mb-2"><a href="/about" class="text-decoration-none text-secondary"><i class="fas fa-info-circle me-2"></i>About</a></li>
+          <% if (locals.user) { %>
+            <li class="mb-2"><a href="/profile" class="text-decoration-none text-secondary"><i class="fas fa-user me-2"></i>Profile</a></li>
+            <li class="mb-2">
+              <form action="/auth/logout" method="POST" class="d-inline">
+                <button type="submit" class="btn btn-link p-0 text-secondary text-decoration-none">
+                  <i class="fas fa-sign-out-alt me-2"></i>Logout
+                </button>
+              </form>
+            </li>
+          <% } else { %>
+            <li class="mb-2"><a href="/auth/login" class="text-decoration-none text-secondary"><i class="fas fa-sign-in-alt me-2"></i>Login</a></li>
+            <li class="mb-2"><a href="/auth/register" class="text-decoration-none text-secondary"><i class="fas fa-user-plus me-2"></i>Register</a></li>
+          <% } %>
+        </ul>
+      </div>
+      <div class="col-md-4">
+        <h5 class="text-primary mb-3">Contact</h5>
+        <address class="text-secondary">
+          <p><i class="fas fa-map-marker-alt me-2"></i>Kalasalingam Academy of Research and Education<br>Krishnankoil, Tamil Nadu 626126</p>
+          <!-- <p><i class="fas fa-phone me-2"></i>+91 4563 289042</p> -->
+          <p><i class="fas fa-envelope me-2"></i>info@klu.ac.in</p>
+        </address>
+      </div>
+    </div>
+    <hr class="my-4">
+    <div class="row align-items-center">
+      <div class="col-md-6 text-center text-md-start">
+        <p class="mb-0 text-secondary">&copy; <%= new Date().getFullYear() %> Secured Computing Virtual Lab | Kalasalingam Academy of Research and Education</p>
+      </div>
+      <div class="col-md-6 text-center text-md-end">
+        <p class="mb-0 text-secondary">Designed for cybersecurity education and practical training</p>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- Initialize tooltips -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+      return new bootstrap.Tooltip(tooltipTriggerEl)
+    });
+  });
+</script>
+</body>
+</html> 

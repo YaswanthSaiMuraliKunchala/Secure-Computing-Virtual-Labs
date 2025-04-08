@@ -1,0 +1,1145 @@
+<%- include('../partials/header') %>
+
+<div class="experiment-container" data-experiment-type="advanced-encryption-standard">
+  <!-- Left Column - Theory and Visualization -->
+  <div class="experiment-left">
+    <!-- Experiment Title -->
+    <div class="card mb-4">
+      <div class="card-header bg-primary text-white">
+        <h3 class="mb-0">Advanced Encryption Standard (AES)</h3>
+      </div>
+    </div>
+    
+    <!-- Aim Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-bullseye section-icon"></i> Aim
+        </h5>
+      </div>
+      <div class="card-body">
+        <p>To understand the need of highly secured symmetric encryption algorithm known as Advanced Encryption Standard (AES).</p>
+      </div>
+    </div>
+    
+    <!-- Algorithm Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-code-branch section-icon"></i> Algorithm
+        </h5>
+      </div>
+      <div class="card-body">
+        <ol>
+          <li>Import Libraries:
+            <ul>
+              <li>AES for AES encryption/decryption.</li>
+              <li>get_random_bytes to generate a random key.</li>
+              <li>pad and unpad to ensure data is of a valid block size.</li>
+            </ul>
+          </li>
+          <li>Encrypt Function:
+            <ul>
+              <li>Creates a new AES cipher object in CBC mode.</li>
+              <li>Pads the data to be a multiple of the block size.</li>
+              <li>Encrypts the padded data.</li>
+              <li>Returns the initialization vector (IV) and the ciphertext.</li>
+            </ul>
+          </li>
+          <li>Decrypt Function:
+            <ul>
+              <li>Creates a new AES cipher object with the same IV.</li>
+              <li>Decrypts the ciphertext.</li>
+              <li>Unpads and decodes the decrypted data.</li>
+            </ul>
+          </li>
+          <li>Example Usage:
+            <ul>
+              <li>Generates a random 16-byte key.</li>
+              <li>Encrypts a sample message.</li>
+              <li>Prints the ciphertext in hexadecimal format.</li>
+              <li>Decrypts the ciphertext.</li>
+              <li>Prints the decrypted message.</li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+    </div>
+    
+    <!-- Sample Input/Output Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-exchange-alt section-icon"></i> Sample Input/Output
+        </h5>
+      </div>
+      <div class="card-body">
+<div class="row">
+          <div class="col-md-6">
+            <h6><i class="fas fa-sign-in-alt me-2"></i>Sample Input:</h6>
+            <pre class="bg-light p-3 rounded">Plaintext: "This is a secret message."
+Key: [Randomly generated 16-byte key]</pre>
+          </div>
+          <div class="col-md-6">
+            <h6><i class="fas fa-sign-out-alt me-2"></i>Sample Output:</h6>
+            <pre class="bg-light p-3 rounded">Encrypted Ciphertext (hex): "a7c8b3d5e6f9a1b2c3d4e5f6a7b8c9d0..."
+Decrypted Data: "This is a secret message."</pre>
+          </div>
+        </div>
+  </div>
+    </div>
+    
+    <!-- Visualization Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-chart-bar section-icon"></i> Visualization
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="form-group mb-3">
+          <label for="input-text" class="form-label theme-text">Plaintext Message:</label>
+          <input type="text" class="form-control" id="input-text" placeholder="Enter plaintext to encrypt" value="This is a secret message.">
+        </div>
+        
+        <div class="mb-3">
+          <label for="key-option" class="form-label theme-text">Key Option:</label>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="keyOption" id="randomKey" value="random" checked>
+            <label class="form-check-label theme-text" for="randomKey">
+              Generate Random Key
+            </label>
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="keyOption" id="customKey" value="custom">
+            <label class="form-check-label theme-text" for="customKey">
+              Use Custom Key
+            </label>
+          </div>
+        </div>
+        
+        <div class="mb-3 d-none" id="custom-key-container">
+          <label for="key-value" class="form-label theme-text">Custom Key (16 bytes):</label>
+          <input type="text" class="form-control" id="key-value" value="AESKey123AESKey1">
+          <small class="form-text text-muted theme-text">Enter exactly 16 characters for AES-128</small>
+        </div>
+        
+        <button class="btn btn-primary" id="visualize-btn">
+          <i class="fas fa-play me-2"></i>Visualize
+        </button>
+        
+        <div id="visualization-section" class="mt-4 d-none">
+          <ul class="nav nav-tabs" id="aesVisualizationTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="encryption-tab" data-bs-toggle="tab" data-bs-target="#encryption" type="button" role="tab" aria-controls="encryption" aria-selected="true">Encryption</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="decryption-tab" data-bs-toggle="tab" data-bs-target="#decryption" type="button" role="tab" aria-controls="decryption" aria-selected="false">Decryption</button>
+            </li>
+          </ul>
+          
+          <div class="tab-content mt-3" id="aesVisualizationTabContent">
+            <div class="tab-pane fade show active" id="encryption" role="tabpanel" aria-labelledby="encryption-tab">
+              <h6 class="mb-3 theme-text">AES Encryption Process:</h6>
+              <div class="table-responsive">
+                <table class="table table-bordered table-striped" id="encryption-table">
+                  <thead>
+                    <tr>
+                      <th>Step</th>
+                      <th>Operation</th>
+                      <th>Details</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Will be populated by JavaScript -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            
+            <div class="tab-pane fade" id="decryption" role="tabpanel" aria-labelledby="decryption-tab">
+              <h6 class="mb-3 theme-text">AES Decryption Process:</h6>
+              <div class="table-responsive">
+                <table class="table table-bordered table-striped" id="decryption-table">
+                  <thead>
+                    <tr>
+                      <th>Step</th>
+                      <th>Operation</th>
+                      <th>Details</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Will be populated by JavaScript -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-4">
+            <div class="card">
+              <div class="card-header bg-success text-white">
+                <h6 class="mb-0">Results</h6>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-6">
+                    <h6 class="theme-text">Key (Hex):</h6>
+                    <div class="bg-light p-3 rounded mb-3" id="key-display"></div>
+                    
+                    <h6 class="theme-text">Initialization Vector (IV):</h6>
+                    <div class="bg-light p-3 rounded mb-3" id="iv-display"></div>
+                    
+                    <h6 class="theme-text">Plaintext:</h6>
+                    <div class="bg-light p-3 rounded" id="plaintext-display"></div>
+                  </div>
+                  <div class="col-md-6">
+                    <h6 class="theme-text">Encrypted Ciphertext (Hex):</h6>
+                    <div class="bg-light p-3 rounded mb-3" id="ciphertext-display"></div>
+                    
+                    <h6 class="theme-text">Decrypted Message:</h6>
+                    <div class="bg-light p-3 rounded" id="decrypted-display"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+    
+  <!-- Right Column - Code Editor and Output -->
+  <div class="experiment-right">
+    <!-- Code Editor Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-keyboard section-icon"></i> Code
+        </h5>
+      </div>
+      <div class="card-body">
+        <!-- Language Selection -->
+          <div class="mb-3">
+          <label for="language-select" class="form-label">Select Language:</label>
+          <select class="form-select" id="language-select">
+            <option value="javascript">JavaScript</option>
+            <option value="python">Python</option>
+            <option value="java">Java</option>
+            <option value="c">C</option>
+            <option value="cpp">C++</option>
+          </select>
+        </div>
+        
+        <div class="code-editor-container">
+          <div id="code-editor-wrapper">
+            <textarea id="code-editor" class="form-control" rows="15">// AES Implementation (128-bit)
+
+// S-box lookup table
+const SBOX = [
+    0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76,
+    // ... (full S-box table)
+];
+
+// Round constants
+const RCON = [
+    0x01, 0x02, 0x04, 0x08, 0x10, 0x20, 0x40, 0x80, 0x1b, 0x36
+];
+
+// Helper function to convert string to bytes
+function stringToBytes(str) {
+    const bytes = new Uint8Array(str.length);
+    for (let i = 0; i < str.length; i++) {
+        bytes[i] = str.charCodeAt(i);
+    }
+    return bytes;
+}
+
+// Helper function to convert bytes to hex string
+function bytesToHex(bytes) {
+    return Array.from(bytes)
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('');
+}
+
+// Key expansion
+function expandKey(key) {
+    const keyBytes = stringToBytes(key);
+    const expandedKey = new Uint8Array(176); // 16 * 11 rounds
+    expandedKey.set(keyBytes);
+    
+    // Key expansion logic here
+    // ... (implement key expansion)
+    
+    return expandedKey;
+}
+
+// SubBytes transformation
+function subBytes(state) {
+    for (let i = 0; i < 16; i++) {
+        state[i] = SBOX[state[i]];
+    }
+    return state;
+}
+
+// ShiftRows transformation
+function shiftRows(state) {
+    // Shift rows logic here
+    // ... (implement shift rows)
+    return state;
+}
+
+// MixColumns transformation
+function mixColumns(state) {
+    // Mix columns logic here
+    // ... (implement mix columns)
+    return state;
+}
+
+// AddRoundKey transformation
+function addRoundKey(state, roundKey) {
+    for (let i = 0; i < 16; i++) {
+        state[i] ^= roundKey[i];
+    }
+    return state;
+}
+
+// AES encryption
+async function encryptAES(plaintext, key) {
+    const state = stringToBytes(plaintext);
+    const expandedKey = expandKey(key);
+    
+    // Initial round
+    addRoundKey(state, expandedKey.slice(0, 16));
+    
+    // Main rounds
+    for (let round = 1; round < 10; round++) {
+        subBytes(state);
+        shiftRows(state);
+        mixColumns(state);
+        addRoundKey(state, expandedKey.slice(round * 16, (round + 1) * 16));
+    }
+    
+    // Final round
+    subBytes(state);
+    shiftRows(state);
+    addRoundKey(state, expandedKey.slice(160, 176));
+    
+    return bytesToHex(state);
+}
+
+// Test the implementation
+const plaintext = "Hello World";
+const key = "AESKey123AESKey12";
+
+encryptAES(plaintext, key).then(ciphertext => {
+    console.log("Plaintext:", plaintext);
+    console.log("Key:", key);
+    console.log("Ciphertext:", ciphertext);
+});</textarea>
+          </div>
+        </div>
+        
+        <div class="mt-3 d-flex justify-content-between">
+          <button class="btn btn-secondary" id="clear-code-btn">
+            <i class="fas fa-eraser me-2"></i>Clear Code
+            </button>
+          <button class="btn btn-primary" id="run-code-btn">
+            <i class="fas fa-play me-2"></i>Run Code
+            </button>
+          </div>
+      </div>
+    </div>
+    
+    <!-- Output Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-terminal section-icon"></i> Output
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="code-output bg-dark text-light p-3 rounded" id="code-output">
+          <div class="text-muted">Run your code to see the output here...</div>
+        </div>
+        
+        <div class="mt-3 d-flex justify-content-end">
+          <button class="btn btn-success" id="submit-code-btn">
+            <i class="fas fa-paper-plane me-2"></i>Submit
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CodeMirror CSS and JS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/dracula.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/show-hint.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/show-hint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/javascript-hint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/anyword-hint.min.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Set experiment type on body
+    document.body.setAttribute('data-experiment-type', 'advanced-encryption-standard');
+    
+    // Initialize CodeMirror
+    const codeEditorTextarea = document.getElementById('code-editor');
+    const codeEditor = CodeMirror.fromTextArea(codeEditorTextarea, {
+      lineNumbers: true,
+      mode: 'javascript',
+      theme: 'dracula',
+      indentUnit: 2,
+      smartIndent: true,
+      tabSize: 2,
+      indentWithTabs: false,
+      lineWrapping: true,
+      matchBrackets: true,
+      autoCloseBrackets: true,
+      extraKeys: {
+        "Ctrl-Space": "autocomplete",
+        "Tab": function(cm) {
+          if (cm.somethingSelected()) {
+            cm.indentSelection("add");
+          } else {
+            cm.replaceSelection("  ", "end");
+          }
+        }
+      }
+    });
+    
+    // Toggle custom key input based on radio button selection
+    const randomKeyRadio = document.getElementById('randomKey');
+    const customKeyRadio = document.getElementById('customKey');
+    const customKeyContainer = document.getElementById('custom-key-container');
+    
+    if (randomKeyRadio && customKeyRadio && customKeyContainer) {
+      randomKeyRadio.addEventListener('change', function() {
+        if (this.checked) {
+          customKeyContainer.classList.add('d-none');
+        }
+      });
+      
+      customKeyRadio.addEventListener('change', function() {
+        if (this.checked) {
+          customKeyContainer.classList.remove('d-none');
+        }
+      });
+    }
+    
+    // Helper functions for AES visualization
+    function stringToHex(str) {
+      let hex = '';
+      for (let i = 0; i < str.length; i++) {
+        hex += str.charCodeAt(i).toString(16).padStart(2, '0');
+      }
+      return hex;
+    }
+    
+    function hexToBytes(hex) {
+      const bytes = new Uint8Array(hex.length / 2);
+      for (let i = 0; i < hex.length; i += 2) {
+        bytes[i / 2] = parseInt(hex.substr(i, 2), 16);
+      }
+      return bytes;
+    }
+    
+    function bytesToHex(bytes) {
+      return Array.from(bytes)
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('');
+    }
+    
+    function generateRandomBytes(length) {
+      const bytes = new Uint8Array(length);
+      window.crypto.getRandomValues(bytes);
+      return bytes;
+    }
+    
+    // AES encryption simulation for visualization
+    async function aesEncrypt(plaintext, key) {
+      try {
+        // Convert plaintext to bytes
+        const plaintextBytes = new TextEncoder().encode(plaintext);
+        
+        // Generate random IV
+        const iv = generateRandomBytes(16);
+        
+        // Convert key to bytes if it's a string
+        let keyBytes;
+        if (typeof key === 'string') {
+          if (key.length === 32 && /^[0-9a-f]+$/i.test(key)) {
+            // Key is already in hex format
+            keyBytes = hexToBytes(key);
+          } else {
+            // Key is a string, convert to bytes
+            keyBytes = new TextEncoder().encode(key.padEnd(16, ' ').slice(0, 16));
+          }
+        } else {
+          keyBytes = key;
+        }
+        
+        // Import key
+        const cryptoKey = await window.crypto.subtle.importKey(
+          'raw',
+          keyBytes,
+          { name: 'AES-CBC', length: 128 },
+          false,
+          ['encrypt']
+        );
+        
+        // Encrypt
+        const encryptedData = await window.crypto.subtle.encrypt(
+          { name: 'AES-CBC', iv },
+          cryptoKey,
+          plaintextBytes
+        );
+        
+        return {
+          iv: bytesToHex(iv),
+          ciphertext: bytesToHex(new Uint8Array(encryptedData))
+        };
+      } catch (error) {
+        console.error('AES Encryption Error:', error);
+        throw error;
+      }
+    }
+    
+    // AES decryption simulation for visualization
+    async function aesDecrypt(ciphertext, key, iv) {
+      try {
+        // Convert ciphertext and IV to bytes
+        const ciphertextBytes = hexToBytes(ciphertext);
+        const ivBytes = hexToBytes(iv);
+        
+        // Convert key to bytes if it's a string
+        let keyBytes;
+        if (typeof key === 'string') {
+          if (key.length === 32 && /^[0-9a-f]+$/i.test(key)) {
+            // Key is already in hex format
+            keyBytes = hexToBytes(key);
+          } else {
+            // Key is a string, convert to bytes
+            keyBytes = new TextEncoder().encode(key.padEnd(16, ' ').slice(0, 16));
+          }
+        } else {
+          keyBytes = key;
+        }
+        
+        // Import key
+        const cryptoKey = await window.crypto.subtle.importKey(
+          'raw',
+          keyBytes,
+          { name: 'AES-CBC', length: 128 },
+          false,
+          ['decrypt']
+        );
+        
+        // Decrypt
+        const decryptedData = await window.crypto.subtle.decrypt(
+          { name: 'AES-CBC', iv: ivBytes },
+          cryptoKey,
+          ciphertextBytes
+        );
+        
+        // Convert decrypted data to string
+        return new TextDecoder().decode(new Uint8Array(decryptedData));
+      } catch (error) {
+        console.error('AES Decryption Error:', error);
+        throw error;
+      }
+    }
+    
+    // Visualization button
+    const visualizeBtn = document.getElementById('visualize-btn');
+    const visualizationSection = document.getElementById('visualization-section');
+    const encryptionTable = document.getElementById('encryption-table');
+    const decryptionTable = document.getElementById('decryption-table');
+    const keyDisplay = document.getElementById('key-display');
+    const ivDisplay = document.getElementById('iv-display');
+    const plaintextDisplay = document.getElementById('plaintext-display');
+    const ciphertextDisplay = document.getElementById('ciphertext-display');
+    const decryptedDisplay = document.getElementById('decrypted-display');
+    const inputText = document.getElementById('input-text');
+    
+    if (visualizeBtn && visualizationSection) {
+      visualizeBtn.addEventListener('click', async function() {
+        // Get plaintext
+        const plaintext = inputText.value.trim();
+        
+        if (!plaintext) {
+          if (typeof window.showNotification === 'function') {
+            window.showNotification('Error', 'Please enter a plaintext message.', 'error');
+          } else {
+            alert('Please enter a plaintext message.');
+          }
+          return;
+        }
+        
+        // Get key based on option
+        let key;
+        if (document.getElementById('randomKey').checked) {
+          // Generate random key
+          key = bytesToHex(generateRandomBytes(16));
+        } else {
+          // Use custom key
+          const customKey = document.getElementById('key-value').value.trim();
+          
+          if (!customKey || customKey.length < 16) {
+            if (typeof window.showNotification === 'function') {
+              window.showNotification('Error', 'Please enter a valid key (at least 16 characters).', 'error');
+            } else {
+              alert('Please enter a valid key (at least 16 characters).');
+            }
+            return;
+          }
+          
+          // Use the first 16 bytes of the custom key
+          key = stringToHex(customKey.slice(0, 16));
+        }
+        
+        // Show visualization section
+        visualizationSection.classList.remove('d-none');
+        
+        try {
+          // Show loading state
+          encryptionTable.querySelector('tbody').innerHTML = '<tr><td colspan="3" class="text-center"><i class="fas fa-spinner fa-spin me-2"></i>Processing...</td></tr>';
+          decryptionTable.querySelector('tbody').innerHTML = '<tr><td colspan="3" class="text-center"><i class="fas fa-spinner fa-spin me-2"></i>Processing...</td></tr>';
+          
+          // Encrypt
+          const { iv, ciphertext } = await aesEncrypt(plaintext, key);
+          
+          // Decrypt
+          const decryptedText = await aesDecrypt(ciphertext, key, iv);
+          
+          // Update encryption table
+          encryptionTable.querySelector('tbody').innerHTML = `
+            <tr>
+              <td>1</td>
+              <td>Input Plaintext</td>
+              <td>${plaintext}</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Generate Key</td>
+              <td>${key}</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Generate IV</td>
+              <td>${iv}</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>Create AES-CBC Cipher</td>
+              <td>AES cipher in CBC mode created</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>Pad Data</td>
+              <td>Data padded to block size (16 bytes)</td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td>Encrypt Data</td>
+              <td>Data encrypted using AES-CBC</td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td>Result</td>
+              <td class="text-break"><code>${ciphertext}</code></td>
+            </tr>
+          `;
+          
+          // Update decryption table
+          decryptionTable.querySelector('tbody').innerHTML = `
+            <tr>
+              <td>1</td>
+              <td>Input Ciphertext</td>
+              <td class="text-break"><code>${ciphertext}</code></td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Use Key</td>
+              <td>${key}</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Use IV</td>
+              <td>${iv}</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>Create AES-CBC Cipher</td>
+              <td>AES cipher in CBC mode created with same IV</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>Decrypt Data</td>
+              <td>Ciphertext decrypted using AES-CBC</td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td>Unpad Data</td>
+              <td>Padding removed from decrypted data</td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td>Result</td>
+              <td>${decryptedText}</td>
+            </tr>
+          `;
+          
+          // Update result displays
+          keyDisplay.textContent = key;
+          ivDisplay.textContent = iv;
+          plaintextDisplay.textContent = plaintext;
+          ciphertextDisplay.textContent = ciphertext;
+          decryptedDisplay.textContent = decryptedText;
+          
+        } catch (error) {
+          console.error('AES Visualization Error:', error);
+          
+          // Show error message
+          encryptionTable.querySelector('tbody').innerHTML = `<tr><td colspan="3" class="text-danger">Error: ${error.message}</td></tr>`;
+          decryptionTable.querySelector('tbody').innerHTML = `<tr><td colspan="3" class="text-danger">Error: ${error.message}</td></tr>`;
+          
+          if (typeof window.showNotification === 'function') {
+            window.showNotification('Error', `AES operation failed: ${error.message}`, 'error');
+          } else {
+            alert(`AES operation failed: ${error.message}`);
+          }
+        }
+      });
+    }
+    
+    // Update code editor with Python implementation
+    function getPythonCode() {
+      return `# AES Implementation using PyCryptodome
+from Crypto.Cipher import AES
+from Crypto.Random import get_random_bytes
+from Crypto.Util.Padding import pad, unpad
+import binascii
+
+def encrypt(data, key):
+    """
+    Encrypts data using AES-CBC mode.
+    
+    Args:
+        data (bytes): The data to encrypt
+        key (bytes): The encryption key (16, 24, or 32 bytes)
+        
+    Returns:
+        tuple: (iv, ciphertext) - initialization vector and encrypted data
+    """
+    # Create a new AES cipher
+    cipher = AES.new(key, AES.MODE_CBC)
+    
+    # Pad the data to be a multiple of the block size
+    padded_data = pad(data, AES.block_size)
+    
+    # Encrypt the data
+    ciphertext = cipher.encrypt(padded_data)
+    
+    # Return the IV and ciphertext
+    return cipher.iv, ciphertext
+
+def decrypt(ciphertext, key, iv):
+    """
+    Decrypts data using AES-CBC mode.
+    
+    Args:
+        ciphertext (bytes): The encrypted data
+        key (bytes): The encryption key
+        iv (bytes): The initialization vector
+        
+    Returns:
+        bytes: The decrypted data
+    """
+    # Create a new AES cipher with the same IV
+    cipher = AES.new(key, AES.MODE_CBC, iv)
+    
+    # Decrypt the data
+    decrypted_data = cipher.decrypt(ciphertext)
+    
+    # Unpad the data
+    unpadded_data = unpad(decrypted_data, AES.block_size)
+    
+    return unpadded_data
+
+# Example usage
+def main():
+    # Generate a random 16-byte key (AES-128)
+    key = get_random_bytes(16)
+    print(f"Key (hex): {binascii.hexlify(key).decode()}")
+    
+    # Message to encrypt
+    message = "This is a secret message."
+    print(f"Original message: {message}")
+    
+    # Encrypt the message
+    iv, ciphertext = encrypt(message.encode('utf-8'), key)
+    print(f"IV (hex): {binascii.hexlify(iv).decode()}")
+    print(f"Encrypted (hex): {binascii.hexlify(ciphertext).decode()}")
+    
+    # Decrypt the message
+    decrypted_data = decrypt(ciphertext, key, iv)
+    decrypted_message = decrypted_data.decode('utf-8')
+    print(f"Decrypted message: {decrypted_message}")
+
+if __name__ == "__main__":
+    main()`;
+    }
+    
+    // Update code editor with JavaScript implementation
+    function getJavaScriptCode() {
+      return `// AES Implementation using Web Crypto API
+
+/**
+ * Generates a random AES key
+ * @returns {Promise<CryptoKey>} The generated AES key
+ */
+async function generateKey() {
+  return await window.crypto.subtle.generateKey(
+    {
+      name: "AES-CBC",
+      length: 128 // AES-128
+    },
+    true, // extractable
+    ["encrypt", "decrypt"] // key usages
+  );
+}
+
+/**
+ * Encrypts data using AES-CBC
+ * @param {string} plaintext - The plaintext to encrypt
+ * @param {CryptoKey} key - The AES key
+ * @returns {Promise<Object>} Object containing iv and ciphertext
+ */
+async function encrypt(plaintext, key) {
+  // Generate a random IV
+  const iv = window.crypto.getRandomValues(new Uint8Array(16));
+  
+  // Convert plaintext to bytes
+  const plaintextBytes = new TextEncoder().encode(plaintext);
+  
+  // Encrypt the data
+  const ciphertext = await window.crypto.subtle.encrypt(
+    {
+      name: "AES-CBC",
+      iv: iv
+    },
+    key,
+    plaintextBytes
+  );
+  
+  // Return IV and ciphertext
+  return {
+    iv: iv,
+    ciphertext: new Uint8Array(ciphertext)
+  };
+}
+
+/**
+ * Decrypts data using AES-CBC
+ * @param {Uint8Array} ciphertext - The encrypted data
+ * @param {CryptoKey} key - The AES key
+ * @param {Uint8Array} iv - The initialization vector
+ * @returns {Promise<string>} The decrypted plaintext
+ */
+async function decrypt(ciphertext, key, iv) {
+  // Decrypt the data
+  const decryptedData = await window.crypto.subtle.decrypt(
+    {
+      name: "AES-CBC",
+      iv: iv
+    },
+    key,
+    ciphertext
+  );
+  
+  // Convert decrypted data to string
+  return new TextDecoder().decode(new Uint8Array(decryptedData));
+}
+
+/**
+ * Helper function to convert bytes to hex string
+ * @param {Uint8Array} bytes - The bytes to convert
+ * @returns {string} The hex string
+ */
+function bytesToHex(bytes) {
+  return Array.from(bytes)
+    .map(b => b.toString(16).padStart(2, '0'))
+    .join('');
+}
+
+// Example usage
+async function main() {
+  try {
+    // Generate a random AES key
+    const key = await generateKey();
+    
+    // Message to encrypt
+    const message = "This is a secret message.";
+    console.log("Original message:", message);
+    
+    // Encrypt the message
+    const { iv, ciphertext } = await encrypt(message, key);
+    console.log("IV (hex):", bytesToHex(iv));
+    console.log("Encrypted (hex):", bytesToHex(ciphertext));
+    
+    // Decrypt the message
+    const decryptedMessage = await decrypt(ciphertext, key, iv);
+    console.log("Decrypted message:", decryptedMessage);
+    
+    // Export the key for display
+    const rawKey = await window.crypto.subtle.exportKey("raw", key);
+    console.log("Key (hex):", bytesToHex(new Uint8Array(rawKey)));
+    
+  } catch (error) {
+    console.error("AES operation failed:", error);
+  }
+}
+
+// Run the example
+main();`;
+    }
+    
+    // Language selection
+    const languageSelect = document.getElementById('language-select');
+    if (languageSelect) {
+      languageSelect.addEventListener('change', function() {
+        const language = this.value;
+        let mode;
+        
+        switch(language) {
+          case 'javascript':
+            mode = 'javascript';
+            codeEditor.setValue(getJavaScriptCode());
+            break;
+          case 'python':
+            mode = 'python';
+            codeEditor.setValue(getPythonCode());
+            break;
+          // Add other language implementations as needed
+          default:
+            mode = 'javascript';
+            codeEditor.setValue(getJavaScriptCode());
+        }
+        
+        codeEditor.setOption('mode', mode);
+      });
+      
+      // Set initial code
+      if (languageSelect.value === 'python') {
+        codeEditor.setValue(getPythonCode());
+        codeEditor.setOption('mode', 'python');
+      } else {
+        codeEditor.setValue(getJavaScriptCode());
+        codeEditor.setOption('mode', 'javascript');
+      }
+    }
+    
+    // Clear code button
+    const clearCodeBtn = document.getElementById('clear-code-btn');
+    if (clearCodeBtn) {
+      clearCodeBtn.addEventListener('click', function() {
+        if (confirm('Are you sure you want to clear your code? All changes will be lost.')) {
+          codeEditor.setValue('');
+        }
+      });
+    }
+    
+    // Run code button
+    const runCodeBtn = document.getElementById('run-code-btn');
+    const codeOutput = document.getElementById('code-output');
+    if (runCodeBtn && codeOutput) {
+      runCodeBtn.addEventListener('click', function() {
+        const code = codeEditor.getValue();
+        const language = languageSelect.value;
+        
+        if (!code.trim()) {
+          codeOutput.innerHTML = '<span class="text-danger">Error: Please write some code before running.</span>';
+          return;
+        }
+        
+        // Show loading state
+        codeOutput.innerHTML = '<div class="text-info"><i class="fas fa-spinner fa-spin me-2"></i>Running code...</div>';
+        
+        // Send code to server for execution
+        fetch('/experiments/advanced-encryption-standard/run', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+          body: JSON.stringify({ code, language })
+      })
+      .then(response => response.json())
+      .then(data => {
+          if (data.error) {
+            codeOutput.innerHTML = `<span class="text-danger">Error: ${data.error}</span>`;
+        } else {
+            codeOutput.innerHTML = `<pre>${data.output}</pre>`;
+        }
+      })
+      .catch(error => {
+          console.error('Run code error:', error);
+          codeOutput.innerHTML = '<span class="text-danger">An error occurred while running the code. Please try again.</span>';
+        });
+      });
+    }
+    
+    // Submit code button
+    const submitCodeBtn = document.getElementById('submit-code-btn');
+    if (submitCodeBtn) {
+      submitCodeBtn.addEventListener('click', function() {
+        const code = codeEditor.getValue();
+        const language = languageSelect.value;
+        
+        if (!code.trim()) {
+          if (typeof window.showNotification === 'function') {
+            window.showNotification('Error', 'Please write some code before submitting.', 'error');
+          } else {
+            alert('Please write some code before submitting.');
+          }
+          return;
+        }
+        
+        // Show loading state
+        submitCodeBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
+        submitCodeBtn.disabled = true;
+        
+        // Send code to server for submission
+        fetch('/experiments/advanced-encryption-standard/submit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ code, language })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.error) {
+            if (typeof window.showNotification === 'function') {
+              window.showNotification('Error', data.error, 'error');
+            } else {
+              alert(data.error);
+            }
+          } else {
+            if (typeof window.showNotification === 'function') {
+              window.showNotification('Success', 'Code submitted successfully!', 'success');
+            } else {
+              alert('Code submitted successfully!');
+            }
+            
+            // Mark experiment as completed in localStorage
+            const completedExperiments = JSON.parse(localStorage.getItem('completedExperiments')) || [];
+            if (!completedExperiments.includes('advanced-encryption-standard')) {
+              completedExperiments.push('advanced-encryption-standard');
+              localStorage.setItem('completedExperiments', JSON.stringify(completedExperiments));
+              
+              // Update sidebar and progress
+              if (typeof markCompletedExperiments === 'function') {
+                markCompletedExperiments();
+              }
+            }
+          }
+          
+          // Reset button state
+          submitCodeBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Submit';
+          submitCodeBtn.disabled = false;
+        })
+        .catch(error => {
+          console.error('Submit code error:', error);
+          if (typeof window.showNotification === 'function') {
+            window.showNotification('Error', 'An error occurred while submitting the code. Please try again.', 'error');
+          } else {
+            alert('An error occurred while submitting the code. Please try again.');
+          }
+          
+          // Reset button state
+          submitCodeBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Submit';
+          submitCodeBtn.disabled = false;
+      });
+    });
+    }
+  });
+</script>
+
+<!-- Add dark theme styles -->
+<style>
+  body[data-bs-theme="dark"] {
+    background-color: #1a1a1a;
+    color: #ffffff;
+  }
+  
+  body[data-bs-theme="dark"] .card {
+    background-color: #2d2d2d;
+    border-color: #404040;
+  }
+  
+  body[data-bs-theme="dark"] .card-header:not(.bg-primary) {
+    background-color: #404040;
+    color: #ffffff;
+  }
+  
+  body[data-bs-theme="dark"] .card-body {
+    color: #ffffff;
+  }
+  
+  body[data-bs-theme="dark"] pre.bg-light {
+    background-color: #404040 !important;
+    color: #ffffff;
+  }
+  
+  body[data-bs-theme="dark"] .table {
+    color: #ffffff;
+  }
+  
+  body[data-bs-theme="dark"] .table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+  
+  body[data-bs-theme="dark"] .bg-light {
+    background-color: #404040 !important;
+    color: #ffffff;
+  }
+  
+  body[data-bs-theme="dark"] .text-muted {
+    color: #a0a0a0 !important;
+  }
+  
+  body[data-bs-theme="dark"] .form-control {
+    background-color: #404040;
+    border-color: #606060;
+    color: #ffffff;
+  }
+  
+  body[data-bs-theme="dark"] .form-control:focus {
+    background-color: #404040;
+    border-color: #007bff;
+    color: #ffffff;
+  }
+  
+  body[data-bs-theme="dark"] .form-select {
+    background-color: #404040;
+    border-color: #606060;
+    color: #ffffff;
+  }
+  
+  body[data-bs-theme="dark"] .code-output {
+    background-color: #2d2d2d !important;
+    border: 1px solid #404040;
+  }
+</style>
+
+<%- include('../partials/footer') %> 

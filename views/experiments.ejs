@@ -1,0 +1,598 @@
+<%- include('partials/header') %>
+
+<!-- Hardcoded auth check script for improved reliability -->
+<script>
+  // Immediate auth check - hide login/register buttons if user is logged in
+  (function() {
+    var hasSession = document.cookie.includes('connect.sid');
+    
+    // Function to force hide login/register buttons when user is logged in
+    function hideLoginButtons() {
+      var loginButtons = document.querySelectorAll('a[href="/auth/login"], a[href="/auth/register"]');
+      loginButtons.forEach(function(button) {
+        if (button && !button.closest('#expUserDropdown')) {
+          button.style.display = 'none';
+        }
+      });
+    }
+    
+    // Function to show user dropdown if not visible but user is logged in
+    function showUserMenu() {
+      var userMenuExists = document.querySelector('#expUserMenu');
+      var loginVisible = document.querySelector('a[href="/auth/login"]') && 
+                         document.querySelector('a[href="/auth/login"]').style.display !== 'none';
+      
+      // If login is visible but session exists, force reload
+      if (loginVisible && hasSession) {
+        window.location.reload();
+      }
+    }
+    
+    // Call immediately
+    if (hasSession) {
+      hideLoginButtons();
+      showUserMenu();
+      // Set interval to periodically check and hide login buttons
+      setInterval(hideLoginButtons, 1000);
+    }
+  })();
+</script>
+
+<!-- Include experiments CSS -->
+<link rel="stylesheet" href="/css/experiments.css">
+
+<!-- Custom CSS for enhanced experiments page -->
+<style>
+  .experiment-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border-radius: 8px;
+    overflow: hidden;
+    height: 100%;
+  }
+  
+  .experiment-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+  }
+  
+  .experiment-card .card-title {
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .experiment-card .card-title i {
+    margin-right: 10px;
+    color: var(--primary-color);
+    font-size: 1.2em;
+  }
+  
+  .experiment-card .card-body {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding: 20px;
+  }
+  
+  .experiment-card .card-text {
+    margin-bottom: 20px;
+    flex-grow: 1;
+  }
+  
+  .experiment-card .btn-primary {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .experiment-card .btn-primary:hover {
+    transform: scale(1.05);
+  }
+  
+  .experiment-card .btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+    transition: all 0.6s ease;
+  }
+  
+  .experiment-card .btn-primary:hover::before {
+    left: 100%;
+  }
+  
+  .badge.bg-success {
+    animation: pulse 1.5s infinite;
+  }
+  
+  @keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+  
+  .progress {
+    height: 20px;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .progress-bar {
+    background-image: linear-gradient(45deg, rgba(255,255,255,.15) 25%, transparent 25%, transparent 50%, rgba(255,255,255,.15) 50%, rgba(255,255,255,.15) 75%, transparent 75%, transparent);
+    background-size: 1rem 1rem;
+    animation: progress-bar-stripes 1s linear infinite;
+  }
+  
+  @keyframes progress-bar-stripes {
+    from { background-position: 1rem 0; }
+    to { background-position: 0 0; }
+  }
+  
+  .page-title {
+    margin-bottom: 30px;
+    position: relative;
+    display: inline-block;
+  }
+  
+  .page-title::after {
+    content: '';
+    position: absolute;
+    bottom: -10px;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background-color: var(--primary-color);
+    border-radius: 2px;
+  }
+  
+  .scroll-reveal {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+  
+  .scroll-reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .experiment-number {
+    position: absolute;
+    top: -10px;
+    left: -10px;
+    width: 40px;
+    height: 40px;
+    background-color: var(--primary-color);
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  
+  .card {
+    position: relative;
+  }
+</style>
+
+<div class="container mt-5 pt-4">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="page-title">Available Experiments</h1>
+    <!-- Inline user dropdown, independent of header -->
+    <% if (locals.user && user) { %>
+      <div id="expUserMenu" style="position: relative;">
+        <button onclick="toggleExpUserDropdown()" style="background: none; border: none; display: flex; align-items: center; gap: 8px; cursor: pointer; text-decoration: none; color: inherit; padding: 8px 16px;">
+          <i class="fas fa-user-circle fa-lg"></i>
+          <span><%= user.email ? user.email.split('@')[0] : user.username %></span>
+          <i class="fas fa-chevron-down" style="font-size: 12px;"></i>
+        </button>
+        <div id="expUserDropdown" style="display: none; position: absolute; right: 0; top: 100%; width: 220px; background: white; border: 1px solid #ddd; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); z-index: 1000;">
+          <a href="/dashboard" style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; color: inherit; text-decoration: none; border-bottom: 1px solid #eee;">
+            <i class="fas fa-tachometer-alt" style="width: 16px;"></i>
+            <span>Dashboard</span>
+          </a>
+          <a href="/users/profile" style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; color: inherit; text-decoration: none; border-bottom: 1px solid #eee;">
+            <i class="fas fa-id-card" style="width: 16px;"></i>
+            <span>Profile</span>
+          </a>
+          <a href="/users/settings" style="display: flex; align-items: center; gap: 8px; padding: 12px 16px; color: inherit; text-decoration: none; border-bottom: 1px solid #eee;">
+            <i class="fas fa-cog" style="width: 16px;"></i>
+            <span>Settings</span>
+          </a>
+          <form action="/auth/logout" method="POST" style="margin: 0; padding: 0;">
+            <button type="submit" style="width: 100%; display: flex; align-items: center; gap: 8px; padding: 12px 16px; color: #dc3545; background: none; border: none; cursor: pointer; text-align: left;">
+              <i class="fas fa-sign-out-alt" style="width: 16px;"></i>
+              <span>Logout</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    <% } %>
+  </div>
+
+  <!-- Forcibly check user status with hardcoded logic -->
+  <script>
+    function toggleExpUserDropdown() {
+      var dropdown = document.getElementById('expUserDropdown');
+      dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+      
+      // Close when clicking outside
+      if (dropdown.style.display === 'block') {
+        document.onclick = function(e) {
+          if (!e.target.closest('button') && !e.target.closest('#expUserDropdown')) {
+            dropdown.style.display = 'none';
+            document.onclick = null;
+          }
+        };
+      }
+      
+      // Dark theme support
+      if (document.documentElement.getAttribute('data-theme') === 'dark') {
+        dropdown.style.backgroundColor = '#2d3436';
+        dropdown.style.borderColor = '#4b6584';
+        var links = dropdown.getElementsByTagName('a');
+        for (var i = 0; i < links.length; i++) {
+          links[i].style.color = '#ffffff';
+          links[i].style.borderBottomColor = '#4b6584';
+        }
+        var button = dropdown.querySelector('button');
+        if (button) button.style.color = '#fc5c65';
+      }
+    }
+    
+    // Add hover effects
+    var dropdownLinks = document.querySelectorAll('#expUserDropdown a, #expUserDropdown button');
+    for (var i = 0; i < dropdownLinks.length; i++) {
+      dropdownLinks[i].addEventListener('mouseover', function() {
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        this.style.backgroundColor = isDark ? '#4b6584' : '#f8f9fa';
+      });
+      
+      dropdownLinks[i].addEventListener('mouseout', function() {
+        var isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+        this.style.backgroundColor = isDark ? '#2d3436' : 'white';
+      });
+    }
+    
+    // Run on page load to ensure login/logout state is correct
+    document.addEventListener('DOMContentLoaded', function() {
+      var hasSession = document.cookie.includes('connect.sid');
+      var loginButtons = document.querySelectorAll('a[href="/auth/login"], a[href="/auth/register"]');
+      
+      if (hasSession) {
+        loginButtons.forEach(function(button) {
+          if (button && !button.closest('#expUserDropdown')) {
+            button.style.display = 'none';
+          }
+        });
+      }
+      
+      // Add scroll reveal animation
+      function checkScroll() {
+        const elements = document.querySelectorAll('.scroll-reveal');
+        elements.forEach(el => {
+          const elementTop = el.getBoundingClientRect().top;
+          const elementVisible = 150;
+          if (elementTop < window.innerHeight - elementVisible) {
+            el.classList.add('active');
+          }
+        });
+      }
+      
+      // Check elements on load
+      checkScroll();
+      
+      // Check elements on scroll
+      window.addEventListener('scroll', checkScroll);
+    });
+  </script>
+
+  <% if (locals.user && user) { %>
+    <!-- Progress Overview -->
+    <div class="card mb-4 scroll-reveal">
+      <div class="card-body">
+        <h5 class="card-title">Your Progress</h5>
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" style="width: <%= (user.completedExperiments || []).length / 14 * 100 %>%;">
+            <%= (user.completedExperiments || []).length %> / 14 Experiments
+          </div>
+        </div>
+      </div>
+    </div>
+  <% } %>
+
+  <!-- Experiments Grid - Always visible -->
+  <div class="row">
+    <% if (experiments && experiments.length > 0) { %>
+      <% experiments.forEach(function(experiment, index) { %>
+        <div class="col-md-4 mb-4 scroll-reveal" style="animation-delay: <%= index * 0.1 %>s">
+          <div class="card experiment-card h-100">
+            <div class="experiment-number"><%= experiment.number || (index + 1) %></div>
+            <div class="card-body">
+              <h5 class="card-title">
+                <i class="<%= experiment.icon || 'fas fa-flask' %>"></i>
+                <%= experiment.title %>
+              </h5>
+              <p class="card-text"><%= experiment.description %></p>
+              <div class="d-flex align-items-center justify-content-between">
+                <a href="/experiments/<%= experiment.slug %>" class="btn btn-primary">
+                  <i class="fas fa-play me-2"></i> Start Experiment
+                </a>
+                <% if (locals.user && user && user.completedExperiments && user.completedExperiments.includes(experiment.id)) { %>
+                  <span class="badge bg-success ms-2">
+                    <i class="fas fa-check"></i> Completed
+                  </span>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        </div>
+      <% }); %>
+    <% } else { %>
+      <!-- Fallback experiments if no data from database -->
+      <div class="col-md-4 mb-4 scroll-reveal">
+        <div class="card experiment-card h-100">
+          <div class="experiment-number">1</div>
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="fas fa-lock"></i>
+              Caesar Cipher
+            </h5>
+            <p class="card-text">Learn about one of the earliest encryption techniques used in history. Implement and understand the classic Caesar Cipher algorithm.</p>
+            <div class="d-flex align-items-center">
+              <a href="/experiments/caesar-cipher" class="btn btn-primary">
+                <i class="fas fa-play me-2"></i> Start Experiment
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4 mb-4 scroll-reveal" style="animation-delay: 0.1s">
+        <div class="card experiment-card h-100">
+          <div class="experiment-number">2</div>
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="fas fa-key"></i>
+              Monoalphabetic Cipher
+            </h5>
+            <p class="card-text">Explore the monoalphabetic substitution cipher technique and its implementation for encrypting and decrypting messages.</p>
+            <div class="d-flex align-items-center">
+              <a href="/experiments/mono-alphabetic-cipher" class="btn btn-primary">
+                <i class="fas fa-play me-2"></i> Start Experiment
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4 mb-4 scroll-reveal" style="animation-delay: 0.2s">
+        <div class="card experiment-card h-100">
+          <div class="experiment-number">3</div>
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="fas fa-shield-alt"></i>
+              Message Authentication Code
+            </h5>
+            <p class="card-text">Learn about message authentication codes and how they ensure data integrity and authentication in secure communications.</p>
+            <div class="d-flex align-items-center">
+              <a href="/experiments/message-authentication-code" class="btn btn-primary">
+                <i class="fas fa-play me-2"></i> Start Experiment
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4 mb-4 scroll-reveal" style="animation-delay: 0.3s">
+        <div class="card experiment-card h-100">
+          <div class="experiment-number">4</div>
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="fas fa-database"></i>
+              Data Encryption Standard
+            </h5>
+            <p class="card-text">Understand the classic DES algorithm, its structure, and implementation for symmetric key cryptography.</p>
+            <div class="d-flex align-items-center">
+              <a href="/experiments/data-encryption-standard" class="btn btn-primary">
+                <i class="fas fa-play me-2"></i> Start Experiment
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4 mb-4 scroll-reveal" style="animation-delay: 0.4s">
+        <div class="card experiment-card h-100">
+          <div class="experiment-number">5</div>
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="fas fa-lock"></i>
+              Advanced Encryption Standard
+            </h5>
+            <p class="card-text">Explore AES, the current standard for symmetric encryption, and learn about its superior security features.</p>
+            <div class="d-flex align-items-center">
+              <a href="/experiments/advanced-encryption-standard" class="btn btn-primary">
+                <i class="fas fa-play me-2"></i> Start Experiment
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4 mb-4 scroll-reveal" style="animation-delay: 0.5s">
+        <div class="card experiment-card h-100">
+          <div class="experiment-number">6</div>
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="fas fa-key"></i>
+              Asymmetric Key Encryption
+            </h5>
+            <p class="card-text">Learn about public key cryptography and how asymmetric encryption provides secure communication over insecure channels.</p>
+            <div class="d-flex align-items-center">
+              <a href="/experiments/asymmetric-key-encryption" class="btn btn-primary">
+                <i class="fas fa-play me-2"></i> Start Experiment
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4 mb-4 scroll-reveal" style="animation-delay: 0.6s">
+        <div class="card experiment-card h-100">
+          <div class="experiment-number">7</div>
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="fas fa-exchange-alt"></i>
+              Secure Key Exchange
+            </h5>
+            <p class="card-text">Understand how to securely exchange encryption keys over insecure channels using the Diffie-Hellman key exchange protocol.</p>
+            <div class="d-flex align-items-center">
+              <a href="/experiments/secure-key-exchange" class="btn btn-primary">
+                <i class="fas fa-play me-2"></i> Start Experiment
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4 mb-4 scroll-reveal" style="animation-delay: 0.7s">
+        <div class="card experiment-card h-100">
+          <div class="experiment-number">8</div>
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="fas fa-signature"></i>
+              Digital Signature Generation
+            </h5>
+            <p class="card-text">Learn how digital signatures provide authentication, non-repudiation, and integrity in electronic documents and messages.</p>
+            <div class="d-flex align-items-center">
+              <a href="/experiments/digital-signature-generation" class="btn btn-primary">
+                <i class="fas fa-play me-2"></i> Start Experiment
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4 mb-4 scroll-reveal" style="animation-delay: 0.8s">
+        <div class="card experiment-card h-100">
+          <div class="experiment-number">9</div>
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="fas fa-mobile-alt"></i>
+              Mobile Security
+            </h5>
+            <p class="card-text">Explore security challenges and solutions specific to mobile devices, including encryption, authentication, and app security.</p>
+            <div class="d-flex align-items-center">
+              <a href="/experiments/mobile-security" class="btn btn-primary">
+                <i class="fas fa-play me-2"></i> Start Experiment
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4 mb-4 scroll-reveal" style="animation-delay: 0.9s">
+        <div class="card experiment-card h-100">
+          <div class="experiment-number">10</div>
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="fas fa-search"></i>
+              Intrusion Detection System
+            </h5>
+            <p class="card-text">Learn about intrusion detection systems and how to use Snort to monitor and analyze network traffic for security threats.</p>
+            <div class="d-flex align-items-center">
+              <a href="/experiments/intrusion-detection-snort" class="btn btn-primary">
+                <i class="fas fa-play me-2"></i> Start Experiment
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4 mb-4 scroll-reveal" style="animation-delay: 1.0s">
+        <div class="card experiment-card h-100">
+          <div class="experiment-number">11</div>
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="fas fa-bug"></i>
+              Defeating Malware (Trojans)
+            </h5>
+            <p class="card-text">Understand how Trojan malware works and learn techniques to detect, prevent, and remove these security threats.</p>
+            <div class="d-flex align-items-center">
+              <a href="/experiments/defeating-malware-trojans" class="btn btn-primary">
+                <i class="fas fa-play me-2"></i> Start Experiment
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4 mb-4 scroll-reveal" style="animation-delay: 1.1s">
+        <div class="card experiment-card h-100">
+          <div class="experiment-number">12</div>
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="fas fa-search"></i>
+              Defeating Malware (Rootkit Hunter)
+            </h5>
+            <p class="card-text">Learn to detect and remove rootkits, the stealthy type of malware designed to hide the existence of certain processes or programs.</p>
+            <div class="d-flex align-items-center">
+              <a href="/experiments/defeating-malware-rootkit-hunter" class="btn btn-primary">
+                <i class="fas fa-play me-2"></i> Start Experiment
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4 mb-4 scroll-reveal" style="animation-delay: 1.2s">
+        <div class="card experiment-card h-100">
+          <div class="experiment-number">13</div>
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="fas fa-database"></i>
+              Database Security
+            </h5>
+            <p class="card-text">Explore techniques to secure databases from common vulnerabilities like SQL injection and unauthorized access.</p>
+            <div class="d-flex align-items-center">
+              <a href="/experiments/database-security" class="btn btn-primary">
+                <i class="fas fa-play me-2"></i> Start Experiment
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-4 mb-4 scroll-reveal" style="animation-delay: 1.3s">
+        <div class="card experiment-card h-100">
+          <div class="experiment-number">14</div>
+          <div class="card-body">
+            <h5 class="card-title">
+              <i class="fas fa-shield-alt"></i>
+              Encryption Integrity Control
+            </h5>
+            <p class="card-text">Learn about ensuring the integrity of encrypted data and the mechanisms used to verify that data hasn't been tampered with.</p>
+            <div class="d-flex align-items-center">
+              <a href="/experiments/encryption-integrity-control" class="btn btn-primary">
+                <i class="fas fa-play me-2"></i> Start Experiment
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<%- include('partials/footer') %>
+
+<!-- Include experiments.js for animations and interactivity -->
+<script src="/js/experiments.js"></script> 

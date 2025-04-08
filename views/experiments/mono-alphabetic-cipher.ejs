@@ -1,0 +1,821 @@
+<%- include('../partials/header') %>
+
+<div class="experiment-container" data-experiment-type="mono-alphabetic-cipher">
+  <!-- Left Column - Theory and Visualization -->
+  <div class="experiment-left">
+    <!-- Experiment Title -->
+    <div class="card mb-4">
+      <div class="card-header bg-primary text-white">
+        <h3 class="mb-0">Monoalphabetic Cipher</h3>
+      </div>
+    </div>
+    
+    <!-- Aim Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-bullseye section-icon"></i> Aim
+        </h5>
+      </div>
+      <div class="card-body">
+        <p>To implement the Monoalphabetic Cipher encryption and decryption algorithm, understand its working principles, and analyze its security strengths and weaknesses.</p>
+      </div>
+    </div>
+    
+    <!-- Algorithm Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-code-branch section-icon"></i> Algorithm
+        </h5>
+      </div>
+      <div class="card-body">
+        <ol>
+          <li>Create a substitution key by mapping each letter of the alphabet to another letter:</li>
+          <ul>
+            <li>Each letter must map to a unique letter (one-to-one mapping)</li>
+            <li>The mapping must include all 26 letters of the alphabet</li>
+          </ul>
+          <li>For encryption:</li>
+          <ul>
+            <li>Replace each letter in the plaintext with its corresponding letter from the substitution key</li>
+            <li>Keep non-alphabetic characters unchanged</li>
+          </ul>
+          <li>For decryption:</li>
+          <ul>
+            <li>Use the reverse mapping to convert each letter back to its original form</li>
+            <li>Keep non-alphabetic characters unchanged</li>
+          </ul>
+        </ol>
+      </div>
+    </div>
+    
+    <!-- Sample Input/Output Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-exchange-alt section-icon"></i> Sample Input/Output
+        </h5>
+      </div>
+      <div class="card-body">
+<div class="row">
+          <div class="col-md-6">
+            <h6><i class="fas fa-sign-in-alt me-2"></i>Sample Input:</h6>
+            <pre class="bg-light p-3 rounded">Plaintext: "Hello World"
+Key: "QWERTYUIOPASDFGHJKLZXCVBNM"</pre>
+          </div>
+          <div class="col-md-6">
+            <h6><i class="fas fa-sign-out-alt me-2"></i>Sample Output:</h6>
+            <pre class="bg-light p-3 rounded">Encrypted: "Itssg Vgksr"</pre>
+          </div>
+        </div>
+  </div>
+    </div>
+    
+    <!-- Visualization Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-chart-bar section-icon"></i> Visualization
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="mb-3">
+          <label for="input-text" class="form-label">Input Text:</label>
+          <input type="text" class="form-control" id="input-text" value="Hello World">
+        </div>
+        
+        <div class="mb-3">
+          <label for="key-value" class="form-label">Substitution Key:</label>
+          <input type="text" class="form-control" id="key-value" value="QWERTYUIOPASDFGHJKLZXCVBNM" maxlength="26" pattern="[A-Za-z]{26}">
+          <small class="form-text text-muted">Enter 26 unique letters for the substitution key.</small>
+        </div>
+        
+        <button class="btn btn-primary" id="visualize-btn">
+          <i class="fas fa-play me-2"></i>Visualize
+        </button>
+        
+        <div id="visualization-section" class="mt-4 d-none">
+          <h6 class="mb-3">Encryption Process:</h6>
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped" id="visualization-table">
+              <!-- Visualization table will be populated by JavaScript -->
+            </table>
+          </div>
+          
+          <div class="mt-3">
+            <h6>Output:</h6>
+            <div class="bg-light p-3 rounded" id="output-text"></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+    
+  <!-- Right Column - Code Editor and Output -->
+  <div class="experiment-right">
+    <!-- Code Editor Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-keyboard section-icon"></i> Code
+        </h5>
+      </div>
+      <div class="card-body">
+        <!-- Language Selection -->
+          <div class="mb-3">
+          <label for="language-select" class="form-label">Select Language:</label>
+          <select class="form-select" id="language-select">
+            <option value="javascript">JavaScript</option>
+            <option value="python">Python</option>
+            <option value="java">Java</option>
+            <option value="c">C</option>
+            <option value="cpp">C++</option>
+          </select>
+        </div>
+        
+        <div class="code-editor-container">
+          <div id="code-editor-wrapper">
+            <!-- Code Mirror editor will be initialized here -->
+            <textarea id="code-editor" class="form-control" rows="15">// Monoalphabetic Cipher Implementation
+
+function encrypt(text, key) {
+  // Your encryption code here
+  let result = "";
+  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const mapping = {};
+  
+  // Create mapping from alphabet to key
+  for (let i = 0; i < 26; i++) {
+    mapping[alphabet[i]] = key[i];
+    mapping[alphabet[i].toLowerCase()] = key[i].toLowerCase();
+  }
+  
+  // Encrypt each character
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
+    
+    // Check if character is a letter
+    if (/[a-zA-Z]/.test(char)) {
+      result += mapping[char];
+    } else {
+      result += char;
+    }
+  }
+  
+  return result;
+}
+
+function decrypt(text, key) {
+  // Your decryption code here
+  let result = "";
+  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const reverseMapping = {};
+  
+  // Create reverse mapping from key to alphabet
+  for (let i = 0; i < 26; i++) {
+    reverseMapping[key[i]] = alphabet[i];
+    reverseMapping[key[i].toLowerCase()] = alphabet[i].toLowerCase();
+  }
+  
+  // Decrypt each character
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
+    
+    // Check if character is a letter
+    if (/[a-zA-Z]/.test(char)) {
+      result += reverseMapping[char];
+    } else {
+      result += char;
+    }
+  }
+  
+  return result;
+}
+
+// Test the functions
+const plaintext = "Hello World";
+const key = "QWERTYUIOPASDFGHJKLZXCVBNM";
+
+const encrypted = encrypt(plaintext, key);
+console.log("Encrypted:", encrypted);
+
+const decrypted = decrypt(encrypted, key);
+console.log("Decrypted:", decrypted);</textarea>
+          </div>
+        </div>
+        
+        <div class="mt-3 d-flex justify-content-between">
+          <button class="btn btn-secondary" id="clear-code-btn">
+            <i class="fas fa-eraser me-2"></i>Clear Code
+            </button>
+          <button class="btn btn-primary" id="run-code-btn">
+            <i class="fas fa-play me-2"></i>Run Code
+            </button>
+          </div>
+      </div>
+    </div>
+    
+    <!-- Output Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-terminal section-icon"></i> Output
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="code-output bg-dark text-light p-3 rounded" id="code-output">
+          <div class="text-muted">Run your code to see the output here...</div>
+        </div>
+        
+        <div class="mt-3 d-flex justify-content-end">
+          <button class="btn btn-success" id="submit-code-btn">
+            <i class="fas fa-paper-plane me-2"></i>Submit
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CodeMirror CSS and JS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/dracula.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/show-hint.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/show-hint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/javascript-hint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/anyword-hint.min.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Set experiment type on body
+    document.body.setAttribute('data-experiment-type', 'mono-alphabetic-cipher');
+    
+    // Helper function for notifications if not defined elsewhere
+    function showNotification(message, type) {
+      if (window.showNotification) {
+        window.showNotification(message, type);
+      } else {
+        alert(message);
+      }
+    }
+    
+    // Initialize CodeMirror
+    const codeEditorTextarea = document.getElementById('code-editor');
+    const codeEditor = CodeMirror.fromTextArea(codeEditorTextarea, {
+      lineNumbers: true,
+      mode: 'javascript',
+      theme: 'dracula',
+      indentUnit: 2,
+      smartIndent: true,
+      tabSize: 2,
+      indentWithTabs: false,
+      lineWrapping: true,
+      matchBrackets: true,
+      autoCloseBrackets: true,
+      extraKeys: {
+        "Ctrl-Space": "autocomplete",
+        "Tab": function(cm) {
+          if (cm.somethingSelected()) {
+            cm.indentSelection("add");
+          } else {
+            cm.replaceSelection("  ", "end");
+          }
+        }
+      }
+    });
+    
+    // Language selection
+    const languageSelect = document.getElementById('language-select');
+    languageSelect.addEventListener('change', function() {
+      const language = this.value;
+      let mode;
+      
+      switch(language) {
+        case 'javascript':
+          mode = 'javascript';
+          break;
+        case 'python':
+          mode = 'python';
+          break;
+        case 'java':
+          mode = 'text/x-java';
+          break;
+        case 'c':
+          mode = 'text/x-csrc';
+          break;
+        case 'cpp':
+          mode = 'text/x-c++src';
+          break;
+        default:
+          mode = 'javascript';
+      }
+      
+      codeEditor.setOption('mode', mode);
+      
+      // Update starter code based on language
+      let starterCode = '';
+      
+      switch(language) {
+        case 'javascript':
+          starterCode = getJavaScriptStarterCode();
+          break;
+        case 'python':
+          starterCode = getPythonStarterCode();
+          break;
+        case 'java':
+          starterCode = getJavaStarterCode();
+          break;
+        case 'c':
+          starterCode = getCStarterCode();
+          break;
+        case 'cpp':
+          starterCode = getCppStarterCode();
+          break;
+      }
+      
+      codeEditor.setValue(starterCode);
+    });
+    
+    // Helper functions for starter code based on language
+    function getJavaScriptStarterCode() {
+      return `// Monoalphabetic Cipher Implementation
+
+function encrypt(text, key) {
+  // Your encryption code here
+  let result = "";
+  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const mapping = {};
+  
+  // Create mapping from alphabet to key
+  for (let i = 0; i < 26; i++) {
+    mapping[alphabet[i]] = key[i];
+    mapping[alphabet[i].toLowerCase()] = key[i].toLowerCase();
+  }
+  
+  // Encrypt each character
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
+    
+    // Check if character is a letter
+    if (/[a-zA-Z]/.test(char)) {
+      result += mapping[char];
+    } else {
+      result += char;
+    }
+  }
+  
+  return result;
+}
+
+function decrypt(text, key) {
+  // Your decryption code here
+  let result = "";
+  const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const reverseMapping = {};
+  
+  // Create reverse mapping from key to alphabet
+  for (let i = 0; i < 26; i++) {
+    reverseMapping[key[i]] = alphabet[i];
+    reverseMapping[key[i].toLowerCase()] = alphabet[i].toLowerCase();
+  }
+  
+  // Decrypt each character
+  for (let i = 0; i < text.length; i++) {
+    const char = text[i];
+    
+    // Check if character is a letter
+    if (/[a-zA-Z]/.test(char)) {
+      result += reverseMapping[char];
+    } else {
+      result += char;
+    }
+  }
+  
+  return result;
+}
+
+// Test the functions
+const plaintext = "Hello World";
+const key = "QWERTYUIOPASDFGHJKLZXCVBNM";
+
+const encrypted = encrypt(plaintext, key);
+console.log("Encrypted:", encrypted);
+
+const decrypted = decrypt(encrypted, key);
+console.log("Decrypted:", decrypted);`;
+    }
+    
+    function getPythonStarterCode() {
+      return `# Monoalphabetic Cipher Implementation
+
+def encrypt(text, key):
+    """
+    Encrypts text using monoalphabetic substitution cipher.
+    
+    Args:
+        text (str): The plaintext to encrypt
+        key (str): The 26-letter substitution key
+        
+    Returns:
+        str: The encrypted text
+    """
+    result = ""
+    alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    mapping = {}
+    
+    # Create mapping from alphabet to key
+    for i in range(26):
+        mapping[alphabet[i]] = key[i]
+        mapping[alphabet[i].lower()] = key[i].lower()
+    
+    # Encrypt each character
+    for char in text:
+        if char.isalpha():
+            result += mapping[char]
+        else:
+            result += char
+    
+    return result
+
+def decrypt(text, key):
+    """
+    Decrypts text using monoalphabetic substitution cipher.
+    
+    Args:
+        text (str): The ciphertext to decrypt
+        key (str): The 26-letter substitution key
+        
+    Returns:
+        str: The decrypted text
+    """
+    result = ""
+    alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+    reverse_mapping = {}
+    
+    # Create reverse mapping from key to alphabet
+    for i in range(26):
+        reverse_mapping[key[i]] = alphabet[i]
+        reverse_mapping[key[i].lower()] = alphabet[i].lower()
+    
+    # Decrypt each character
+    for char in text:
+        if char.isalpha():
+            result += reverse_mapping[char]
+        else:
+            result += char
+    
+    return result
+
+# Test the functions
+plaintext = "Hello World"
+key = "QWERTYUIOPASDFGHJKLZXCVBNM"
+
+encrypted = encrypt(plaintext, key)
+print(f"Encrypted: {encrypted}")
+
+decrypted = decrypt(encrypted, key)
+print(f"Decrypted: {decrypted}")`;
+    }
+    
+    function getJavaStarterCode() {
+      return `// Monoalphabetic Cipher Implementation
+
+public class MonoalphabeticCipher {
+    public static String encrypt(String text, String key) {
+        StringBuilder result = new StringBuilder();
+        String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        
+        // Create mapping from alphabet to key
+        for (int i = 0; i < text.length(); i++) {
+            char ch = text.charAt(i);
+            
+            if (Character.isLetter(ch)) {
+                int index = Character.isUpperCase(ch) ? 
+                    alphabet.indexOf(ch) : 
+                    alphabet.indexOf(Character.toUpperCase(ch));
+                
+                char newChar = key.charAt(index);
+                result.append(Character.isUpperCase(ch) ? 
+                    newChar : 
+                    Character.toLowerCase(newChar));
+            } else {
+                result.append(ch);
+            }
+        }
+        
+        return result.toString();
+    }
+    
+    public static String decrypt(String text, String key) {
+        StringBuilder result = new StringBuilder();
+        String alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        
+        // Create reverse mapping from key to alphabet
+        for (int i = 0; i < text.length(); i++) {
+            char ch = text.charAt(i);
+            
+            if (Character.isLetter(ch)) {
+                int index = Character.isUpperCase(ch) ? 
+                    key.indexOf(ch) : 
+                    key.indexOf(Character.toUpperCase(ch));
+                
+                char newChar = alphabet.charAt(index);
+                result.append(Character.isUpperCase(ch) ? 
+                    newChar : 
+                    Character.toLowerCase(newChar));
+            } else {
+                result.append(ch);
+            }
+        }
+        
+        return result.toString();
+    }
+    
+    public static void main(String[] args) {
+        String plaintext = "Hello World";
+        String key = "QWERTYUIOPASDFGHJKLZXCVBNM";
+        
+        String encrypted = encrypt(plaintext, key);
+        System.out.println("Encrypted: " + encrypted);
+        
+        String decrypted = decrypt(encrypted, key);
+        System.out.println("Decrypted: " + decrypted);
+    }
+}`;
+    }
+    
+    function getCStarterCode() {
+      return `// Monoalphabetic Cipher Implementation
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+void encrypt(char *text, const char *key) {
+    const char *alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    int i;
+    char ch;
+    
+    for (i = 0; text[i] != '\\0'; i++) {
+        ch = text[i];
+        
+        if (isalpha(ch)) {
+            int index = isupper(ch) ? 
+                (ch - 'A') : 
+                (ch - 'a');
+            
+            text[i] = isupper(ch) ? 
+                key[index] : 
+                tolower(key[index]);
+        }
+    }
+}
+
+void decrypt(char *text, const char *key) {
+    const char *alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    int i, j;
+    char ch;
+    
+    for (i = 0; text[i] != '\\0'; i++) {
+        ch = text[i];
+        
+        if (isalpha(ch)) {
+            // Find position in key
+            for (j = 0; j < 26; j++) {
+                if (toupper(ch) == key[j]) {
+                    text[i] = isupper(ch) ? 
+                        alphabet[j] : 
+                        tolower(alphabet[j]);
+                    break;
+                }
+            }
+        }
+    }
+}
+
+int main() {
+    char plaintext[] = "Hello World";
+    const char key[] = "QWERTYUIOPASDFGHJKLZXCVBNM";
+    
+    printf("Original: %s\\n", plaintext);
+    
+    encrypt(plaintext, key);
+    printf("Encrypted: %s\\n", plaintext);
+    
+    decrypt(plaintext, key);
+    printf("Decrypted: %s\\n", plaintext);
+    
+    return 0;
+}`;
+    }
+    
+    function getCppStarterCode() {
+      return `// Monoalphabetic Cipher Implementation
+#include <iostream>
+#include <string>
+using namespace std;
+
+string encrypt(string text, string key) {
+    string result = "";
+    string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    
+    for (char ch : text) {
+        if (isalpha(ch)) {
+            int index = isupper(ch) ? 
+                (ch - 'A') : 
+                (ch - 'a');
+            
+            result += isupper(ch) ? 
+                key[index] : 
+                tolower(key[index]);
+        } else {
+            result += ch;
+        }
+    }
+    
+    return result;
+}
+
+string decrypt(string text, string key) {
+    string result = "";
+    string alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    
+    for (char ch : text) {
+        if (isalpha(ch)) {
+            char upperCh = toupper(ch);
+            size_t index = key.find(upperCh);
+            
+            result += isupper(ch) ? 
+                alphabet[index] : 
+                tolower(alphabet[index]);
+        } else {
+            result += ch;
+        }
+    }
+    
+    return result;
+}
+
+int main() {
+    string plaintext = "Hello World";
+    string key = "QWERTYUIOPASDFGHJKLZXCVBNM";
+    
+    string encrypted = encrypt(plaintext, key);
+    cout << "Encrypted: " << encrypted << endl;
+    
+    string decrypted = decrypt(encrypted, key);
+    cout << "Decrypted: " << decrypted << endl;
+    
+    return 0;
+}`;
+    }
+    
+    // Clear code button
+    const clearCodeBtn = document.getElementById('clear-code-btn');
+    
+    if (clearCodeBtn) {
+      clearCodeBtn.addEventListener('click', function() {
+        if (confirm('Are you sure you want to clear your code? All changes will be lost.')) {
+          codeEditor.setValue('');
+        }
+      });
+    }
+    
+    // Run code button
+    const runCodeBtn = document.getElementById('run-code-btn');
+    const codeOutput = document.getElementById('code-output');
+    
+    if (runCodeBtn && codeOutput) {
+      runCodeBtn.addEventListener('click', function() {
+        const code = codeEditor.getValue();
+        const language = languageSelect.value;
+        
+        if (!code.trim()) {
+          codeOutput.innerHTML = '<span class="text-danger">Error: Please write some code before running.</span>';
+          return;
+        }
+        
+        // Show loading state
+        codeOutput.innerHTML = '<div class="text-info"><i class="fas fa-spinner fa-spin me-2"></i>Running code...</div>';
+        
+        // Send code to server for execution
+        fetch('/experiments/mono-alphabetic-cipher/run', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+          body: JSON.stringify({ code, language })
+      })
+      .then(response => response.json())
+      .then(data => {
+          if (data.error) {
+            codeOutput.innerHTML = `<span class="text-danger">Error: ${data.error}</span>`;
+        } else {
+            codeOutput.innerHTML = `<pre>${data.output}</pre>`;
+          }
+        })
+        .catch(error => {
+          console.error('Run code error:', error);
+          codeOutput.innerHTML = '<span class="text-danger">An error occurred while running the code. Please try again.</span>';
+        });
+      });
+    }
+    
+    // Submit code button
+    const submitCodeBtn = document.getElementById('submit-code-btn');
+    
+    if (submitCodeBtn) {
+      submitCodeBtn.addEventListener('click', function() {
+        const code = codeEditor.getValue();
+        const language = languageSelect.value;
+        
+        if (!code.trim()) {
+          showNotification('Please write some code before submitting.', 'error');
+          return;
+        }
+        
+        // Show loading state
+        submitCodeBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
+        submitCodeBtn.disabled = true;
+        
+        // Send code to server for submission
+        fetch('/experiments/mono-alphabetic-cipher/submit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ code, language })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.error) {
+            showNotification(data.error, 'error');
+          } else {
+            showNotification('Code submitted successfully!', 'success');
+            
+            // Mark experiment as completed in localStorage
+            const completedExperiments = JSON.parse(localStorage.getItem('completedExperiments')) || [];
+            if (!completedExperiments.includes('mono-alphabetic-cipher')) {
+              completedExperiments.push('mono-alphabetic-cipher');
+              localStorage.setItem('completedExperiments', JSON.stringify(completedExperiments));
+              
+              // Update sidebar and progress
+              if (typeof markCompletedExperiments === 'function') {
+                markCompletedExperiments();
+              }
+            }
+          }
+          
+          // Reset button state
+          submitCodeBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Submit';
+          submitCodeBtn.disabled = false;
+      })
+      .catch(error => {
+          console.error('Submit code error:', error);
+          showNotification('An error occurred while submitting the code. Please try again.', 'error');
+          
+          // Reset button state
+          submitCodeBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Submit';
+          submitCodeBtn.disabled = false;
+        });
+      });
+    }
+    
+    // Visualization button
+    const visualizeBtn = document.getElementById('visualize-btn');
+    const visualizationSection = document.getElementById('visualization-section');
+    const visualizationTable = document.getElementById('visualization-table');
+    const outputText = document.getElementById('output-text');
+    const inputText = document.getElementById('input-text');
+    const keyValue = document.getElementById('key-value');
+    
+    if (visualizeBtn && visualizationSection && visualizationTable && outputText && inputText && keyValue) {
+      visualizeBtn.addEventListener('click', function() {
+        const input = inputText.value.trim();
+        const key = keyValue.value.trim().toUpperCase();
+        
+        if (!input) {
+          showNotification('Please enter some text to visualize.', 'error');
+          return;
+        }
+        
+        if (!/^[A-Z]{26}$/.test(key)) {
+          showNotification('Please enter a valid 26-letter substitution key.', 'error');
+          return;
+        }
+        
+        // Show visualization section
+        visualizationSection.classList.remove('d-none');
+        visualizeMonoalphabeticCipher(input, key);
+      });
+    }
+  });
+</script>
+
+<%- include('../partials/footer') %> 

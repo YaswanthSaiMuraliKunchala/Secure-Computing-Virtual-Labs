@@ -1,0 +1,99 @@
+<div class="card mb-4">
+  <div class="card-header bg-primary text-white">
+    <h5 class="mb-0">Navigation</h5>
+  </div>
+  <div class="list-group list-group-flush">
+    <a href="/" class="list-group-item list-group-item-action">
+      <i class="fas fa-home me-2"></i> Home
+    </a>
+    <a href="/experiments" class="list-group-item list-group-item-action">
+      <i class="fas fa-flask me-2"></i> Experiments
+    </a>
+    <% if (locals.user) { %>
+      <a href="/users/profile" class="list-group-item list-group-item-action">
+        <i class="fas fa-user me-2"></i> Profile
+      </a>
+      <% if (locals.user.role === 'Faculty') { %>
+        <a href="/admin/dashboard" class="list-group-item list-group-item-action">
+          <i class="fas fa-tachometer-alt me-2"></i> Admin Dashboard
+        </a>
+      <% } %>
+      <form action="/auth/logout" method="POST" style="margin: 0; padding: 0;">
+        <button type="submit" class="list-group-item list-group-item-action text-danger" style="width: 100%; text-align: left; border: none;">
+          <i class="fas fa-sign-out-alt me-2"></i> Logout
+        </button>
+      </form>
+    <% } else { %>
+      <a href="/auth/login" class="list-group-item list-group-item-action">
+        <i class="fas fa-sign-in-alt me-2"></i> Login
+      </a>
+      <a href="/auth/register" class="list-group-item list-group-item-action">
+        <i class="fas fa-user-plus me-2"></i> Register
+      </a>
+    <% } %>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-header bg-primary text-white">
+    <h5 class="mb-0">Experiments</h5>
+  </div>
+  <div class="list-group list-group-flush">
+    <% if (locals.experiments && locals.experiments.length > 0) { %>
+      <% experiments.forEach(experiment => { %>
+        <a href="/experiments/<%= experiment.slug %>" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+          <%= experiment.number %>. <%= experiment.title.substring(0, 20) %><%= experiment.title.length > 20 ? '...' : '' %>
+          <% if (locals.user && user.progress && user.progress[experiment._id] && user.progress[experiment._id].completed) { %>
+            <span class="badge bg-success rounded-pill">
+              <i class="fas fa-check"></i>
+            </span>
+          <% } %>
+        </a>
+      <% }); %>
+    <% } else { %>
+      <!-- Hardcoded list of experiments if no database data is available -->
+      <a href="/experiments/caesar-cipher" class="list-group-item list-group-item-action">
+        <i class="fas fa-angle-right me-2"></i> 1. Caesar Cipher
+      </a>
+      <a href="/experiments/mono-alphabetic-cipher" class="list-group-item list-group-item-action">
+        <i class="fas fa-angle-right me-2"></i> 2. Mono-alphabetic Cipher
+      </a>
+      <a href="/experiments/message-authentication-code" class="list-group-item list-group-item-action">
+        <i class="fas fa-angle-right me-2"></i> 3. Message Auth. Code
+      </a>
+      <a href="/experiments/data-encryption-standard" class="list-group-item list-group-item-action">
+        <i class="fas fa-angle-right me-2"></i> 4. DES
+      </a>
+      <a href="/experiments/advanced-encryption-standard" class="list-group-item list-group-item-action">
+        <i class="fas fa-angle-right me-2"></i> 5. AES
+      </a>
+      <a href="/experiments/asymmetric-key-encryption" class="list-group-item list-group-item-action">
+        <i class="fas fa-angle-right me-2"></i> 6. Asymmetric Key
+      </a>
+      <a href="/experiments/secure-key-exchange" class="list-group-item list-group-item-action">
+        <i class="fas fa-angle-right me-2"></i> 7. Key Exchange
+      </a>
+      <a href="/experiments/digital-signature-generation" class="list-group-item list-group-item-action">
+        <i class="fas fa-angle-right me-2"></i> 8. Digital Signature
+      </a>
+      <a href="/experiments/mobile-security" class="list-group-item list-group-item-action">
+        <i class="fas fa-angle-right me-2"></i> 9. Mobile Security
+      </a>
+      <a href="/experiments/intrusion-detection-snort" class="list-group-item list-group-item-action">
+        <i class="fas fa-angle-right me-2"></i> 10. Intrusion Detection
+      </a>
+      <a href="/experiments/defeating-malware-trojans" class="list-group-item list-group-item-action">
+        <i class="fas fa-angle-right me-2"></i> 11. Trojans
+      </a>
+      <a href="/experiments/defeating-malware-rootkit-hunter" class="list-group-item list-group-item-action">
+        <i class="fas fa-angle-right me-2"></i> 12. Rootkit Hunter
+      </a>
+      <a href="/experiments/database-security" class="list-group-item list-group-item-action">
+        <i class="fas fa-angle-right me-2"></i> 13. Database Security
+      </a>
+      <a href="/experiments/encryption-integrity-control" class="list-group-item list-group-item-action">
+        <i class="fas fa-angle-right me-2"></i> 14. Encryption Integrity
+      </a>
+    <% } %>
+  </div>
+</div> 

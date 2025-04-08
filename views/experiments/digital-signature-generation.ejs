@@ -1,0 +1,609 @@
+<%- include('../partials/header') %>
+
+<div class="experiment-container" data-experiment-type="digital-signature-generation">
+  <!-- Left Column - Theory and Visualization -->
+  <div class="experiment-left">
+    <!-- Experiment Title -->
+    <div class="card mb-4">
+      <div class="card-header bg-primary text-white">
+        <h3 class="mb-0">Digital Signature Generation</h3>
+  </div>
+    </div>
+    
+    <!-- Aim Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-bullseye section-icon"></i> Aim
+        </h5>
+      </div>
+      <div class="card-body">
+        <p class="theme-text">To authenticate a message sent over the Internet using digital signature mechanism.</p>
+      </div>
+    </div>
+    
+    <!-- Algorithm Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-code-branch section-icon"></i> Algorithm
+        </h5>
+      </div>
+      <div class="card-body">
+        <ol class="theme-text">
+          <li>Generate RSA Keys:
+            <ul>
+              <li>The RSA key pair (private and public keys) is generated with a keysize of 2048 bits.</li>
+              <li>The keys are saved to files private.pem and public.pem.</li>
+            </ul>
+          </li>
+          <li>Sign Message Function:
+            <ul>
+              <li>Imports the private key.</li>
+              <li>Creates a SHA-256 hash of the message.</li>
+              <li>Signs the hash using pkcs1_15 with the private key.</li>
+              <li>Returns the signature.</li>
+            </ul>
+          </li>
+          <li>Verify Signature Function:
+            <ul>
+              <li>Imports the public key.</li>
+              <li>Creates a SHA-256 hash of the message.</li>
+              <li>Verifies the signature using pkcs1_15 with the public key.</li>
+              <li>Returns True if the signature is valid, otherwise returns False.</li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+    </div>
+    
+    <!-- Sample Input/Output Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-exchange-alt section-icon"></i> Sample Input/Output
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <h6 class="theme-text"><i class="fas fa-sign-in-alt me-2"></i>Sample Input:</h6>
+            <pre class="bg-light p-3 rounded">Message: "This is a secret message."
+Key Size: 2048 bits</pre>
+          </div>
+          <div class="col-md-6">
+            <h6 class="theme-text"><i class="fas fa-sign-out-alt me-2"></i>Sample Output:</h6>
+            <pre class="bg-light p-3 rounded">Signature: 1a2b3c4d5e6f7g8h9i0j...
+Signature valid: True</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Visualization Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-chart-bar section-icon"></i> Visualization
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="message" class="form-label theme-text">Message:</label>
+              <input type="text" class="form-control" id="message" value="This is a secret message.">
+            </div>
+          </div>
+          <div class="col-md-6">
+            <div class="mb-3">
+              <label for="key-size" class="form-label theme-text">Key Size (bits):</label>
+              <select class="form-select" id="key-size">
+                <option value="2048" selected>2048</option>
+                <option value="4096">4096</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        
+        <button class="btn btn-primary" id="visualize-btn">
+          <i class="fas fa-play me-2"></i>Visualize
+        </button>
+        
+        <div id="visualization-section" class="mt-4 d-none">
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped">
+              <thead class="table-dark">
+                <tr>
+                  <th>Step</th>
+                  <th>Operation</th>
+                  <th>Result</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Generate RSA Keys</td>
+                  <td id="key-generation-result">Generating...</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Message Hash (SHA-256)</td>
+                  <td id="hash-result">Computing...</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>Sign Message</td>
+                  <td id="signature-result">Signing...</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>Verify Signature</td>
+                  <td id="verification-result">Verifying...</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          
+          <div class="mt-3">
+            <h6 class="theme-text">Final Output:</h6>
+            <div class="bg-light p-3 rounded" id="output-text"></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+    
+  <!-- Right Column - Code Editor and Output -->
+  <div class="experiment-right">
+    <!-- Code Editor Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-keyboard section-icon"></i> Code
+        </h5>
+      </div>
+      <div class="card-body">
+        <!-- Language Selection -->
+          <div class="mb-3">
+          <label for="language-select" class="form-label">Select Language:</label>
+          <select class="form-select" id="language-select">
+            <option value="javascript">JavaScript</option>
+            <option value="python">Python</option>
+            <option value="java">Java</option>
+            <option value="c">C</option>
+            <option value="cpp">C++</option>
+          </select>
+        </div>
+        
+        <div class="code-editor-container">
+          <div id="code-editor-wrapper">
+            <!-- Code Mirror editor will be initialized here -->
+            <textarea id="code-editor" class="form-control" rows="15">// Digital Signature Implementation
+
+// Note: In a real implementation, you would use a cryptographic library
+// This is a simplified example for educational purposes
+
+function generateRSAKeyPair(keySize = 2048) {
+  // Generate RSA key pair
+  // Your code here
+}
+
+function hashMessage(message, algorithm = 'SHA-256') {
+  // Compute hash of the message
+  // Your code here
+}
+
+function signMessage(message, privateKey) {
+  // Sign a message using private key
+  // 1. Hash the message
+  // 2. Encrypt the hash with the private key
+  // Your code here
+}
+
+function verifySignature(message, signature, publicKey) {
+  // Verify a signature using public key
+  // 1. Hash the message
+  // 2. Decrypt the signature with the public key
+  // 3. Compare the hashes
+  // Your code here
+}
+
+// Example usage
+const message = "This is a message that needs to be signed.";
+
+// Generate key pair
+const { publicKey, privateKey } = generateRSAKeyPair();
+
+// Sign the message
+const messageHash = hashMessage(message);
+const signature = signMessage(message, privateKey);
+
+// Verify the signature
+const isValid = verifySignature(message, signature, publicKey);
+
+console.log("Message Hash:", messageHash);
+console.log("Digital Signature:", signature);
+console.log("Verification Result:", isValid ? "Signature is valid" : "Signature is invalid");</textarea>
+          </div>
+        </div>
+        
+        <div class="mt-3 d-flex justify-content-between">
+          <button class="btn btn-secondary" id="clear-code-btn">
+            <i class="fas fa-eraser me-2"></i>Clear Code
+            </button>
+          <button class="btn btn-primary" id="run-code-btn">
+            <i class="fas fa-play me-2"></i>Run Code
+            </button>
+          </div>
+      </div>
+    </div>
+    
+    <!-- Output Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-terminal section-icon"></i> Output
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="code-output bg-dark text-light p-3 rounded" id="code-output">
+          <div class="text-muted">Run your code to see the output here...</div>
+        </div>
+        
+        <div class="mt-3 d-flex justify-content-end">
+          <button class="btn btn-success" id="submit-code-btn">
+            <i class="fas fa-paper-plane me-2"></i>Submit
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CodeMirror CSS and JS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/dracula.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/show-hint.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/show-hint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/javascript-hint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/anyword-hint.min.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Set experiment type on body
+    document.body.setAttribute('data-experiment-type', 'digital-signature-generation');
+    
+    // Helper function for notifications
+    function showNotification(message, type) {
+      if (window.showNotification) {
+        window.showNotification(message, type);
+      } else {
+        alert(message);
+      }
+    }
+    
+    // Initialize CodeMirror
+    const codeEditorTextarea = document.getElementById('code-editor');
+    const codeEditor = CodeMirror.fromTextArea(codeEditorTextarea, {
+      lineNumbers: true,
+      mode: 'javascript',
+      theme: 'dracula',
+      indentUnit: 2,
+      smartIndent: true,
+      tabSize: 2,
+      indentWithTabs: false,
+      lineWrapping: true,
+      matchBrackets: true,
+      autoCloseBrackets: true,
+      extraKeys: {
+        "Ctrl-Space": "autocomplete",
+        "Tab": function(cm) {
+          if (cm.somethingSelected()) {
+            cm.indentSelection("add");
+          } else {
+            cm.replaceSelection("  ", "end");
+          }
+        }
+      }
+    });
+    
+    // Language selection
+    const languageSelect = document.getElementById('language-select');
+    languageSelect.addEventListener('change', function() {
+      const language = this.value;
+      let mode;
+      
+      switch(language) {
+        case 'javascript':
+          mode = 'javascript';
+          break;
+        case 'python':
+          mode = 'python';
+          break;
+        case 'java':
+          mode = 'text/x-java';
+          break;
+        case 'c':
+          mode = 'text/x-csrc';
+          break;
+        case 'cpp':
+          mode = 'text/x-c++src';
+          break;
+        default:
+          mode = 'javascript';
+      }
+      
+      codeEditor.setOption('mode', mode);
+      
+      // Update starter code based on language
+      if (confirm('Changing language will replace your current code. Continue?')) {
+        codeEditor.setValue(getStarterCode(language));
+      } else {
+        this.value = codeEditor.getOption('mode');
+      }
+    });
+    
+    // Helper function to get starter code for different languages
+    function getStarterCode(language) {
+      // Add starter code for different languages here
+      // Return appropriate starter code based on language
+      return codeEditor.getValue(); // For now, keep existing code
+    }
+    
+    // Clear code button
+    const clearCodeBtn = document.getElementById('clear-code-btn');
+    if (clearCodeBtn) {
+      clearCodeBtn.addEventListener('click', function() {
+        if (confirm('Are you sure you want to clear your code? All changes will be lost.')) {
+          codeEditor.setValue('');
+        }
+      });
+    }
+    
+    // Run code button
+    const runCodeBtn = document.getElementById('run-code-btn');
+    const codeOutput = document.getElementById('code-output');
+    
+    if (runCodeBtn && codeOutput) {
+      runCodeBtn.addEventListener('click', function() {
+        const code = codeEditor.getValue();
+        const language = languageSelect.value;
+        
+        if (!code.trim()) {
+          codeOutput.innerHTML = '<span class="text-danger">Error: Please write some code before running.</span>';
+        return;
+      }
+      
+        // Show loading state
+        codeOutput.innerHTML = '<div class="text-info"><i class="fas fa-spinner fa-spin me-2"></i>Running code...</div>';
+        
+        // Send code to server for execution
+        fetch('/experiments/digital-signature-generation/run', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ code, language })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.error) {
+            codeOutput.innerHTML = `<span class="text-danger">Error: ${data.error}</span>`;
+          } else {
+            codeOutput.innerHTML = `<pre>${data.output}</pre>`;
+          }
+        })
+        .catch(error => {
+          console.error('Run code error:', error);
+          codeOutput.innerHTML = '<span class="text-danger">An error occurred while running the code. Please try again.</span>';
+        });
+      });
+    }
+    
+    // Submit code button
+    const submitCodeBtn = document.getElementById('submit-code-btn');
+    
+    if (submitCodeBtn) {
+      submitCodeBtn.addEventListener('click', function() {
+        const code = codeEditor.getValue();
+        const language = languageSelect.value;
+        
+        if (!code.trim()) {
+          showNotification('Please write some code before submitting.', 'error');
+        return;
+      }
+      
+        // Show loading state
+        submitCodeBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
+        submitCodeBtn.disabled = true;
+        
+        // Send code to server for submission
+        fetch('/experiments/digital-signature-generation/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+          body: JSON.stringify({ code, language })
+      })
+      .then(response => response.json())
+      .then(data => {
+          if (data.error) {
+            showNotification(data.error, 'error');
+        } else {
+            showNotification('Code submitted successfully!', 'success');
+            
+            // Mark experiment as completed in localStorage
+            const completedExperiments = JSON.parse(localStorage.getItem('completedExperiments')) || [];
+            if (!completedExperiments.includes('digital-signature-generation')) {
+              completedExperiments.push('digital-signature-generation');
+              localStorage.setItem('completedExperiments', JSON.stringify(completedExperiments));
+              
+              // Update sidebar and progress
+              if (typeof markCompletedExperiments === 'function') {
+                markCompletedExperiments();
+              }
+            }
+          }
+          
+          // Reset button state
+          submitCodeBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Submit';
+          submitCodeBtn.disabled = false;
+      })
+      .catch(error => {
+          console.error('Submit code error:', error);
+          showNotification('An error occurred while submitting the code. Please try again.', 'error');
+          
+          // Reset button state
+          submitCodeBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Submit';
+          submitCodeBtn.disabled = false;
+        });
+      });
+    }
+    
+    // Helper function for modular exponentiation
+    function modPow(base, exponent, modulus) {
+      if (modulus === 1) return 0;
+      let result = 1;
+      base = base % modulus;
+      while (exponent > 0) {
+        if (exponent % 2 === 1) {
+          result = (result * base) % modulus;
+        }
+        exponent = Math.floor(exponent / 2);
+        base = (base * base) % modulus;
+      }
+      return result;
+    }
+
+    // Helper function to calculate SHA-256 hash
+    async function calculateHash(message) {
+      const encoder = new TextEncoder();
+      const data = encoder.encode(message);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', data);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    // Helper function to generate RSA keys
+    function generateRSAKeys(keySize) {
+      // For demonstration, using small prime numbers
+      const p = 17;
+      const q = 19;
+      const n = p * q;
+      const phiN = (p - 1) * (q - 1);
+      const e = 7;
+      const d = modInverse(e, phiN);
+      
+      return {
+        publicKey: { e, n },
+        privateKey: { d, n }
+      };
+    }
+
+    // Helper function to calculate modular multiplicative inverse
+    function modInverse(a, m) {
+      let m0 = m;
+      let y = 0;
+      let x = 1;
+      
+      if (m === 1) return 0;
+      
+      while (a > 1) {
+        const q = Math.floor(a / m);
+        let t = m;
+        m = a % m;
+        a = t;
+        t = y;
+        y = x - q * y;
+        x = t;
+      }
+      
+      if (x < 0) x += m0;
+      return x;
+    }
+
+    // Helper function to sign message
+    function signMessage(message, privateKey) {
+      // Convert message to number (simplified for demonstration)
+      const m = message.split('').reduce((acc, char) => acc * 256 + char.charCodeAt(0), 0);
+      const { d, n } = privateKey;
+      return modPow(m, d, n);
+    }
+
+    // Helper function to verify signature
+    function verifySignature(message, signature, publicKey) {
+      const { e, n } = publicKey;
+      const m = message.split('').reduce((acc, char) => acc * 256 + char.charCodeAt(0), 0);
+      const mPrime = modPow(signature, e, n);
+      return mPrime === m;
+    }
+
+    // Visualization button
+    const visualizeBtn = document.getElementById('visualize-btn');
+    const visualizationSection = document.getElementById('visualization-section');
+    
+    if (visualizeBtn && visualizationSection) {
+      visualizeBtn.addEventListener('click', async function() {
+        const message = document.getElementById('message').value;
+        const keySize = parseInt(document.getElementById('key-size').value);
+        
+        if (!message) {
+          showNotification('Please enter a message to sign.', 'error');
+          return;
+        }
+        
+        // Show visualization section
+        visualizationSection.classList.remove('d-none');
+        
+        try {
+          // Step 1: Generate RSA Keys
+          document.getElementById('key-generation-result').innerHTML = 'Generating RSA keys...';
+          const { publicKey, privateKey } = generateRSAKeys(keySize);
+          document.getElementById('key-generation-result').innerHTML = `
+            Public Key: (e=${publicKey.e}, n=${publicKey.n})<br>
+            Private Key: (d=${privateKey.d}, n=${privateKey.n})
+          `;
+          
+          // Step 2: Calculate Message Hash
+          document.getElementById('hash-result').innerHTML = 'Computing SHA-256 hash...';
+          const messageHash = await calculateHash(message);
+          document.getElementById('hash-result').innerHTML = messageHash;
+          
+          // Step 3: Sign Message
+          document.getElementById('signature-result').innerHTML = 'Signing message...';
+          const signature = signMessage(message, privateKey);
+          document.getElementById('signature-result').innerHTML = signature.toString(16);
+          
+          // Step 4: Verify Signature
+          document.getElementById('verification-result').innerHTML = 'Verifying signature...';
+          const isValid = verifySignature(message, signature, publicKey);
+          document.getElementById('verification-result').innerHTML = isValid ? 'Signature is valid' : 'Signature is invalid';
+          
+          // Update final output
+          document.getElementById('output-text').innerHTML = `
+            <div class="theme-text">
+              <strong>Message:</strong> "${message}"<br>
+              <strong>Message Hash (SHA-256):</strong> ${messageHash}<br>
+              <strong>Digital Signature:</strong> ${signature.toString(16)}<br>
+              <strong>Verification Result:</strong> ${isValid ? 'Valid' : 'Invalid'}<br>
+              <strong>Public Key:</strong> (e=${publicKey.e}, n=${publicKey.n})<br>
+              <strong>Private Key:</strong> (d=${privateKey.d}, n=${privateKey.n})
+            </div>
+          `;
+        } catch (error) {
+          console.error('Visualization error:', error);
+          showNotification('An error occurred during visualization. Please try again.', 'error');
+        }
+      });
+    }
+  });
+</script>
+
+<%- include('../partials/footer') %> 

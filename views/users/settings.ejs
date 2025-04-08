@@ -1,0 +1,467 @@
+<%- include('../partials/header') %>
+
+<div class="container mt-5 pt-5">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="h3 mb-0 text-gray-800">Account Settings</h1>
+            <p class="text-muted">Manage your account settings and preferences</p>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-lg-3 mb-4">
+            <div class="card shadow">
+                <div class="card-body p-0">
+                    <div class="list-group list-group-flush rounded-0">
+                        <a href="#profile-section" class="list-group-item list-group-item-action active" id="profile-tab">
+                            <i class="fas fa-user-circle me-2"></i> Profile
+                        </a>
+                        <a href="#security-section" class="list-group-item list-group-item-action" id="security-tab">
+                            <i class="fas fa-lock me-2"></i> Security
+                        </a>
+                        <a href="#notification-section" class="list-group-item list-group-item-action" id="notification-tab">
+                            <i class="fas fa-bell me-2"></i> Notifications
+                        </a>
+                        <a href="#appearance-section" class="list-group-item list-group-item-action" id="appearance-tab">
+                            <i class="fas fa-palette me-2"></i> Appearance
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-lg-9">
+            <!-- Profile Section -->
+            <div class="card shadow mb-4" id="profile-section">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Profile Information</h6>
+                </div>
+                <div class="card-body">
+                    <form id="profile-form" class="needs-validation" novalidate>
+                        <div class="row mb-4">
+                            <div class="col-md-3 text-center">
+                                <div style="width: 120px; height: 120px; background-color: var(--primary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; color: white; font-size: 48px;">
+                                    <i class="fas fa-user"></i>
+                                </div>
+                                <button type="button" class="btn btn-sm btn-outline-primary mt-3">
+                                    <i class="fas fa-camera me-1"></i> Change Photo
+                                </button>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="username" class="form-label">Username</label>
+                                        <input type="text" class="form-control" id="username" name="username" value="<%= locals.user ? user.username : '' %>" required>
+                                        <div class="invalid-feedback">
+                                            Please provide a username.
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="email" class="form-label">Email Address</label>
+                                        <input type="email" class="form-control" id="email" name="email" value="<%= locals.user ? user.email : '' %>" required>
+                                        <div class="invalid-feedback">
+                                            Please provide a valid email.
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="firstName" class="form-label">First Name</label>
+                                        <input type="text" class="form-control" id="firstName" name="firstName" value="">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="lastName" class="form-label">Last Name</label>
+                                        <input type="text" class="form-control" id="lastName" name="lastName" value="">
+                                    </div>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="bio" class="form-label">Bio</label>
+                                    <textarea class="form-control" id="bio" name="bio" rows="3"></textarea>
+                                    <small class="text-muted">Brief description for your profile.</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i> Save Changes
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Security Section -->
+            <div class="card shadow mb-4 d-none" id="security-section">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Security Settings</h6>
+                </div>
+                <div class="card-body">
+                    <form id="password-form" class="needs-validation" novalidate>
+                        <h5 class="mb-4">Change Password</h5>
+                        <div class="mb-3">
+                            <label for="currentPassword" class="form-label">Current Password</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="currentPassword" name="currentPassword" required>
+                                <button class="btn btn-outline-secondary password-toggle" type="button">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="invalid-feedback">
+                                Please enter your current password.
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="newPassword" class="form-label">New Password</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="newPassword" name="newPassword" data-password-strength required>
+                                <button class="btn btn-outline-secondary password-toggle" type="button">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="invalid-feedback">
+                                Please enter a new password.
+                            </div>
+                        </div>
+                        <div class="mb-4">
+                            <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                            <div class="input-group">
+                                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required>
+                                <button class="btn btn-outline-secondary password-toggle" type="button">
+                                    <i class="fas fa-eye"></i>
+                                </button>
+                            </div>
+                            <div class="invalid-feedback">
+                                Please confirm your new password.
+                            </div>
+                        </div>
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-key me-1"></i> Update Password
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <hr class="my-4">
+                    
+                    <h5 class="mb-4">Two-Factor Authentication</h5>
+                    <p>Add an extra layer of security to your account by enabling two-factor authentication.</p>
+                    <div class="form-check form-switch mb-3">
+                        <input class="form-check-input" type="checkbox" id="twoFactorAuth">
+                        <label class="form-check-label" for="twoFactorAuth">Enable Two-Factor Authentication</label>
+                    </div>
+                    <button type="button" class="btn btn-outline-primary" disabled>
+                        <i class="fas fa-qrcode me-1"></i> Set Up Two-Factor Authentication
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Notification Section -->
+            <div class="card shadow mb-4 d-none" id="notification-section">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Notification Preferences</h6>
+                </div>
+                <div class="card-body">
+                    <form id="notification-form">
+                        <h5 class="mb-4">Email Notifications</h5>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="emailTestNotification" checked>
+                            <label class="form-check-label" for="emailTestNotification">Upcoming Test Reminders</label>
+                            <div class="text-muted small">Receive email notifications about upcoming tests and deadlines.</div>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="emailGradeNotification" checked>
+                            <label class="form-check-label" for="emailGradeNotification">Grade Updates</label>
+                            <div class="text-muted small">Receive email notifications when your submissions are graded.</div>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="emailAnnouncementNotification" checked>
+                            <label class="form-check-label" for="emailAnnouncementNotification">Announcements</label>
+                            <div class="text-muted small">Receive email notifications for important announcements.</div>
+                        </div>
+                        
+                        <hr class="my-4">
+                        
+                        <h5 class="mb-4">Browser Notifications</h5>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="browserTestNotification" checked>
+                            <label class="form-check-label" for="browserTestNotification">Test Reminders</label>
+                            <div class="text-muted small">Receive browser notifications for upcoming tests.</div>
+                        </div>
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" class="form-check-input" id="browserGradeNotification" checked>
+                            <label class="form-check-label" for="browserGradeNotification">Grade Updates</label>
+                            <div class="text-muted small">Receive browser notifications when your submissions are graded.</div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i> Save Preferences
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Appearance Section -->
+            <div class="card shadow mb-4 d-none" id="appearance-section">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Appearance Settings</h6>
+                </div>
+                <div class="card-body">
+                    <form id="appearance-form">
+                        <h5 class="mb-4">Theme</h5>
+                        <div class="mb-4">
+                            <div class="row">
+                                <div class="col-md-4 mb-3">
+                                    <div class="card theme-card active">
+                                        <div class="card-body p-2 text-center">
+                                            <div class="theme-preview light-theme mb-2"></div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="theme" id="lightTheme" value="light" checked>
+                                                <label class="form-check-label" for="lightTheme">
+                                                    Light
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="card theme-card">
+                                        <div class="card-body p-2 text-center">
+                                            <div class="theme-preview dark-theme mb-2"></div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="theme" id="darkTheme" value="dark">
+                                                <label class="form-check-label" for="darkTheme">
+                                                    Dark
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <div class="card theme-card">
+                                        <div class="card-body p-2 text-center">
+                                            <div class="theme-preview system-theme mb-2"></div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="theme" id="systemTheme" value="system">
+                                                <label class="form-check-label" for="systemTheme">
+                                                    System
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h5 class="mb-4">Font Size</h5>
+                        <div class="mb-4">
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="fontSize" id="smallFont" value="small">
+                                <label class="form-check-label" for="smallFont">Small</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="fontSize" id="mediumFont" value="medium" checked>
+                                <label class="form-check-label" for="mediumFont">Medium</label>
+                            </div>
+                            <div class="form-check form-check-inline">
+                                <input class="form-check-input" type="radio" name="fontSize" id="largeFont" value="large">
+                                <label class="form-check-label" for="largeFont">Large</label>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-end">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-1"></i> Save Preferences
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .theme-card {
+        cursor: pointer;
+        transition: all 0.3s ease;
+    }
+    
+    .theme-card.active {
+        border-color: var(--secondary-color);
+    }
+    
+    .theme-preview {
+        height: 100px;
+        border-radius: var(--border-radius);
+    }
+    
+    .light-theme {
+        background-color: #f8f9fa;
+        border: 1px solid #dee2e6;
+    }
+    
+    .dark-theme {
+        background-color: #343a40;
+        border: 1px solid #495057;
+    }
+    
+    .system-theme {
+        background: linear-gradient(to right, #f8f9fa 50%, #343a40 50%);
+        border: 1px solid #dee2e6;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Tab navigation
+        const tabs = document.querySelectorAll('.list-group-item');
+        const sections = document.querySelectorAll('.card[id$="-section"]');
+        
+        tabs.forEach(tab => {
+            tab.addEventListener('click', function(e) {
+                e.preventDefault();
+                
+                // Remove active class from all tabs
+                tabs.forEach(t => t.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                this.classList.add('active');
+                
+                // Hide all sections
+                sections.forEach(section => section.classList.add('d-none'));
+                
+                // Show the corresponding section
+                const targetId = this.getAttribute('href');
+                document.querySelector(targetId).classList.remove('d-none');
+            });
+        });
+        
+        // Theme card selection
+        const themeCards = document.querySelectorAll('.theme-card');
+        
+        themeCards.forEach(card => {
+            card.addEventListener('click', function() {
+                // Remove active class from all cards
+                themeCards.forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked card
+                this.classList.add('active');
+                
+                // Check the radio button inside the card
+                const radio = this.querySelector('input[type="radio"]');
+                radio.checked = true;
+            });
+        });
+        
+        // Form submissions
+        const profileForm = document.getElementById('profile-form');
+        const passwordForm = document.getElementById('password-form');
+        const notificationForm = document.getElementById('notification-form');
+        const appearanceForm = document.getElementById('appearance-form');
+        
+        if (profileForm) {
+            profileForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (this.checkValidity()) {
+                    // Simulate form submission
+                    const submitBtn = this.querySelector('button[type="submit"]');
+                    const originalBtnText = submitBtn.innerHTML;
+                    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...';
+                    submitBtn.disabled = true;
+                    
+                    setTimeout(() => {
+                        submitBtn.innerHTML = originalBtnText;
+                        submitBtn.disabled = false;
+                        
+                        // Show success notification
+                        window.showNotification('Profile information updated successfully!', 'success');
+                    }, 1500);
+                }
+                
+                this.classList.add('was-validated');
+            });
+        }
+        
+        if (passwordForm) {
+            passwordForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (this.checkValidity()) {
+                    const newPassword = document.getElementById('newPassword').value;
+                    const confirmPassword = document.getElementById('confirmPassword').value;
+                    
+                    if (newPassword !== confirmPassword) {
+                        document.getElementById('confirmPassword').setCustomValidity('Passwords do not match');
+                        this.classList.add('was-validated');
+                        return;
+                    }
+                    
+                    // Simulate form submission
+                    const submitBtn = this.querySelector('button[type="submit"]');
+                    const originalBtnText = submitBtn.innerHTML;
+                    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Updating...';
+                    submitBtn.disabled = true;
+                    
+                    setTimeout(() => {
+                        submitBtn.innerHTML = originalBtnText;
+                        submitBtn.disabled = false;
+                        
+                        // Reset form
+                        this.reset();
+                        this.classList.remove('was-validated');
+                        
+                        // Show success notification
+                        window.showNotification('Password updated successfully!', 'success');
+                    }, 1500);
+                }
+                
+                this.classList.add('was-validated');
+            });
+        }
+        
+        if (notificationForm) {
+            notificationForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Simulate form submission
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const originalBtnText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...';
+                submitBtn.disabled = true;
+                
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalBtnText;
+                    submitBtn.disabled = false;
+                    
+                    // Show success notification
+                    window.showNotification('Notification preferences saved!', 'success');
+                }, 1500);
+            });
+        }
+        
+        if (appearanceForm) {
+            appearanceForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Simulate form submission
+                const submitBtn = this.querySelector('button[type="submit"]');
+                const originalBtnText = submitBtn.innerHTML;
+                submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...';
+                submitBtn.disabled = true;
+                
+                setTimeout(() => {
+                    submitBtn.innerHTML = originalBtnText;
+                    submitBtn.disabled = false;
+                    
+                    // Show success notification
+                    window.showNotification('Appearance settings saved!', 'success');
+                }, 1500);
+            });
+        }
+    });
+</script>
+
+<%- include('../partials/footer') %> 

@@ -1,0 +1,1004 @@
+<%- include('../partials/header') %>
+
+<div class="experiment-container" data-experiment-type="message-authentication-code">
+  <!-- Left Column - Theory and Visualization -->
+  <div class="experiment-left">
+    <!-- Experiment Title -->
+    <div class="card mb-4">
+      <div class="card-header bg-primary text-white">
+        <h3 class="mb-0">Message Authentication Code (MAC)</h3>
+      </div>
+    </div>
+    
+    <!-- Aim Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-bullseye section-icon"></i> Aim
+        </h5>
+      </div>
+      <div class="card-body">
+        <p>To calculate the messages digest of a text using the SHA-1 algorithm and thereby verifying data integrity</p>
+      </div>
+    </div>
+    
+    <!-- Hash Types Description -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-info-circle section-icon"></i> Hash Types
+        </h5>
+      </div>
+      <div class="card-body">
+        <dl>
+          <dt>SHA-1 (Secure Hash Algorithm 1)</dt>
+          <dd>A 160-bit (20-byte) hash function which was once the standard but is now considered cryptographically broken.</dd>
+          
+          <dt>SHA-224</dt>
+          <dd>A 224-bit (28-byte) hash function from the SHA-2 family, offering better security than SHA-1 while being more compact than SHA-256.</dd>
+          
+          <dt>SHA-256</dt>
+          <dd>A 256-bit (32-byte) hash function from the SHA-2 family, widely used in security applications and protocols.</dd>
+          
+          <dt>SHA-384</dt>
+          <dd>A 384-bit (48-byte) hash function from the SHA-2 family, providing stronger security with a larger output size.</dd>
+          
+          <dt>SHA-512</dt>
+          <dd>A 512-bit (64-byte) hash function from the SHA-2 family, offering the highest security level among these variants.</dd>
+        </dl>
+      </div>
+    </div>
+    
+    <!-- Algorithm Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-code-branch section-icon"></i> Algorithm
+        </h5>
+      </div>
+      <div class="card-body">
+        <ol>
+          <li>Import Hashlib Module:
+            <ul>
+              <li>Import the hashlib module to use various SHA hash functions.</li>
+            </ul>
+          </li>
+          <li>Compute SHA256 Hash:
+            <ul>
+              <li>Initialize a string str with the value "GeeksforGeeks".</li>
+              <li>Encode the string using str.encode() to convert it to bytes.</li>
+              <li>Pass the encoded string to hashlib.sha256() to compute the SHA256 hash.</li>
+              <li>Get the hexadecimal representation of the hash using result.hexdigest().</li>
+              <li>Print the message "The hexadecimal equivalent of SHA256 is :" followed by the hexadecimal value.</li>
+            </ul>
+          </li>
+          <li>Compute SHA384 Hash:
+            <ul>
+              <li>Initialize a string str with the value "GeeksforGeeks".</li>
+              <li>Encode the string using str.encode().</li>
+              <li>Pass the encoded string to hashlib.sha384() to compute the SHA384 hash.</li>
+              <li>Get the hexadecimal representation of the hash using result.hexdigest().</li>
+              <li>Print the message "The hexadecimal equivalent of SHA384 is :" followed by the hexadecimal value.</li>
+            </ul>
+          </li>
+          <li>Compute SHA224 Hash:
+            <ul>
+              <li>Initialize a string str with the value "GeeksforGeeks".</li>
+              <li>Encode the string using str.encode().</li>
+              <li>Pass the encoded string to hashlib.sha224() to compute the SHA224 hash.</li>
+              <li>Get the hexadecimal representation of the hash using result.hexdigest().</li>
+            </ul>
+          </li>
+          <li>Encode and hash using SHA512:
+            <ul>
+              <li>Reinitialize the string: str = "GeeksforGeeks"</li>
+              <li>Encode the string: encoded_str = str.encode()</li>
+              <li>Hash the encoded string using SHA512: result = hashlib.sha512(encoded_str)</li>
+              <li>Print the hexadecimal equivalent</li>
+            </ul>
+          </li>
+          <li>Encode and hash using SHA1:
+            <ul>
+              <li>Reinitialize the string: str = "GeeksforGeeks"</li>
+              <li>Encode the string: encoded_str = str.encode()</li>
+              <li>Hash the encoded string using SHA1: result = hashlib.sha1(encoded_str)</li>
+              <li>Print the hexadecimal equivalent</li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+    </div>
+    
+    <!-- Sample Input/Output Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-exchange-alt section-icon"></i> Sample Input/Output
+        </h5>
+      </div>
+      <div class="card-body">
+<div class="row">
+          <div class="col-md-6">
+            <h6><i class="fas fa-sign-in-alt me-2"></i>Sample Input:</h6>
+            <pre class="bg-light p-3 rounded">String: "GeeksforGeeks"</pre>
+          </div>
+          <div class="col-md-6">
+            <h6><i class="fas fa-sign-out-alt me-2"></i>Sample Output:</h6>
+            <pre class="bg-light p-3 rounded">SHA-1: f1320094548c882072fa0a9b3bca6d32cf8aa091
+SHA-224: 8b2e9ba847c0a82e40e277d6f6d2f35f4c9f4d5668dc4c699b77d49
+SHA-256: f6071725e7ddeb434fb6b1c1643924a928127fb07373f8ab73c3351b
+SHA-384: 421c3d71c1c3f7b1fb7b3b46c9469c3c2f8a4f43996800f51cca11f3
+SHA-512: 5a62af2c4e9adbe3c4347f1bef0922c4a8b2e4d09a0de8788b11fe4b</pre>
+          </div>
+        </div>
+  </div>
+    </div>
+    
+    <!-- Visualization Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-chart-bar section-icon"></i> Visualization
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="mb-3">
+          <label for="input-text" class="form-label">Input Text:</label>
+          <input type="text" class="form-control" id="input-text" value="GeeksforGeeks">
+        </div>
+        
+        <div class="mb-3">
+          <label for="hash-type" class="form-label">Hash Type:</label>
+          <select class="form-select" id="hash-type">
+            <option value="sha1">SHA-1</option>
+            <option value="sha224">SHA-224</option>
+            <option value="sha256">SHA-256</option>
+            <option value="sha384">SHA-384</option>
+            <option value="sha512">SHA-512</option>
+          </select>
+        </div>
+        
+        <button class="btn btn-primary" id="visualize-btn">
+          <i class="fas fa-play me-2"></i>Visualize
+        </button>
+        
+        <div id="visualization-section" class="mt-4 d-none">
+          <h6 class="mb-3">Hashing Process:</h6>
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped" id="visualization-table">
+              <thead>
+                <tr>
+                  <th>Step</th>
+                  <th>Operation</th>
+                  <th>Result</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Will be populated by JavaScript -->
+              </tbody>
+            </table>
+          </div>
+          
+          <div class="mt-3">
+            <h6>Final Hash:</h6>
+            <div class="bg-light p-3 rounded" id="output-text"></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+    
+  <!-- Right Column - Code Editor and Output -->
+  <div class="experiment-right">
+    <!-- Code Editor Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-keyboard section-icon"></i> Code
+        </h5>
+      </div>
+      <div class="card-body">
+        <!-- Language Selection -->
+          <div class="mb-3">
+          <label for="language-select" class="form-label">Select Language:</label>
+          <select class="form-select" id="language-select">
+            <option value="javascript">JavaScript</option>
+            <option value="python">Python</option>
+            <option value="java">Java</option>
+            <option value="c">C</option>
+            <option value="cpp">C++</option>
+          </select>
+        </div>
+        
+        <div class="code-editor-container">
+          <div id="code-editor-wrapper">
+            <textarea id="code-editor" class="form-control" rows="15">// SHA Hash Implementation
+
+// Helper function to convert string to bytes
+function stringToBytes(str) {
+    const encoder = new TextEncoder();
+    return encoder.encode(str);
+}
+
+// Helper function to convert bytes to hex string
+function bytesToHex(bytes) {
+    return Array.from(bytes)
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('');
+}
+
+// Function to compute hash using different SHA algorithms
+async function computeHash(text, algorithm) {
+    const data = stringToBytes(text);
+    const hashBuffer = await crypto.subtle.digest(algorithm, data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return bytesToHex(hashArray);
+}
+
+// Function to compute all hash variants
+async function computeAllHashes(text) {
+    const str = text || "GeeksforGeeks";
+    
+    // Compute SHA-1 hash
+    const sha1Hash = await computeHash(str, "SHA-1");
+    console.log("The hexadecimal equivalent of SHA1 is:", sha1Hash);
+    
+    // Compute SHA-256 hash
+    const sha256Hash = await computeHash(str, "SHA-256");
+    console.log("The hexadecimal equivalent of SHA256 is:", sha256Hash);
+    
+    // Compute SHA-384 hash
+    const sha384Hash = await computeHash(str, "SHA-384");
+    console.log("The hexadecimal equivalent of SHA384 is:", sha384Hash);
+    
+    // Compute SHA-512 hash
+    const sha512Hash = await computeHash(str, "SHA-512");
+    console.log("The hexadecimal equivalent of SHA512 is:", sha512Hash);
+    
+    return {
+        sha1: sha1Hash,
+        sha256: sha256Hash,
+        sha384: sha384Hash,
+        sha512: sha512Hash
+    };
+}
+
+// Test the implementation
+const text = "GeeksforGeeks";
+console.log("Input text:", text);
+computeAllHashes(text).then(hashes => {
+    console.log("\nHash values for different SHA variants:");
+    console.log("SHA-1:", hashes.sha1);
+    console.log("SHA-256:", hashes.sha256);
+    console.log("SHA-384:", hashes.sha384);
+    console.log("SHA-512:", hashes.sha512);
+});</textarea>
+          </div>
+        </div>
+        
+        <div class="mt-3 d-flex justify-content-between">
+          <button class="btn btn-secondary" id="clear-code-btn">
+            <i class="fas fa-eraser me-2"></i>Clear Code
+            </button>
+          <button class="btn btn-primary" id="run-code-btn">
+            <i class="fas fa-play me-2"></i>Run Code
+            </button>
+          </div>
+      </div>
+    </div>
+    
+    <!-- Output Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-terminal section-icon"></i> Output
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="code-output bg-dark text-light p-3 rounded" id="code-output">
+          <div class="text-muted">Run your code to see the output here...</div>
+        </div>
+        
+        <div class="mt-3 d-flex justify-content-end">
+          <button class="btn btn-success" id="submit-code-btn">
+            <i class="fas fa-paper-plane me-2"></i>Submit
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CodeMirror CSS and JS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/dracula.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/show-hint.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/show-hint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/javascript-hint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/anyword-hint.min.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Set experiment type on body
+    document.body.setAttribute('data-experiment-type', 'message-authentication-code');
+    
+    // Helper function for notifications if not defined elsewhere
+    function showNotification(message, type) {
+      if (window.showNotification) {
+        window.showNotification(message, type);
+      } else {
+        alert(message);
+      }
+    }
+    
+    // Initialize CodeMirror
+    const codeEditorTextarea = document.getElementById('code-editor');
+    const codeEditor = CodeMirror.fromTextArea(codeEditorTextarea, {
+      lineNumbers: true,
+      mode: 'javascript',
+      theme: 'dracula',
+      indentUnit: 2,
+      smartIndent: true,
+      tabSize: 2,
+      indentWithTabs: false,
+      lineWrapping: true,
+      matchBrackets: true,
+      autoCloseBrackets: true,
+      extraKeys: {
+        "Ctrl-Space": "autocomplete",
+        "Tab": function(cm) {
+          if (cm.somethingSelected()) {
+            cm.indentSelection("add");
+          } else {
+            cm.replaceSelection("  ", "end");
+          }
+        }
+      }
+    });
+    
+    // Language selection
+    const languageSelect = document.getElementById('language-select');
+    languageSelect.addEventListener('change', function() {
+      const language = this.value;
+      let mode;
+      
+      switch(language) {
+        case 'javascript':
+          mode = 'javascript';
+          break;
+        case 'python':
+          mode = 'python';
+          break;
+        case 'java':
+          mode = 'text/x-java';
+          break;
+        case 'c':
+          mode = 'text/x-csrc';
+          break;
+        case 'cpp':
+          mode = 'text/x-c++src';
+          break;
+        default:
+          mode = 'javascript';
+      }
+      
+      codeEditor.setOption('mode', mode);
+      
+      // Update starter code based on language
+      let starterCode = '';
+      
+      switch(language) {
+        case 'javascript':
+          starterCode = getJavaScriptStarterCode();
+          break;
+        case 'python':
+          starterCode = getPythonStarterCode();
+          break;
+        case 'java':
+          starterCode = getJavaStarterCode();
+          break;
+        case 'c':
+          starterCode = getCStarterCode();
+          break;
+        case 'cpp':
+          starterCode = getCppStarterCode();
+          break;
+      }
+      
+      codeEditor.setValue(starterCode);
+    });
+    
+    // Helper functions for starter code based on language
+    function getJavaScriptStarterCode() {
+      return `// SHA Hash Implementation
+
+// Helper function to convert string to bytes
+function stringToBytes(str) {
+    const encoder = new TextEncoder();
+    return encoder.encode(str);
+}
+
+// Helper function to convert bytes to hex string
+function bytesToHex(bytes) {
+    return Array.from(bytes)
+        .map(b => b.toString(16).padStart(2, '0'))
+        .join('');
+}
+
+// Function to compute hash using different SHA algorithms
+async function computeHash(text, algorithm) {
+    const data = stringToBytes(text);
+    const hashBuffer = await crypto.subtle.digest(algorithm, data);
+    const hashArray = Array.from(new Uint8Array(hashBuffer));
+    return bytesToHex(hashArray);
+}
+
+// Function to compute all hash variants
+async function computeAllHashes(text) {
+    const str = text || "GeeksforGeeks";
+    
+    // Compute SHA-1 hash
+    const sha1Hash = await computeHash(str, "SHA-1");
+    console.log("The hexadecimal equivalent of SHA1 is:", sha1Hash);
+    
+    // Compute SHA-256 hash
+    const sha256Hash = await computeHash(str, "SHA-256");
+    console.log("The hexadecimal equivalent of SHA256 is:", sha256Hash);
+    
+    // Compute SHA-384 hash
+    const sha384Hash = await computeHash(str, "SHA-384");
+    console.log("The hexadecimal equivalent of SHA384 is:", sha384Hash);
+    
+    // Compute SHA-512 hash
+    const sha512Hash = await computeHash(str, "SHA-512");
+    console.log("The hexadecimal equivalent of SHA512 is:", sha512Hash);
+    
+    return {
+        sha1: sha1Hash,
+        sha256: sha256Hash,
+        sha384: sha384Hash,
+        sha512: sha512Hash
+    };
+}
+
+// Test the implementation
+const text = "GeeksforGeeks";
+console.log("Input text:", text);
+computeAllHashes(text).then(hashes => {
+    console.log("\nHash values for different SHA variants:");
+    console.log("SHA-1:", hashes.sha1);
+    console.log("SHA-256:", hashes.sha256);
+    console.log("SHA-384:", hashes.sha384);
+    console.log("SHA-512:", hashes.sha512);
+});`;
+    }
+    
+    function getPythonStarterCode() {
+      return `# SHA Hash Implementation
+
+# Helper function to convert string to bytes
+def stringToBytes(str):
+    return str.encode('utf-8')
+
+# Helper function to convert bytes to hex string
+def bytesToHex(bytes):
+    return ''.join(f'{b:02x}' for b in bytes)
+
+# Function to compute hash using different SHA algorithms
+async def computeHash(text, algorithm):
+    data = stringToBytes(text)
+    hash_buffer = await crypto.subtle.digest(algorithm, data)
+    hash_array = [b for b in new Uint8Array(hash_buffer)]
+    return bytesToHex(hash_array)
+
+# Function to compute all hash variants
+async def computeAllHashes(text):
+    str = text or "GeeksforGeeks"
+    
+    # Compute SHA-1 hash
+    sha1_hash = await computeHash(str, "SHA-1")
+    print("The hexadecimal equivalent of SHA1 is:", sha1_hash)
+    
+    # Compute SHA-256 hash
+    sha256_hash = await computeHash(str, "SHA-256")
+    print("The hexadecimal equivalent of SHA256 is:", sha256_hash)
+    
+    # Compute SHA-384 hash
+    sha384_hash = await computeHash(str, "SHA-384")
+    print("The hexadecimal equivalent of SHA384 is:", sha384_hash)
+    
+    # Compute SHA-512 hash
+    sha512_hash = await computeHash(str, "SHA-512")
+    print("The hexadecimal equivalent of SHA512 is:", sha512_hash)
+    
+    return {
+        "sha1": sha1_hash,
+        "sha256": sha256_hash,
+        "sha384": sha384_hash,
+        "sha512": sha512_hash
+    }
+
+# Test the implementation
+text = "GeeksforGeeks"
+print("Input text:", text)
+computeAllHashes(text).then(hashes => {
+    print("\nHash values for different SHA variants:")
+    print("SHA-1:", hashes["sha1"])
+    print("SHA-256:", hashes["sha256"])
+    print("SHA-384:", hashes["sha384"])
+    print("SHA-512:", hashes["sha512"])
+})`;
+    }
+    
+    function getJavaStarterCode() {
+      return `// SHA Hash Implementation
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.nio.charset.StandardCharsets;
+
+public class SHAHashImplementation {
+    public static String computeHash(String text, String algorithm) throws NoSuchAlgorithmException {
+        Mac sha256_HMAC = Mac.getInstance(algorithm);
+        SecretKeySpec secret_key = new SecretKeySpec(text.getBytes(StandardCharsets.UTF_8), algorithm);
+        sha256_HMAC.init(secret_key);
+        byte[] bytes = sha256_HMAC.doFinal(text.getBytes(StandardCharsets.UTF_8));
+        return bytesToHex(bytes);
+    }
+    
+    public static String computeAllHashes(String text) throws NoSuchAlgorithmException {
+        String str = text || "GeeksforGeeks";
+        
+        // Compute SHA-1 hash
+        String sha1Hash = computeHash(str, "HmacSHA1");
+        System.out.println("The hexadecimal equivalent of SHA1 is: " + sha1Hash);
+        
+        // Compute SHA-256 hash
+        String sha256Hash = computeHash(str, "HmacSHA256");
+        System.out.println("The hexadecimal equivalent of SHA256 is: " + sha256Hash);
+        
+        // Compute SHA-384 hash
+        String sha384Hash = computeHash(str, "HmacSHA384");
+        System.out.println("The hexadecimal equivalent of SHA384 is: " + sha384Hash);
+        
+        // Compute SHA-512 hash
+        String sha512Hash = computeHash(str, "HmacSHA512");
+        System.out.println("The hexadecimal equivalent of SHA512 is: " + sha512Hash);
+        
+        return sha1Hash + "\n" + sha256Hash + "\n" + sha384Hash + "\n" + sha512Hash;
+    }
+    
+    private static String bytesToHex(byte[] bytes) {
+        StringBuilder result = new StringBuilder();
+        for (byte b : bytes) {
+            result.append(String.format("%02x", b));
+        }
+        return result.toString();
+    }
+    
+    public static void main(String[] args) {
+        try {
+            String text = "GeeksforGeeks";
+            System.out.println("Input text: " + text);
+            System.out.println("\nHash values for different SHA variants:");
+            System.out.println(computeAllHashes(text));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}`;
+    }
+    
+    function getCStarterCode() {
+      return `// SHA Hash Implementation
+#include <stdio.h>
+#include <string.h>
+#include <openssl/hmac.h>
+#include <openssl/sha.h>
+
+void computeAllHashes(const char* text) {
+    const char* str = text || "GeeksforGeeks";
+    
+    // Compute SHA-1 hash
+    unsigned char sha1Hash[SHA_DIGEST_LENGTH];
+    HMAC(EVP_sha1(), str, strlen(str), NULL, 0, sha1Hash, NULL);
+    printf("The hexadecimal equivalent of SHA1 is: %s\n", bytesToHex(sha1Hash, SHA_DIGEST_LENGTH));
+    
+    // Compute SHA-256 hash
+    unsigned char sha256Hash[SHA256_DIGEST_LENGTH];
+    HMAC(EVP_sha256(), str, strlen(str), NULL, 0, sha256Hash, NULL);
+    printf("The hexadecimal equivalent of SHA256 is: %s\n", bytesToHex(sha256Hash, SHA256_DIGEST_LENGTH));
+    
+    // Compute SHA-384 hash
+    unsigned char sha384Hash[SHA384_DIGEST_LENGTH];
+    HMAC(EVP_sha384(), str, strlen(str), NULL, 0, sha384Hash, NULL);
+    printf("The hexadecimal equivalent of SHA384 is: %s\n", bytesToHex(sha384Hash, SHA384_DIGEST_LENGTH));
+    
+    // Compute SHA-512 hash
+    unsigned char sha512Hash[SHA512_DIGEST_LENGTH];
+    HMAC(EVP_sha512(), str, strlen(str), NULL, 0, sha512Hash, NULL);
+    printf("The hexadecimal equivalent of SHA512 is: %s\n", bytesToHex(sha512Hash, SHA512_DIGEST_LENGTH));
+}
+
+int main() {
+    const char* text = "GeeksforGeeks";
+    printf("Input text: %s\n", text);
+    computeAllHashes(text);
+    return 0;
+}
+
+char* bytesToHex(const unsigned char* bytes, size_t length) {
+    char* hex = (char*)malloc(length * 2 + 1);
+    for (size_t i = 0; i < length; i++) {
+        sprintf(hex + i * 2, "%02x", bytes[i]);
+    }
+    hex[length * 2] = '\0';
+    return hex;
+}`;
+    }
+    
+    function getCppStarterCode() {
+      return `// SHA Hash Implementation
+#include <iostream>
+#include <string>
+#include <openssl/hmac.h>
+#include <openssl/sha.h>
+
+std::string computeHash(const std::string& text, const std::string& algorithm) {
+    const EVP_MD* evp_md = EVP_get_digestbyname(algorithm.c_str());
+    if (!evp_md) {
+        throw std::runtime_error("Unknown algorithm");
+    }
+
+    unsigned int digest_length;
+    HMAC_CTX* ctx = HMAC_CTX_new();
+    if (!ctx) {
+        throw std::runtime_error("HMAC_CTX_new() failed");
+    }
+
+    HMAC_Init_ex(ctx, text.c_str(), text.length(), evp_md, NULL);
+    unsigned char digest[EVP_MAX_MD_SIZE];
+    HMAC_Final(ctx, digest, &digest_length);
+    HMAC_CTX_free(ctx);
+
+    return std::string(reinterpret_cast<const char*>(digest), digest_length);
+}
+
+std::string computeAllHashes(const std::string& text) {
+    const std::string str = text.empty() ? "GeeksforGeeks" : text;
+    
+    // Compute SHA-1 hash
+    const std::string sha1Hash = computeHash(str, "HmacSHA1");
+    std::cout << "The hexadecimal equivalent of SHA1 is: " << sha1Hash << std::endl;
+    
+    // Compute SHA-256 hash
+    const std::string sha256Hash = computeHash(str, "HmacSHA256");
+    std::cout << "The hexadecimal equivalent of SHA256 is: " << sha256Hash << std::endl;
+    
+    // Compute SHA-384 hash
+    const std::string sha384Hash = computeHash(str, "HmacSHA384");
+    std::cout << "The hexadecimal equivalent of SHA384 is: " << sha384Hash << std::endl;
+    
+    // Compute SHA-512 hash
+    const std::string sha512Hash = computeHash(str, "HmacSHA512");
+    std::cout << "The hexadecimal equivalent of SHA512 is: " << sha512Hash << std::endl;
+    
+    return sha1Hash + "\n" + sha256Hash + "\n" + sha384Hash + "\n" + sha512Hash;
+}
+
+int main() {
+    try {
+        const std::string text = "GeeksforGeeks";
+        std::cout << "Input text: " << text << std::endl;
+        std::cout << "\nHash values for different SHA variants:" << std::endl;
+        std::cout << computeAllHashes(text);
+    } catch (const std::exception& e) {
+        std::cerr << "Error: " << e.what() << std::endl;
+        return 1;
+    }
+    return 0;
+}`;
+    }
+    
+    // Clear code button
+    const clearCodeBtn = document.getElementById('clear-code-btn');
+    
+    if (clearCodeBtn) {
+      clearCodeBtn.addEventListener('click', function() {
+        if (confirm('Are you sure you want to clear your code? All changes will be lost.')) {
+          codeEditor.setValue('');
+        }
+      });
+    }
+    
+    // Run code button
+    const runCodeBtn = document.getElementById('run-code-btn');
+    const codeOutput = document.getElementById('code-output');
+    
+    if (runCodeBtn && codeOutput) {
+      runCodeBtn.addEventListener('click', function() {
+        const code = codeEditor.getValue();
+        const language = languageSelect.value;
+        
+        if (!code.trim()) {
+          codeOutput.innerHTML = '<span class="text-danger">Error: Please write some code before running.</span>';
+          return;
+        }
+        
+        // Show loading state
+        codeOutput.innerHTML = '<div class="text-info"><i class="fas fa-spinner fa-spin me-2"></i>Running code...</div>';
+        
+        // Send code to server for execution
+        fetch('/experiments/message-authentication-code/run', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+          body: JSON.stringify({ code, language })
+      })
+      .then(response => response.json())
+      .then(data => {
+          if (data.error) {
+            codeOutput.innerHTML = `<span class="text-danger">Error: ${data.error}</span>`;
+        } else {
+            codeOutput.innerHTML = `<pre>${data.output}</pre>`;
+          }
+        })
+        .catch(error => {
+          console.error('Run code error:', error);
+          codeOutput.innerHTML = '<span class="text-danger">An error occurred while running the code. Please try again.</span>';
+        });
+      });
+    }
+    
+    // Submit code button
+    const submitCodeBtn = document.getElementById('submit-code-btn');
+    
+    if (submitCodeBtn) {
+      submitCodeBtn.addEventListener('click', function() {
+        const code = codeEditor.getValue();
+        const language = languageSelect.value;
+        
+        if (!code.trim()) {
+          showNotification('Please write some code before submitting.', 'error');
+          return;
+        }
+        
+        // Show loading state
+        submitCodeBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
+        submitCodeBtn.disabled = true;
+        
+        // Send code to server for submission
+        fetch('/experiments/message-authentication-code/submit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ code, language })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.error) {
+            showNotification(data.error, 'error');
+          } else {
+            showNotification('Code submitted successfully!', 'success');
+            
+            // Mark experiment as completed in localStorage
+            const completedExperiments = JSON.parse(localStorage.getItem('completedExperiments')) || [];
+            if (!completedExperiments.includes('message-authentication-code')) {
+              completedExperiments.push('message-authentication-code');
+              localStorage.setItem('completedExperiments', JSON.stringify(completedExperiments));
+              
+              // Update sidebar and progress
+              if (typeof markCompletedExperiments === 'function') {
+                markCompletedExperiments();
+              }
+            }
+          }
+          
+          // Reset button state
+          submitCodeBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Submit';
+          submitCodeBtn.disabled = false;
+      })
+      .catch(error => {
+          console.error('Submit code error:', error);
+          showNotification('An error occurred while submitting the code. Please try again.', 'error');
+          
+          // Reset button state
+          submitCodeBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Submit';
+          submitCodeBtn.disabled = false;
+        });
+      });
+    }
+    
+    // Visualization functionality
+    function visualizeHashingProcess(input, hashType) {
+      const tbody = visualizationTable.querySelector('tbody');
+      tbody.innerHTML = '';
+      
+      // Step 1: Input text
+      tbody.innerHTML += `
+        <tr>
+          <td>1</td>
+          <td>Input Text</td>
+          <td>${input}</td>
+        </tr>
+      `;
+      
+      // Step 2: Convert to bytes
+      const encoder = new TextEncoder();
+      const bytes = encoder.encode(input);
+      tbody.innerHTML += `
+        <tr>
+          <td>2</td>
+          <td>Convert to Bytes</td>
+          <td class="text-break">[${Array.from(bytes).join(', ')}]</td>
+        </tr>
+      `;
+      
+      // Step 3: Hash type
+      tbody.innerHTML += `
+        <tr>
+          <td>3</td>
+          <td>Hash Algorithm</td>
+          <td>${hashType.toUpperCase()}</td>
+        </tr>
+      `;
+      
+      // Show loading indicator in the output area
+      outputText.innerHTML = '<div class="text-center"><i class="fas fa-spinner fa-spin"></i> Computing hash...</div>';
+      
+      // Step 4: Compute hash
+      try {
+        const algorithmMap = {
+          'sha1': 'SHA-1',
+          'sha224': 'SHA-224',
+          'sha256': 'SHA-256',
+          'sha384': 'SHA-384',
+          'sha512': 'SHA-512'
+        };
+        
+        const algorithm = algorithmMap[hashType.toLowerCase()];
+        if (!algorithm) {
+          throw new Error(`Unsupported hash algorithm: ${hashType}`);
+        }
+        
+        crypto.subtle.digest(algorithm, bytes).then(hashBuffer => {
+          const hashArray = Array.from(new Uint8Array(hashBuffer));
+          const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+          
+          tbody.innerHTML += `
+            <tr>
+              <td>4</td>
+              <td>Compute Hash</td>
+              <td class="text-break"><code>${hashHex}</code></td>
+            </tr>
+          `;
+          
+          // Update output text with formatted hash
+          outputText.innerHTML = `<code class="user-select-all">${hashHex}</code>`;
+          
+          // Add hash length information
+          tbody.innerHTML += `
+            <tr>
+              <td>5</td>
+              <td>Hash Length</td>
+              <td>${hashBuffer.byteLength * 8} bits (${hashBuffer.byteLength} bytes)</td>
+            </tr>
+          `;
+        }).catch(error => {
+          console.error('Hash computation error:', error);
+          outputText.innerHTML = `<div class="text-danger">Error computing hash: ${error.message}</div>`;
+        });
+      } catch (error) {
+        console.error('Hash computation error:', error);
+        outputText.innerHTML = `<div class="text-danger">Error computing hash: ${error.message}</div>`;
+      }
+    }
+    
+    // Visualization button click handler
+    const visualizeBtn = document.getElementById('visualize-btn');
+    const visualizationSection = document.getElementById('visualization-section');
+    const visualizationTable = document.getElementById('visualization-table');
+    const outputText = document.getElementById('output-text');
+    const inputText = document.getElementById('input-text');
+    
+    if (visualizeBtn && visualizationSection && visualizationTable && outputText && inputText) {
+      visualizeBtn.addEventListener('click', function() {
+        const input = inputText.value.trim();
+        const hashType = document.getElementById('hash-type').value;
+        
+        if (!input) {
+          if (typeof window.showNotification === 'function') {
+            window.showNotification('Error', 'Please enter some text to hash.', 'error');
+          } else {
+            alert('Please enter some text to hash.');
+          }
+          return;
+        }
+        
+        // Show visualization section
+        visualizationSection.classList.remove('d-none');
+        
+        // Visualize the hashing process
+        visualizeHashingProcess(input, hashType);
+      });
+    }
+  });
+</script>
+
+<!-- Add dark theme styles -->
+<style>
+  body[data-bs-theme="dark"] {
+    background-color: #1a1a1a;
+    color: #ffffff;
+  }
+  
+  body[data-bs-theme="dark"] .card {
+    background-color: #2d2d2d;
+    border-color: #404040;
+  }
+  
+  body[data-bs-theme="dark"] .card-header:not(.bg-primary) {
+    background-color: #404040;
+    color: #ffffff;
+  }
+  
+  body[data-bs-theme="dark"] .card-body {
+    color: #ffffff;
+  }
+  
+  body[data-bs-theme="dark"] pre.bg-light {
+    background-color: #404040 !important;
+    color: #ffffff;
+  }
+  
+  body[data-bs-theme="dark"] .table {
+    color: #ffffff;
+  }
+  
+  body[data-bs-theme="dark"] .table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+  
+  body[data-bs-theme="dark"] .bg-light {
+    background-color: #404040 !important;
+    color: #ffffff;
+  }
+  
+  body[data-bs-theme="dark"] .text-muted {
+    color: #a0a0a0 !important;
+  }
+  
+  body[data-bs-theme="dark"] .form-control {
+    background-color: #404040;
+    border-color: #606060;
+    color: #ffffff;
+  }
+  
+  body[data-bs-theme="dark"] .form-control:focus {
+    background-color: #404040;
+    border-color: #007bff;
+    color: #ffffff;
+  }
+  
+  body[data-bs-theme="dark"] .form-select {
+    background-color: #404040;
+    border-color: #606060;
+    color: #ffffff;
+  }
+  
+  body[data-bs-theme="dark"] .code-output {
+    background-color: #2d2d2d !important;
+    border: 1px solid #404040;
+  }
+</style>
+
+<%- include('../partials/footer') %> 

@@ -1,0 +1,192 @@
+<div class="aim-section">
+    <h2>Aim</h2>
+    <p>To authenticate a message sent over the Internet using a digital signature mechanism.</p>
+</div>
+
+<div class="algorithm-section">
+    <h2>Algorithm</h2>
+    <ol>
+        <li>Generate RSA Keys:
+            <ul>
+                <li>Select two prime numbers p and q</li>
+                <li>Calculate n = p × q</li>
+                <li>Calculate φ(n) = (p-1) × (q-1)</li>
+                <li>Choose e where 1 < e < φ(n) and gcd(e, φ(n)) = 1</li>
+                <li>Calculate d where e × d ≡ 1 (mod φ(n))</li>
+                <li>Public key: (e, n)</li>
+                <li>Private key: (d, n)</li>
+            </ul>
+        </li>
+        <li>Sign Message:
+            <ul>
+                <li>Convert message to number m</li>
+                <li>Calculate signature s = m^d mod n</li>
+                <li>Send message and signature</li>
+            </ul>
+        </li>
+        <li>Verify Signature:
+            <ul>
+                <li>Receive message and signature</li>
+                <li>Calculate m' = s^e mod n</li>
+                <li>Compare m' with original message</li>
+                <li>If m' = m, signature is valid</li>
+            </ul>
+        </li>
+    </ol>
+</div>
+
+<div class="sample-section">
+    <h2>Sample Input/Output</h2>
+    <div class="sample-content">
+        <h3>Input:</h3>
+        <pre>p = 17
+q = 19
+e = 7
+Message = "Hello"</pre>
+        <h3>Output:</h3>
+        <pre>n = 323
+φ(n) = 288
+d = 247
+Signature = 123
+Verification: Valid</pre>
+    </div>
+</div>
+
+<div class="visualization-section">
+    <h2>Visualization</h2>
+    <div class="visualization-content">
+        <div class="input-group">
+            <label for="primeP">Prime p:</label>
+            <input type="number" id="primeP" min="3" value="17">
+        </div>
+        <div class="input-group">
+            <label for="primeQ">Prime q:</label>
+            <input type="number" id="primeQ" min="3" value="19">
+        </div>
+        <div class="input-group">
+            <label for="publicE">Public key e:</label>
+            <input type="number" id="publicE" min="2" value="7">
+        </div>
+        <div class="input-group">
+            <label for="message">Message:</label>
+            <input type="text" id="message" value="Hello">
+        </div>
+        <button id="visualizeBtn" class="visualize-btn">Visualize</button>
+        <div class="visualization-steps">
+            <div class="step" id="step1">
+                <h3>Step 1: Generate RSA Keys</h3>
+                <div class="step-content"></div>
+            </div>
+            <div class="step" id="step2">
+                <h3>Step 2: Sign Message</h3>
+                <div class="step-content"></div>
+            </div>
+            <div class="step" id="step3">
+                <h3>Step 3: Verify Signature</h3>
+                <div class="step-content"></div>
+            </div>
+        </div>
+        <div class="output-text"></div>
+    </div>
+</div>
+
+<script>
+function generateSignatureSteps() {
+    const p = parseInt(document.getElementById('primeP').value);
+    const q = parseInt(document.getElementById('primeQ').value);
+    const e = parseInt(document.getElementById('publicE').value);
+    const message = document.getElementById('message').value;
+
+    // Validate inputs
+    if (!p || !q || !e || !message) {
+        showNotification('Please enter all required values', 'error');
+        return;
+    }
+
+    if (p < 3 || q < 3) {
+        showNotification('Prime numbers must be at least 3', 'error');
+        return;
+    }
+
+    if (e < 2) {
+        showNotification('Public key e must be at least 2', 'error');
+        return;
+    }
+
+    // Calculate n and φ(n)
+    const n = p * q;
+    const phiN = (p - 1) * (q - 1);
+
+    // Check if e is valid
+    if (e >= phiN || gcd(e, phiN) !== 1) {
+        showNotification('Invalid public key e', 'error');
+        return;
+    }
+
+    // Calculate private key d
+    const d = modInverse(e, phiN);
+    if (!d) {
+        showNotification('Could not find valid private key d', 'error');
+        return;
+    }
+
+    // Convert message to number
+    const m = message.split('').reduce((acc, char) => acc * 256 + char.charCodeAt(0), 0);
+
+    // Calculate signature
+    const s = modPow(m, d, n);
+
+    // Verify signature
+    const mPrime = modPow(s, e, n);
+    const isValid = mPrime === m;
+
+    // Update visualization
+    document.querySelector('#step1 .step-content').innerHTML = `
+        <p>n = ${n}</p>
+        <p>φ(n) = ${phiN}</p>
+        <p>d = ${d}</p>
+    `;
+
+    document.querySelector('#step2 .step-content').innerHTML = `
+        <p>Message: "${message}"</p>
+        <p>Message as number: ${m}</p>
+        <p>Signature: ${s}</p>
+    `;
+
+    document.querySelector('#step3 .step-content').innerHTML = `
+        <p>m' = ${mPrime}</p>
+        <p>Verification: ${isValid ? 'Valid' : 'Invalid'}</p>
+    `;
+
+    document.querySelector('.output-text').innerHTML = `
+        <h3>Final Results:</h3>
+        <p>Public Key: (${e}, ${n})</p>
+        <p>Private Key: (${d}, ${n})</p>
+        <p>Message: "${message}"</p>
+        <p>Signature: ${s}</p>
+        <p>Verification: ${isValid ? 'Valid' : 'Invalid'}</p>
+    `;
+}
+
+// Helper function to calculate modular multiplicative inverse
+function modInverse(a, m) {
+    let m0 = m;
+    let y = 0;
+    let x = 1;
+
+    if (m === 1) return 0;
+
+    while (a > 1) {
+        const q = Math.floor(a / m);
+        let t = m;
+        m = a % m;
+        a = t;
+        t = y;
+        y = x - q * y;
+        x = t;
+    }
+
+    if (x < 0) x += m0;
+    return x;
+}
+</script> 

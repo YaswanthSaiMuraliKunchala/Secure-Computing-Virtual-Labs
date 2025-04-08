@@ -1,0 +1,660 @@
+<%- include('../partials/header') %>
+
+<div class="experiment-container">
+  <div class="experiment-left">
+    <div class="card mb-4">
+      <div class="card-header bg-primary text-white">
+        <h4 class="mb-0"><i class="fas fa-mobile-alt me-2"></i> Mobile Security</h4>
+      </div>
+      <div class="card-body">
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5 class="mb-0">
+              <i class="fas fa-bullseye section-icon"></i> Aim
+            </h5>
+          </div>
+          <div class="card-body">
+            <p class="theme-text">To implement basic mobile security functionalities such as scanning for known malicious apps, encrypting and decrypting sensitive data, monitoring network traffic, and authenticating users.</p>
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5 class="mb-0">
+              <i class="fas fa-code-branch section-icon"></i> Algorithm
+            </h5>
+          </div>
+          <div class="card-body">
+            <ol class="theme-text">
+              <li>Import Required Libraries:
+                <ul>
+                  <li>Import hashlib, os, socket, ssl, base64, and Fernet from cryptography.fernet</li>
+                  <li>Import getpass for password input</li>
+                </ul>
+              </li>
+              <li>Define Known Malicious App Hashes:
+                <ul>
+                  <li>Initialize known_malicious_apps with hashes of known malicious apps</li>
+                </ul>
+              </li>
+              <li>Function Definitions:
+                <ul>
+                  <li>Initialize an empty list malicious_apps</li>
+                  <li>Iterate through each app in app_list</li>
+                  <li>Compute the MD5 hash of app</li>
+                  <li>If the computed hash exists in known_malicious_apps, add app to malicious_apps</li>
+                  <li>Return malicious_apps</li>
+                </ul>
+              </li>
+              <li>generate_key():
+                <ul>
+                  <li>Use Fernet.generate_key() to generate a symmetric encryption key</li>
+                  <li>Return key</li>
+                </ul>
+              </li>
+              <li>encrypt_data(data, key):
+                <ul>
+                  <li>Input: data (plaintext data to encrypt), key (encryption key)</li>
+                  <li>Output: encrypted_data (encrypted data)</li>
+                  <li>Initialize a Fernet object with key</li>
+                  <li>Encrypt data using Fernet.encrypt() method</li>
+                  <li>Return encrypted_data</li>
+                </ul>
+              </li>
+              <li>decrypt_data(encrypted_data, key):
+                <ul>
+                  <li>Input: encrypted_data (data to decrypt), key (encryption key)</li>
+                  <li>Output: decrypted_data (decrypted plaintext)</li>
+                  <li>Initialize a Fernet object with key</li>
+                  <li>Decrypt encrypted_data using Fernet.decrypt() method</li>
+                  <li>Decode decrypted_data and return</li>
+                </ul>
+              </li>
+              <li>monitor_network_traffic():
+                <ul>
+                  <li>Print "Monitoring network traffic..." (simulated functionality)</li>
+                </ul>
+              </li>
+              <li>secure_connection(host, port):
+                <ul>
+                  <li>Input: host (hostname or IP address), port (port number)</li>
+                  <li>Create a default SSL context with ssl.create_default_context()</li>
+                  <li>Create a TCP connection to host and port using socket.create_connection()</li>
+                  <li>Wrap the socket with SSL/TLS using context.wrap_socket() and server_hostname=host</li>
+                  <li>Print the negotiated SSL/TLS version (ssock.version())</li>
+                </ul>
+              </li>
+              <li>authenticate_user(username, password, stored_hash):
+                <ul>
+                  <li>Input: username (entered username), password (entered password), stored_hash (hashed password from storage)</li>
+                  <li>Output: True (authentication successful) or False (authentication failed)</li>
+                  <li>Compute the SHA-256 hash of password</li>
+                  <li>Compare the computed hash with stored_hash</li>
+                  <li>Return True if they match, otherwise False</li>
+                </ul>
+              </li>
+            </ol>
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5 class="mb-0">
+              <i class="fas fa-exchange-alt section-icon"></i> Sample Input/Output
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <h6 class="theme-text"><i class="fas fa-sign-in-alt me-2"></i>Sample Input:</h6>
+                <pre class="bg-light p-3 rounded">App List: ["app1", "malicious_app"]
+Sensitive Data: "This is a sensitive information"
+Host: "www.example.com"
+Port: 443
+Username: "user123"
+Password: "secure_password"</pre>
+              </div>
+              <div class="col-md-6">
+                <h6 class="theme-text"><i class="fas fa-sign-out-alt me-2"></i>Sample Output:</h6>
+                <pre class="bg-light p-3 rounded">=== Part 1: Scan for Malicious Apps ===
+Malicious apps found: ['malicious_app']
+
+=== Part 2: Secure Data Storage ===
+Sensitive data: This is a sensitive information
+Encrypted data: b'...'
+Decrypted data: This is a sensitive information
+
+=== Part 3: Monitor Network Traffic ===
+Monitoring network traffic...
+
+=== Part 4: Establish Secure Connection ===
+TLSv1.3
+
+=== Part 5: User Authentication ===
+Enter username: user123
+Enter password: ********
+Authentication successful.</pre>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card mb-4">
+          <div class="card-header">
+            <h5 class="mb-0">
+              <i class="fas fa-chart-bar section-icon"></i> Visualization
+            </h5>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="app-list" class="form-label theme-text">App List:</label>
+                  <input type="text" class="form-control" id="app-list" value="app1, malicious_app">
+                </div>
+                <div class="mb-3">
+                  <label for="sensitive-data" class="form-label theme-text">Sensitive Data:</label>
+                  <input type="text" class="form-control" id="sensitive-data" value="This is a sensitive information">
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="host" class="form-label theme-text">Host:</label>
+                  <input type="text" class="form-control" id="host" value="www.example.com">
+                </div>
+                <div class="mb-3">
+                  <label for="port" class="form-label theme-text">Port:</label>
+                  <input type="number" class="form-control" id="port" value="443">
+                </div>
+                <div class="mb-3">
+                  <label for="username" class="form-label theme-text">Username:</label>
+                  <input type="text" class="form-control" id="username" value="user123">
+                </div>
+                <div class="mb-3">
+                  <label for="password" class="form-label theme-text">Password:</label>
+                  <input type="password" class="form-control" id="password" value="secure_password">
+                </div>
+              </div>
+            </div>
+            
+            <button class="btn btn-primary" id="visualize-btn">
+              <i class="fas fa-play me-2"></i>Visualize Security Process
+            </button>
+            
+            <div id="visualization-section" class="mt-4 d-none">
+              <div class="table-responsive">
+                <table class="table table-bordered table-striped">
+                  <thead class="table-dark">
+                    <tr>
+                      <th>Part</th>
+                      <th>Operation</th>
+                      <th>Result</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>1</td>
+                      <td>Scan for Malicious Apps</td>
+                      <td id="malicious-apps-result">Scanning...</td>
+                    </tr>
+                    <tr>
+                      <td>2</td>
+                      <td>Secure Data Storage</td>
+                      <td id="storage-result">Processing...</td>
+                    </tr>
+                    <tr>
+                      <td>3</td>
+                      <td>Monitor Network Traffic</td>
+                      <td id="network-result">Monitoring...</td>
+                    </tr>
+                    <tr>
+                      <td>4</td>
+                      <td>Establish Secure Connection</td>
+                      <td id="connection-result">Connecting...</td>
+                    </tr>
+                    <tr>
+                      <td>5</td>
+                      <td>User Authentication</td>
+                      <td id="auth-result">Authenticating...</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              
+              <div class="mt-3">
+                <h6 class="theme-text">Final Output:</h6>
+                <div class="bg-light p-3 rounded" id="output-text"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+    
+  <div class="experiment-right">
+    <div class="card mb-4">
+      <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+        <h4 class="mb-0"><i class="fas fa-code me-2"></i> Code Section</h4>
+        <div class="btn-group">
+          <select class="form-select form-select-sm" id="languageSelector">
+            <option value="javascript">JavaScript</option>
+            <option value="python">Python</option>
+            <option value="java">Java</option>
+          </select>
+          <button class="btn btn-sm btn-light" id="clearCode">
+            <i class="fas fa-eraser"></i> Clear
+          </button>
+        </div>
+      </div>
+      <div class="card-body">
+        <div id="codeEditor" class="mb-3">
+          <div class="code-container">
+            <div id="editor"></div>
+          </div>
+          <div class="d-flex justify-content-between mt-3">
+            <button id="runCode" class="btn btn-success">
+              <i class="fas fa-play"></i> Run Code
+            </button>
+            <button id="submitCode" class="btn btn-primary">
+              <i class="fas fa-paper-plane"></i> Submit
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header bg-primary text-white">
+        <h4 class="mb-0"><i class="fas fa-terminal me-2"></i> Output</h4>
+      </div>
+      <div class="card-body">
+        <pre id="output" class="output-area theme-text">// Output will appear here...
+</pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/monokai.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.min.js"></script>
+
+<style>
+  .security-step {
+    padding: 10px;
+    margin: 5px 0;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+  }
+  
+  .visualization-section {
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f8f9fa;
+  }
+  
+  .CodeMirror {
+    height: 400px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+  }
+  
+  [data-theme="dark"] .security-step {
+    background-color: #2d3436;
+    border-color: #4b6584;
+    color: #ffffff;
+  }
+  
+  [data-theme="dark"] .visualization-section {
+    background-color: #2d3436;
+    border-color: #4b6584;
+  }
+  
+  [data-theme="dark"] .security-step .badge.bg-secondary {
+    background-color: #4b6584 !important;
+  }
+  
+  [data-theme="dark"] .security-step .badge.bg-success {
+    background-color: #26de81 !important;
+  }
+  
+  .output-area {
+    min-height: 200px;
+    max-height: 400px;
+    overflow-y: auto;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 10px;
+  }
+  
+  [data-theme="dark"] .output-area {
+    background-color: #2d3436;
+    border-color: #4b6584;
+    color: #ffffff;
+  }
+
+  .code-container {
+    position: relative;
+    height: 400px;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+  }
+
+  #editor {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    font-size: 14px;
+  }
+
+  .output-area {
+    min-height: 150px;
+    max-height: 300px;
+    overflow-y: auto;
+    font-family: monospace;
+    white-space: pre-wrap;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 1rem;
+  }
+
+  [data-theme="dark"] .output-area {
+    background-color: #2d3436;
+    border-color: #4b6584;
+    color: #ffffff;
+  }
+
+  [data-theme="dark"] .code-container {
+    border-color: #4b6584;
+  }
+
+  #languageSelector {
+    width: auto;
+    margin-right: 0.5rem;
+  }
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize CodeMirror
+  const editor = CodeMirror(document.getElementById('editor'), {
+    mode: 'javascript',
+    theme: document.documentElement.getAttribute('data-theme') === 'dark' ? 'monokai' : 'default',
+    lineNumbers: true,
+    autoCloseBrackets: true,
+    matchBrackets: true,
+    indentUnit: 2,
+    tabSize: 2,
+    value: `// Mobile Security Implementation
+class MobileSecurityManager {
+  constructor() {
+    this.isDeviceSecure = false;
+    this.isUserAuthenticated = false;
+    this.secureStorage = new Map();
+  }
+  
+  checkDeviceIntegrity() {
+    // Implement device integrity check
+    // Return true if device is secure, false otherwise
+  }
+
+  authenticateUser(username, password) {
+    // Implement user authentication
+    // Return true if authentication successful, false otherwise
+  }
+  
+  securelyStoreData(key, data) {
+    // Implement secure data storage
+    // Return true if data stored successfully, false otherwise
+  }
+  
+  securelyRetrieveData(key) {
+    // Implement secure data retrieval
+    // Return the decrypted data or null if not found/error
+  }
+  
+  setupSecureCommunication() {
+    // Implement secure communication setup
+    // Return true if setup successful, false otherwise
+  }
+}
+
+// Example usage:
+function runMobileSecurity() {
+  const manager = new MobileSecurityManager();
+  
+  // Test device integrity
+  const isDeviceSecure = manager.checkDeviceIntegrity();
+  console.log('Device Security:', isDeviceSecure ? 'Verified' : 'Compromised');
+  
+  // Test authentication
+  const isAuthenticated = manager.authenticateUser('user123', 'SecureP@ss123');
+  console.log('Authentication:', isAuthenticated ? 'Success' : 'Failed');
+  
+  // Test secure storage
+  const isStored = manager.securelyStoreData('sensitiveData', '4111-1111-1111-1111');
+  console.log('Data Storage:', isStored ? 'Secured' : 'Failed');
+  
+  // Test secure communication
+  const isSecure = manager.setupSecureCommunication();
+  console.log('Communication:', isSecure ? 'Secure' : 'Insecure');
+  
+  return 'Security implementation complete';
+}
+
+// Run the implementation
+runMobileSecurity();`
+  });
+
+  // Theme change observer
+  const observer = new MutationObserver(function(mutations) {
+    mutations.forEach(function(mutation) {
+      if (mutation.attributeName === 'data-theme') {
+        const theme = document.documentElement.getAttribute('data-theme');
+        editor.setOption('theme', theme === 'dark' ? 'monokai' : 'default');
+      }
+    });
+  });
+
+  observer.observe(document.documentElement, {
+    attributes: true,
+    attributeFilter: ['data-theme']
+  });
+
+  // Language selector functionality
+  const languageSelector = document.getElementById('languageSelector');
+  languageSelector.addEventListener('change', function() {
+    const lang = this.value;
+    editor.setOption('mode', lang);
+  });
+
+  // Clear code button
+  document.getElementById('clearCode').addEventListener('click', () => {
+    if (confirm('Are you sure you want to clear the code?')) {
+      editor.setValue('');
+    }
+  });
+
+  // Run code functionality
+  document.getElementById('runCode').addEventListener('click', () => {
+    const output = document.getElementById('output');
+    const code = editor.getValue();
+    
+    output.textContent = 'Running code...\n\n';
+    
+    // Capture console.log output
+    const logs = [];
+    const originalConsoleLog = console.log;
+    console.log = (...args) => {
+      logs.push(args.join(' '));
+      originalConsoleLog.apply(console, args);
+    };
+    
+    try {
+      const result = eval(code);
+      output.textContent = logs.join('\n');
+      if (result !== undefined && !logs.includes(result.toString())) {
+        output.textContent += '\n\nResult: ' + result;
+      }
+    } catch (error) {
+      output.textContent = 'Error: ' + error.message;
+    } finally {
+      console.log = originalConsoleLog;
+    }
+  });
+
+  // Submit code functionality
+  document.getElementById('submitCode').addEventListener('click', () => {
+    const code = editor.getValue();
+      
+      if (code.trim() === '') {
+      if (typeof window.showNotification === 'function') {
+        window.showNotification('Error', 'Please write some code before submitting.', 'error');
+      } else {
+        alert('Please write some code before submitting.');
+      }
+        return;
+    }
+    
+    // Check required functionality
+    const requiredPatterns = [
+      /checkDeviceIntegrity/,
+      /authenticateUser/,
+      /securelyStoreData/,
+      /setupSecureCommunication/
+    ];
+    
+    const missingPatterns = requiredPatterns.filter(pattern => !pattern.test(code));
+    
+    if (missingPatterns.length > 0) {
+      if (typeof window.showNotification === 'function') {
+        window.showNotification('Warning', 'Your code is missing some required functionality. Please implement all security features.', 'error');
+      } else {
+        alert('Your code is missing some required functionality. Please implement all security features.');
+      }
+      return;
+    }
+    
+    // Save progress
+    try {
+      const progress = JSON.parse(localStorage.getItem('experimentProgress')) || {};
+      progress['mobile-security'] = { completed: true, timestamp: new Date().toISOString() };
+      localStorage.setItem('experimentProgress', JSON.stringify(progress));
+      
+      if (typeof window.showNotification === 'function') {
+        window.showNotification('Success', 'Code submitted successfully!', 'success');
+      } else {
+        alert('Code submitted successfully!');
+      }
+    } catch (e) {
+      console.error('Error saving progress:', e);
+      if (typeof window.showNotification === 'function') {
+        window.showNotification('Error', 'Could not save progress: ' + e.message, 'error');
+      } else {
+        alert('Could not save progress: ' + e.message);
+      }
+    }
+  });
+
+  // Visualization functionality
+  const visualizeBtn = document.getElementById('visualize-btn');
+  const visualizationSection = document.getElementById('visualization-section');
+  
+  if (visualizeBtn && visualizationSection) {
+    visualizeBtn.addEventListener('click', async function() {
+      const appList = document.getElementById('app-list').value.split(',').map(app => app.trim());
+      const sensitiveData = document.getElementById('sensitive-data').value;
+      const host = document.getElementById('host').value;
+      const port = parseInt(document.getElementById('port').value);
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+      
+      if (!appList.length || !sensitiveData || !host || !port || !username || !password) {
+        showNotification('Please enter all required values.', 'error');
+        return;
+      }
+      
+      // Show visualization section
+      visualizationSection.classList.remove('d-none');
+      
+      try {
+        // Part 1: Scan for Malicious Apps
+        document.getElementById('malicious-apps-result').innerHTML = 'Scanning apps...';
+        await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate scanning
+        const maliciousAppHash = await calculateMD5('malicious_app');
+        const maliciousApps = appList.filter(app => calculateMD5(app) === maliciousAppHash);
+        document.getElementById('malicious-apps-result').innerHTML = 
+          maliciousApps.length > 0 ? `Malicious apps found: ${maliciousApps.join(', ')}` : 'No malicious apps found';
+        
+        // Part 2: Secure Data Storage
+        document.getElementById('storage-result').innerHTML = 'Encrypting data...';
+        await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate encryption
+        const key = generateKey();
+        const { encrypted, iv } = await encryptData(sensitiveData, key);
+        const decrypted = await decryptData(encrypted, iv, key);
+        document.getElementById('storage-result').innerHTML = `
+          Original: ${sensitiveData}<br>
+          Encrypted: ${encrypted.join('')}<br>
+          Decrypted: ${decrypted}
+        `;
+        
+        // Part 3: Monitor Network Traffic
+        document.getElementById('network-result').innerHTML = 'Monitoring network traffic...';
+        await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate monitoring
+        
+        // Part 4: Establish Secure Connection
+        document.getElementById('connection-result').innerHTML = 'Establishing secure connection...';
+        await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate connection
+        document.getElementById('connection-result').innerHTML = 'TLSv1.3';
+        
+        // Part 5: User Authentication
+        document.getElementById('auth-result').innerHTML = 'Authenticating user...';
+        await new Promise(resolve => setTimeout(resolve, 1000)); // Simulate authentication
+        const passwordHash = await calculateMD5(password);
+        const storedHash = await calculateMD5('secure_password');
+        const isAuthenticated = passwordHash === storedHash;
+        document.getElementById('auth-result').innerHTML = 
+          isAuthenticated ? 'Authentication successful' : 'Authentication failed';
+        
+        // Update final output
+        document.getElementById('output-text').innerHTML = `
+          <div class="theme-text">
+            <strong>=== Part 1: Scan for Malicious Apps ===</strong><br>
+            Malicious apps found: ${maliciousApps.join(', ')}<br><br>
+            
+            <strong>=== Part 2: Secure Data Storage ===</strong><br>
+            Sensitive data: ${sensitiveData}<br>
+            Encrypted data: ${encrypted.join('')}<br>
+            Decrypted data: ${decrypted}<br><br>
+            
+            <strong>=== Part 3: Monitor Network Traffic ===</strong><br>
+            Monitoring network traffic...<br><br>
+            
+            <strong>=== Part 4: Establish Secure Connection ===</strong><br>
+            TLSv1.3<br><br>
+            
+            <strong>=== Part 5: User Authentication ===</strong><br>
+            Enter username: ${username}<br>
+            Enter password: ********<br>
+            Authentication ${isAuthenticated ? 'successful' : 'failed'}
+          </div>
+        `;
+      } catch (error) {
+        console.error('Visualization error:', error);
+        showNotification('An error occurred during visualization. Please try again.', 'error');
+      }
+    });
+  }
+});
+</script>
+
+<%- include('../partials/footer') %> 

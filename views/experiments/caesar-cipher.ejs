@@ -1,0 +1,812 @@
+<%- include('../partials/header') %>
+
+<div class="experiment-container" data-experiment-type="caesar-cipher">
+  <!-- Left Column - Theory and Visualization -->
+  <div class="experiment-left">
+    <!-- Experiment Title -->
+    <div class="card mb-4">
+      <div class="card-header bg-primary text-white">
+        <h3 class="mb-0">Caesar Cipher</h3>
+      </div>
+    </div>
+    
+    <!-- Aim Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-bullseye section-icon"></i> Aim
+        </h5>
+      </div>
+      <div class="card-body">
+        <p>To implements a Caesar cipher, a type of substitution cipher, which replaces each letter in a message with another letter based on a fixed shift value.</p>
+      </div>
+    </div>
+    
+    <!-- Algorithm Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-code-branch section-icon"></i> Algorithm
+        </h5>
+      </div>
+      <div class="card-body">
+        <ol>
+          <li>Define Function:
+            <ul>
+              <li>Define a function encrypt_text(plaintext, n) which takes plaintext (the text to be encrypted) and n (the shift pattern) as input.</li>
+            </ul>
+          </li>
+          <li>Initialize Answer:
+            <ul>
+              <li>Initialize an empty string ans to store the encrypted text.</li>
+            </ul>
+          </li>
+          <li>Iterate Over Plaintext:
+            <ul>
+              <li>Loop through each character ch in plaintext using its index i.</li>
+            </ul>
+          </li>
+          <li>Check Character Type:
+            <ul>
+              <li>If ch is a space, append a space to ans.</li>
+              <li>Else if ch is an uppercase letter:
+                <ul>
+                  <li>Convert ch to its corresponding encrypted character using the formula:</li>
+                  <li>encrypted_char = ((ord(ch) + n - 65) % 26) + 65</li>
+                  <li>Append the encrypted character to ans.</li>
+                </ul>
+              </li>
+              <li>Else if ch is a lowercase letter:
+                <ul>
+                  <li>Convert ch to its corresponding encrypted character using the formula:</li>
+                  <li>encrypted_char = ((ord(ch) + n - 97) % 26) + 97</li>
+                  <li>Append the encrypted character to ans.</li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+          <li>Return Encrypted Text:
+            <ul>
+              <li>Return the encrypted text stored in ans.</li>
+            </ul>
+          </li>
+          <li>Print Results:
+            <ul>
+              <li>Define plaintext and n.</li>
+              <li>Print the original plaintext and shift pattern.</li>
+              <li>Call encrypt_text(plaintext, n) and print the resulting encrypted text.</li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+    </div>
+    
+    <!-- Sample Input/Output Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-exchange-alt section-icon"></i> Sample Input/Output
+        </h5>
+      </div>
+      <div class="card-body">
+<div class="row">
+          <div class="col-md-6">
+            <h6><i class="fas fa-sign-in-alt me-2"></i>Sample Input:</h6>
+            <pre class="bg-light p-3 rounded">Plaintext: "Hello World"
+Key: 3</pre>
+          </div>
+          <div class="col-md-6">
+            <h6><i class="fas fa-sign-out-alt me-2"></i>Sample Output:</h6>
+            <pre class="bg-light p-3 rounded">Encrypted: "Khoor Zruog"</pre>
+          </div>
+        </div>
+  </div>
+    </div>
+    
+    <!-- Visualization Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-chart-bar section-icon"></i> Visualization
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="mb-3">
+          <label for="input-text" class="form-label">Input Text:</label>
+          <input type="text" class="form-control" id="input-text" value="Hello World">
+        </div>
+        
+        <div class="mb-3">
+          <label for="shift-value" class="form-label">Shift Value:</label>
+          <input type="number" class="form-control" id="shift-value" min="-25" max="25" value="3">
+        </div>
+        
+        <button class="btn btn-primary" id="visualize-btn">
+          <i class="fas fa-play me-2"></i>Visualize
+        </button>
+        
+        <div id="visualization-section" class="mt-4 d-none">
+          <h6 class="mb-3">Encryption Process:</h6>
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped" id="visualization-table">
+              <!-- Visualization table will be populated by JavaScript -->
+            </table>
+          </div>
+          
+          <div class="mt-3">
+            <h6>Output:</h6>
+            <div class="bg-light p-3 rounded" id="output-text"></div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+    
+  <!-- Right Column - Code Editor and Output -->
+  <div class="experiment-right">
+    <!-- Code Editor Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-keyboard section-icon"></i> Code
+        </h5>
+      </div>
+      <div class="card-body">
+        <!-- Language Selection -->
+          <div class="mb-3">
+          <label for="language-select" class="form-label">Select Language:</label>
+          <select class="form-select" id="language-select">
+            <option value="javascript">JavaScript</option>
+            <option value="python">Python</option>
+            <option value="java">Java</option>
+            <option value="c">C</option>
+            <option value="cpp">C++</option>
+          </select>
+        </div>
+        
+        <div class="code-editor-container">
+          <div id="code-editor-wrapper">
+            <!-- Code Mirror editor will be initialized here -->
+            <textarea id="code-editor" class="form-control" rows="15">// Caesar Cipher Implementation
+
+function encrypt(text, shift) {
+  // Your encryption code here
+  let result = "";
+  
+  // Loop through each character
+  for (let i = 0; i < text.length; i++) {
+    let char = text[i];
+    
+    // Check if character is a letter
+    if (/[a-zA-Z]/.test(char)) {
+      // Get ASCII code
+      let code = text.charCodeAt(i);
+      
+      // Handle uppercase letters
+      if (code >= 65 && code <= 90) {
+        char = String.fromCharCode(((code - 65 + shift) % 26) + 65);
+      }
+      // Handle lowercase letters
+      else if (code >= 97 && code <= 122) {
+        char = String.fromCharCode(((code - 97 + shift) % 26) + 97);
+      }
+    }
+    
+    // Add character to result
+    result += char;
+  }
+  
+  return result;
+}
+
+function decrypt(text, shift) {
+  // Decryption is just encryption with a negative shift
+  // Your decryption code here
+  return encrypt(text, (26 - shift) % 26);
+}
+
+// Test the functions
+const plaintext = "Hello World";
+const shift = 3;
+
+const encrypted = encrypt(plaintext, shift);
+console.log("Encrypted:", encrypted);
+
+const decrypted = decrypt(encrypted, shift);
+console.log("Decrypted:", decrypted);</textarea>
+          </div>
+        </div>
+        
+        <div class="mt-3 d-flex justify-content-between">
+          <button class="btn btn-secondary" id="clear-code-btn">
+            <i class="fas fa-eraser me-2"></i>Clear Code
+            </button>
+          <button class="btn btn-primary" id="run-code-btn">
+            <i class="fas fa-play me-2"></i>Run Code
+            </button>
+          </div>
+      </div>
+    </div>
+    
+    <!-- Output Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-terminal section-icon"></i> Output
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="code-output bg-dark text-light p-3 rounded" id="code-output">
+          <div class="text-muted">Run your code to see the output here...</div>
+        </div>
+        
+        <div class="mt-3 d-flex justify-content-end">
+          <button class="btn btn-success" id="submit-code-btn">
+            <i class="fas fa-paper-plane me-2"></i>Submit
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CodeMirror CSS and JS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/dracula.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/show-hint.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/show-hint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/javascript-hint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/anyword-hint.min.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Set experiment type on body
+    document.body.setAttribute('data-experiment-type', 'caesar-cipher');
+    
+    // Initialize CodeMirror
+    const codeEditorTextarea = document.getElementById('code-editor');
+    const codeEditor = CodeMirror.fromTextArea(codeEditorTextarea, {
+      lineNumbers: true,
+      mode: 'javascript',
+      theme: 'dracula',
+      indentUnit: 2,
+      smartIndent: true,
+      tabSize: 2,
+      indentWithTabs: false,
+      lineWrapping: true,
+      matchBrackets: true,
+      autoCloseBrackets: true,
+      extraKeys: {
+        "Ctrl-Space": "autocomplete",
+        "Tab": function(cm) {
+          if (cm.somethingSelected()) {
+            cm.indentSelection("add");
+          } else {
+            cm.replaceSelection("  ", "end");
+          }
+        }
+      }
+    });
+    
+    // Language selection
+    const languageSelect = document.getElementById('language-select');
+    languageSelect.addEventListener('change', function() {
+      const language = this.value;
+      let mode;
+      
+      switch(language) {
+        case 'javascript':
+          mode = 'javascript';
+          break;
+        case 'python':
+          mode = 'python';
+          break;
+        case 'java':
+          mode = 'text/x-java';
+          break;
+        case 'c':
+          mode = 'text/x-csrc';
+          break;
+        case 'cpp':
+          mode = 'text/x-c++src';
+          break;
+        default:
+          mode = 'javascript';
+      }
+      
+      codeEditor.setOption('mode', mode);
+      
+      // Update starter code based on language
+      let starterCode = '';
+      
+      switch(language) {
+        case 'javascript':
+          starterCode = getJavaScriptStarterCode();
+          break;
+        case 'python':
+          starterCode = getPythonStarterCode();
+          break;
+        case 'java':
+          starterCode = getJavaStarterCode();
+          break;
+        case 'c':
+          starterCode = getCStarterCode();
+          break;
+        case 'cpp':
+          starterCode = getCppStarterCode();
+          break;
+      }
+      
+      codeEditor.setValue(starterCode);
+    });
+    
+    // Helper functions for starter code based on language
+    function getJavaScriptStarterCode() {
+      return `// Caesar Cipher Implementation
+
+function encrypt(text, shift) {
+  // Your encryption code here
+  let result = "";
+  
+  // Loop through each character
+  for (let i = 0; i < text.length; i++) {
+    let char = text[i];
+    
+    // Check if character is a letter
+    if (/[a-zA-Z]/.test(char)) {
+      // Get ASCII code
+      let code = text.charCodeAt(i);
+      
+      // Handle uppercase letters
+      if (code >= 65 && code <= 90) {
+        char = String.fromCharCode(((code - 65 + shift) % 26) + 65);
+      }
+      // Handle lowercase letters
+      else if (code >= 97 && code <= 122) {
+        char = String.fromCharCode(((code - 97 + shift) % 26) + 97);
+      }
+    }
+    
+    // Add character to result
+    result += char;
+  }
+  
+  return result;
+}
+
+function decrypt(text, shift) {
+  // Decryption is just encryption with a negative shift
+  // Your decryption code here
+  return encrypt(text, (26 - shift) % 26);
+}
+
+// Test the functions
+const plaintext = "Hello World";
+const shift = 3;
+
+const encrypted = encrypt(plaintext, shift);
+console.log("Encrypted:", encrypted);
+
+const decrypted = decrypt(encrypted, shift);
+console.log("Decrypted:", decrypted);`;
+    }
+    
+    function getPythonStarterCode() {
+      return `# Caesar Cipher Implementation
+
+def encrypt(text, shift):
+    """
+    Encrypts the given text using Caesar Cipher with the specified shift.
+    
+    Args:
+        text (str): The plaintext to encrypt
+        shift (int): The shift value (1-25)
+        
+    Returns:
+        str: The encrypted text
+    """
+    result = ""
+    
+    # Loop through each character in the text
+    for char in text:
+        # Check if the character is a letter
+        if char.isalpha():
+            # Determine the ASCII offset based on case
+            ascii_offset = ord('A') if char.isupper() else ord('a')
+            
+            # Apply the shift and wrap around the alphabet (26 letters)
+            shifted = (ord(char) - ascii_offset + shift) % 26 + ascii_offset
+            
+            # Convert back to character and add to result
+            result += chr(shifted)
+        else:
+            # If not a letter, keep the character as is
+            result += char
+    
+    return result
+
+def decrypt(text, shift):
+    """
+    Decrypts the given text using Caesar Cipher with the specified shift.
+    
+    Args:
+        text (str): The ciphertext to decrypt
+        shift (int): The shift value (1-25)
+        
+    Returns:
+        str: The decrypted text
+    """
+    # Decryption is just encryption with a negative shift
+    return encrypt(text, (26 - shift) % 26)
+
+# Test the functions
+plaintext = "Hello World"
+shift = 3
+
+encrypted = encrypt(plaintext, shift)
+print(f"Encrypted: {encrypted}")
+
+decrypted = decrypt(encrypted, shift)
+print(f"Decrypted: {decrypted}")`;
+    }
+    
+    function getJavaStarterCode() {
+      return `// Caesar Cipher Implementation
+
+public class CaesarCipher {
+    public static String encrypt(String text, int shift) {
+        StringBuilder result = new StringBuilder();
+        
+        // Loop through each character in the text
+        for (int i = 0; i < text.length(); i++) {
+            char ch = text.charAt(i);
+            
+            // Check if the character is a letter
+            if (Character.isLetter(ch)) {
+                // Determine if it's uppercase or lowercase
+                char base = Character.isUpperCase(ch) ? 'A' : 'a';
+                
+                // Apply the shift and wrap around the alphabet (26 letters)
+                ch = (char) (((ch - base + shift) % 26) + base);
+            }
+            
+            // Add the character to the result
+            result.append(ch);
+        }
+        
+        return result.toString();
+    }
+    
+    public static String decrypt(String text, int shift) {
+        // Decryption is just encryption with a negative shift
+        return encrypt(text, (26 - shift) % 26);
+    }
+    
+    public static void main(String[] args) {
+        String plaintext = "Hello World";
+        int shift = 3;
+        
+        String encrypted = encrypt(plaintext, shift);
+        System.out.println("Encrypted: " + encrypted);
+        
+        String decrypted = decrypt(encrypted, shift);
+        System.out.println("Decrypted: " + decrypted);
+    }
+}`;
+    }
+    
+    function getCStarterCode() {
+      return `// Caesar Cipher Implementation
+#include <stdio.h>
+#include <string.h>
+#include <ctype.h>
+
+// Function to encrypt text using Caesar Cipher
+void encrypt(char text[], int shift) {
+    int i = 0;
+    char ch;
+    
+    while (text[i] != '\\0') {
+        ch = text[i];
+        
+        // Check if the character is a letter
+        if (isalpha(ch)) {
+            // Determine if it's uppercase or lowercase
+            char base = isupper(ch) ? 'A' : 'a';
+            
+            // Apply the shift and wrap around the alphabet (26 letters)
+            text[i] = ((ch - base + shift) % 26) + base;
+        }
+        
+        i++;
+    }
+}
+
+// Function to decrypt text using Caesar Cipher
+void decrypt(char text[], int shift) {
+    // Decryption is just encryption with a negative shift
+    encrypt(text, 26 - (shift % 26));
+}
+
+int main() {
+    char plaintext[] = "Hello World";
+    int shift = 3;
+    
+    // Create a copy for encryption
+    char encrypted[100];
+    strcpy(encrypted, plaintext);
+    
+    // Encrypt the text
+    encrypt(encrypted, shift);
+    printf("Encrypted: %s\\n", encrypted);
+    
+    // Decrypt the text
+    decrypt(encrypted, shift);
+    printf("Decrypted: %s\\n", encrypted);
+    
+    return 0;
+}`;
+    }
+    
+    function getCppStarterCode() {
+      return `// Caesar Cipher Implementation
+#include <iostream>
+#include <string>
+using namespace std;
+
+// Function to encrypt text using Caesar Cipher
+string encrypt(string text, int shift) {
+    string result = "";
+    
+    // Loop through each character in the text
+    for (int i = 0; i < text.length(); i++) {
+        char ch = text[i];
+        
+        // Check if the character is a letter
+        if (isalpha(ch)) {
+            // Determine if it's uppercase or lowercase
+            char base = isupper(ch) ? 'A' : 'a';
+            
+            // Apply the shift and wrap around the alphabet (26 letters)
+            ch = ((ch - base + shift) % 26) + base;
+        }
+        
+        // Add the character to the result
+        result += ch;
+    }
+    
+    return result;
+}
+
+// Function to decrypt text using Caesar Cipher
+string decrypt(string text, int shift) {
+    // Decryption is just encryption with a negative shift
+    return encrypt(text, 26 - (shift % 26));
+}
+
+int main() {
+    string plaintext = "Hello World";
+    int shift = 3;
+    
+    string encrypted = encrypt(plaintext, shift);
+    cout << "Encrypted: " << encrypted << endl;
+    
+    string decrypted = decrypt(encrypted, shift);
+    cout << "Decrypted: " << decrypted << endl;
+    
+    return 0;
+}`;
+    }
+    
+    // Clear code button
+    const clearCodeBtn = document.getElementById('clear-code-btn');
+    
+    if (clearCodeBtn) {
+      clearCodeBtn.addEventListener('click', function() {
+        if (confirm('Are you sure you want to clear your code? All changes will be lost.')) {
+          codeEditor.setValue('');
+        }
+      });
+    }
+    
+    // Run code button
+    const runCodeBtn = document.getElementById('run-code-btn');
+    const codeOutput = document.getElementById('code-output');
+    
+    if (runCodeBtn && codeOutput) {
+      runCodeBtn.addEventListener('click', function() {
+        const code = codeEditor.getValue();
+        const language = languageSelect.value;
+        
+        if (!code.trim()) {
+          codeOutput.innerHTML = '<span class="text-danger">Error: Please write some code before running.</span>';
+        return;
+      }
+      
+        // Show loading state
+        codeOutput.innerHTML = '<div class="text-info"><i class="fas fa-spinner fa-spin me-2"></i>Running code...</div>';
+        
+        // Send code to server for execution
+        fetch('/experiments/caesar-cipher/run', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+          body: JSON.stringify({ code, language })
+      })
+      .then(response => response.json())
+      .then(data => {
+          if (data.error) {
+            codeOutput.innerHTML = `<span class="text-danger">Error: ${data.error}</span>`;
+        } else {
+            codeOutput.innerHTML = `<pre>${data.output}</pre>`;
+          }
+        })
+        .catch(error => {
+          console.error('Run code error:', error);
+          codeOutput.innerHTML = '<span class="text-danger">An error occurred while running the code. Please try again.</span>';
+        });
+      });
+    }
+    
+    // Submit code button
+    const submitCodeBtn = document.getElementById('submit-code-btn');
+    
+    if (submitCodeBtn) {
+      submitCodeBtn.addEventListener('click', function() {
+        const code = codeEditor.getValue();
+        const language = languageSelect.value;
+        
+        if (!code.trim()) {
+          showNotification('Please write some code before submitting.', 'error');
+          return;
+        }
+        
+        // Show loading state
+        submitCodeBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
+        submitCodeBtn.disabled = true;
+        
+        // Send code to server for submission
+        fetch('/experiments/caesar-cipher/submit', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ code, language })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.error) {
+            showNotification(data.error, 'error');
+          } else {
+            showNotification('Code submitted successfully!', 'success');
+            
+            // Mark experiment as completed in localStorage
+            const completedExperiments = JSON.parse(localStorage.getItem('completedExperiments')) || [];
+            if (!completedExperiments.includes('caesar-cipher')) {
+              completedExperiments.push('caesar-cipher');
+              localStorage.setItem('completedExperiments', JSON.stringify(completedExperiments));
+              
+              // Update sidebar and progress
+              if (typeof markCompletedExperiments === 'function') {
+                markCompletedExperiments();
+              }
+            }
+          }
+          
+          // Reset button state
+          submitCodeBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Submit';
+          submitCodeBtn.disabled = false;
+      })
+      .catch(error => {
+          console.error('Submit code error:', error);
+          showNotification('An error occurred while submitting the code. Please try again.', 'error');
+          
+          // Reset button state
+          submitCodeBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Submit';
+          submitCodeBtn.disabled = false;
+        });
+      });
+    }
+    
+    // Visualization button
+    const visualizeBtn = document.getElementById('visualize-btn');
+    const visualizationSection = document.getElementById('visualization-section');
+    const visualizationTable = document.getElementById('visualization-table');
+    const outputText = document.getElementById('output-text');
+    const inputText = document.getElementById('input-text');
+    
+    if (visualizeBtn && visualizationSection && visualizationTable && outputText && inputText) {
+      visualizeBtn.addEventListener('click', function() {
+        const input = inputText.value.trim();
+        
+        if (!input) {
+          showNotification('Please enter some text to visualize.', 'error');
+          return;
+        }
+        
+        // Show visualization section
+        visualizationSection.classList.remove('d-none');
+        
+        // Get shift value
+        const shiftValue = parseInt(document.getElementById('shift-value').value) || 3;
+        visualizeCaesarCipher(input, shiftValue);
+      });
+    }
+    
+    // Caesar Cipher visualization
+    function visualizeCaesarCipher(input, shift) {
+      // Clear previous visualization
+      visualizationTable.innerHTML = '';
+      
+      // Create table header
+      const thead = document.createElement('thead');
+      thead.innerHTML = `
+        <tr>
+          <th>Character</th>
+          <th>ASCII Value</th>
+          <th>Shift</th>
+          <th>New ASCII</th>
+          <th>Encrypted Character</th>
+        </tr>
+      `;
+      visualizationTable.appendChild(thead);
+      
+      // Create table body
+      const tbody = document.createElement('tbody');
+      let encryptedText = '';
+      
+      for (let i = 0; i < input.length; i++) {
+        const char = input[i];
+        const asciiValue = char.charCodeAt(0);
+        
+        // Only encrypt letters
+        let newAscii, encryptedChar;
+        
+        if (/[a-zA-Z]/.test(char)) {
+          const isUpperCase = char === char.toUpperCase();
+          const base = isUpperCase ? 65 : 97;
+          const letterPosition = asciiValue - base;
+          const newPosition = (letterPosition + shift) % 26;
+          newAscii = base + newPosition;
+          encryptedChar = String.fromCharCode(newAscii);
+        } else {
+          newAscii = asciiValue;
+          encryptedChar = char;
+        }
+        
+        encryptedText += encryptedChar;
+        
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${char}</td>
+          <td>${asciiValue}</td>
+          <td>${/[a-zA-Z]/.test(char) ? '+' + shift : 'N/A'}</td>
+          <td>${newAscii}</td>
+          <td>${encryptedChar}</td>
+        `;
+        tbody.appendChild(row);
+      }
+      
+      visualizationTable.appendChild(tbody);
+      outputText.textContent = encryptedText;
+    }
+    
+    // Helper function for notifications if not defined elsewhere
+    function showNotification(message, type) {
+      if (window.showNotification) {
+        window.showNotification(message, type);
+      } else {
+        alert(message);
+      }
+    }
+  });
+</script>
+
+<%- include('../partials/footer') %> 

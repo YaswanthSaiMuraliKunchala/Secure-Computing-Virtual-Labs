@@ -1,0 +1,406 @@
+<%- include('../partials/header') %>
+
+<div class="container mt-5 pt-5">
+    <div class="row mb-4">
+        <div class="col-12 d-flex justify-content-between align-items-center">
+            <div>
+                <h1 class="h3 mb-0 text-gray-800">Create New Lab Test</h1>
+                <p class="text-muted">Configure a new lab test for your students</p>
+            </div>
+            <a href="/faculty/tests" class="btn btn-outline-primary">
+                <i class="fas fa-arrow-left me-2"></i>Back to Tests
+            </a>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Test Details</h6>
+                </div>
+                <div class="card-body">
+                    <form id="create-test-form">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="test-title" class="form-label">Test Title</label>
+                                <input type="text" class="form-control" id="test-title" name="title" placeholder="e.g., Mid Sem Practical Examination" required>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="test-description" class="form-label">Description</label>
+                                <input type="text" class="form-control" id="test-description" name="description" placeholder="Brief description of the test">
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <label for="test-date" class="form-label">Test Date</label>
+                                <input type="date" class="form-control" id="test-date" name="date" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="test-time" class="form-label">Start Time</label>
+                                <input type="time" class="form-control" id="test-time" name="time" required>
+                            </div>
+                            <div class="col-md-4">
+                                <label for="test-duration" class="form-label">Duration (minutes)</label>
+                                <input type="number" class="form-control" id="test-duration" name="duration" min="30" max="300" value="120" required>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Test Settings</label>
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="prevent-copy-paste" name="preventCopyPaste" checked>
+                                        <label class="form-check-label" for="prevent-copy-paste">Prevent Copy-Paste</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="auto-submit" name="autoSubmit" checked>
+                                        <label class="form-check-label" for="auto-submit">Auto-Submit at End Time</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-check form-switch">
+                                        <input class="form-check-input" type="checkbox" id="plagiarism-check" name="plagiarismCheck" checked>
+                                        <label class="form-check-label" for="plagiarism-check">Enable Plagiarism Check</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <hr class="my-4">
+                        
+                        <h5 class="mb-3">Select Experiments</h5>
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="row">
+                                            <div class="col-md-3 mb-3">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="1" id="exp-1" name="experiments[]">
+                                                    <label class="form-check-label" for="exp-1">
+                                                        Caesar Cipher
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 mb-3">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="2" id="exp-2" name="experiments[]">
+                                                    <label class="form-check-label" for="exp-2">
+                                                        Monoalphabetic Cipher
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 mb-3">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="3" id="exp-3" name="experiments[]">
+                                                    <label class="form-check-label" for="exp-3">
+                                                        Message Authentication
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 mb-3">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="4" id="exp-4" name="experiments[]">
+                                                    <label class="form-check-label" for="exp-4">
+                                                        Data Encryption Standard
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 mb-3">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="5" id="exp-5" name="experiments[]">
+                                                    <label class="form-check-label" for="exp-5">
+                                                        Advanced Encryption Standard
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 mb-3">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="6" id="exp-6" name="experiments[]">
+                                                    <label class="form-check-label" for="exp-6">
+                                                        Asymmetric Key Encryption
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 mb-3">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="7" id="exp-7" name="experiments[]">
+                                                    <label class="form-check-label" for="exp-7">
+                                                        Secure Key Exchange
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3 mb-3">
+                                                <div class="form-check">
+                                                    <input class="form-check-input" type="checkbox" value="8" id="exp-8" name="experiments[]">
+                                                    <label class="form-check-label" for="exp-8">
+                                                        Digital Signature Generation
+                                                    </label>
+                                                </div>
+                                            </div>
+                                            <!-- More experiments... -->
+                                        </div>
+                                        <div class="mt-2">
+                                            <button type="button" class="btn btn-sm btn-outline-primary" id="select-all-exps">Select All</button>
+                                            <button type="button" class="btn btn-sm btn-outline-secondary" id="deselect-all-exps">Deselect All</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <hr class="my-4">
+                        
+                        <h5 class="mb-3">Assign Students</h5>
+                        <div class="row mb-4">
+                            <div class="col-md-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <div class="mb-3">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="studentAssignment" id="all-students" value="all" checked>
+                                                <label class="form-check-label" for="all-students">
+                                                    Assign to all students
+                                                </label>
+                                            </div>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="radio" name="studentAssignment" id="select-students" value="select">
+                                                <label class="form-check-label" for="select-students">
+                                                    Select specific students
+                                                </label>
+                                            </div>
+                                        </div>
+                                        
+                                        <div id="student-selection" class="d-none">
+                                            <div class="table-responsive">
+                                                <table class="table table-bordered" id="studentsTable" width="100%" cellspacing="0">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input" type="checkbox" id="select-all-students">
+                                                                    <label class="form-check-label" for="select-all-students"></label>
+                                                                </div>
+                                                            </th>
+                                                            <th>Student</th>
+                                                            <th>Email</th>
+                                                            <th>Progress</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input student-check" type="checkbox" value="1" id="student-1" name="students[]">
+                                                                    <label class="form-check-label" for="student-1"></label>
+                                                                </div>
+                                                            </td>
+                                                            <td>John Doe</td>
+                                                            <td>john.doe@example.com</td>
+                                                            <td>8/14 experiments completed</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input student-check" type="checkbox" value="2" id="student-2" name="students[]">
+                                                                    <label class="form-check-label" for="student-2"></label>
+                                                                </div>
+                                                            </td>
+                                                            <td>Jane Smith</td>
+                                                            <td>jane.smith@example.com</td>
+                                                            <td>12/14 experiments completed</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                <div class="form-check">
+                                                                    <input class="form-check-input student-check" type="checkbox" value="3" id="student-3" name="students[]">
+                                                                    <label class="form-check-label" for="student-3"></label>
+                                                                </div>
+                                                            </td>
+                                                            <td>Mike Johnson</td>
+                                                            <td>mike.johnson@example.com</td>
+                                                            <td>5/14 experiments completed</td>
+                                                        </tr>
+                                                        <!-- More students... -->
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex justify-content-between">
+                            <a href="/faculty/tests" class="btn btn-outline-secondary">
+                                <i class="fas fa-times me-2"></i>Cancel
+                            </a>
+                            <div>
+                                <button type="button" class="btn btn-outline-primary me-2" id="save-draft-btn">
+                                    <i class="fas fa-save me-2"></i>Save as Draft
+                                </button>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-check me-2"></i>Create Test
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Toggle student selection based on radio button
+        const allStudentsRadio = document.getElementById('all-students');
+        const selectStudentsRadio = document.getElementById('select-students');
+        const studentSelection = document.getElementById('student-selection');
+        
+        if (allStudentsRadio && selectStudentsRadio && studentSelection) {
+            allStudentsRadio.addEventListener('change', function() {
+                if (this.checked) {
+                    studentSelection.classList.add('d-none');
+                }
+            });
+            
+            selectStudentsRadio.addEventListener('change', function() {
+                if (this.checked) {
+                    studentSelection.classList.remove('d-none');
+                }
+            });
+        }
+        
+        // Select/deselect all experiments
+        const selectAllExps = document.getElementById('select-all-exps');
+        const deselectAllExps = document.getElementById('deselect-all-exps');
+        const experimentCheckboxes = document.querySelectorAll('input[name="experiments[]"]');
+        
+        if (selectAllExps && deselectAllExps && experimentCheckboxes.length > 0) {
+            selectAllExps.addEventListener('click', function() {
+                experimentCheckboxes.forEach(checkbox => {
+                    checkbox.checked = true;
+                });
+            });
+            
+            deselectAllExps.addEventListener('click', function() {
+                experimentCheckboxes.forEach(checkbox => {
+                    checkbox.checked = false;
+                });
+            });
+        }
+        
+        // Select/deselect all students
+        const selectAllStudents = document.getElementById('select-all-students');
+        const studentCheckboxes = document.querySelectorAll('.student-check');
+        
+        if (selectAllStudents && studentCheckboxes.length > 0) {
+            selectAllStudents.addEventListener('change', function() {
+                studentCheckboxes.forEach(checkbox => {
+                    checkbox.checked = this.checked;
+                });
+            });
+            
+            studentCheckboxes.forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const allChecked = Array.from(studentCheckboxes).every(c => c.checked);
+                    selectAllStudents.checked = allChecked;
+                });
+            });
+        }
+        
+        // Form submission
+        const createTestForm = document.getElementById('create-test-form');
+        const saveDraftBtn = document.getElementById('save-draft-btn');
+        
+        if (createTestForm) {
+            createTestForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Validate form
+                const title = document.getElementById('test-title').value;
+                const date = document.getElementById('test-date').value;
+                const time = document.getElementById('test-time').value;
+                const duration = document.getElementById('test-duration').value;
+                const selectedExperiments = document.querySelectorAll('input[name="experiments[]"]:checked');
+                
+                if (!title) {
+                    showNotification('Please enter a test title', 'danger');
+                    return;
+                }
+                
+                if (!date || !time) {
+                    showNotification('Please select a date and time for the test', 'danger');
+                    return;
+                }
+                
+                if (!duration || duration < 30) {
+                    showNotification('Please enter a valid duration (minimum 30 minutes)', 'danger');
+                    return;
+                }
+                
+                if (selectedExperiments.length === 0) {
+                    showNotification('Please select at least one experiment', 'danger');
+                    return;
+                }
+                
+                // If specific students are selected, ensure at least one is checked
+                if (selectStudentsRadio.checked) {
+                    const selectedStudents = document.querySelectorAll('input[name="students[]"]:checked');
+                    if (selectedStudents.length === 0) {
+                        showNotification('Please select at least one student', 'danger');
+                        return;
+                    }
+                }
+                
+                // Submit form data
+                const formData = new FormData(createTestForm);
+                
+                // Show success message (in a real app, this would be an AJAX request)
+                showNotification('Test created successfully!', 'success');
+                
+                // Redirect to tests page after a delay
+                setTimeout(() => {
+                    window.location.href = '/faculty/tests';
+                }, 2000);
+            });
+        }
+        
+        if (saveDraftBtn) {
+            saveDraftBtn.addEventListener('click', function() {
+                showNotification('Test saved as draft', 'info');
+            });
+        }
+        
+        // Notification function
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+            notification.style.top = '20px';
+            notification.style.right = '20px';
+            notification.style.zIndex = '9999';
+            notification.style.maxWidth = '400px';
+            notification.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 300);
+            }, 3000);
+        }
+    });
+</script>
+
+<%- include('../partials/footer') %> 

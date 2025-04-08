@@ -1,0 +1,1425 @@
+<%- include('../partials/header') %>
+
+<div class="experiment-container" data-experiment-type="asymmetric-key-encryption">
+  <!-- Left Column - Theory and Visualization -->
+  <div class="experiment-left">
+    <!-- Experiment Title -->
+    <div class="card mb-4">
+      <div class="card-header bg-primary text-white">
+        <h3 class="mb-0">Asymmetric Key Encryption</h3>
+  </div>
+    </div>
+    
+    <!-- Aim Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-bullseye section-icon"></i> Aim
+        </h5>
+      </div>
+      <div class="card-body">
+        <p class="theme-text">To implement the popular asymmetric key algorithm Rivest, Shamir, Adleman (RSA).</p>
+      </div>
+    </div>
+    
+    <!-- Algorithm Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-code-branch section-icon"></i> Algorithm
+        </h5>
+      </div>
+      <div class="card-body">
+        <ol class="theme-text">
+          <li>Input: Two prime numbers p and q, and a plaintext message.</li>
+          <li>Calculate n:
+            <ul>
+              <li>n = p * q</li>
+              <li>For p=53 and q=59, n = 53 * 59 = 3127</li>
+            </ul>
+          </li>
+          <li>Calculate the totient t:
+            <ul>
+              <li>t = (p - 1) * (q - 1)</li>
+              <li>For p=53 and q=59, t = (53 - 1) * (59 - 1) = 52 * 58 = 3016</li>
+            </ul>
+          </li>
+          <li>Select the public key e:
+            <ul>
+              <li>Find the smallest integer e such that gcd(e, t) == 1</li>
+              <li>In this case, e = 3 (assuming the smallest integer that satisfies the condition)</li>
+            </ul>
+          </li>
+          <li>Select the private key d:
+            <ul>
+              <li>Initialize j = 0.</li>
+              <li>Increment j in a loop until (j * e) % t == 1.</li>
+              <li>Set d = j.</li>
+              <li>Find d such that (d * e) % t == 1</li>
+              <li>Through iteration, if e = 3, then d = 2011 (assuming this is found through the while loop)</li>
+            </ul>
+          </li>
+          <li>Encrypt the message:
+            <ul>
+              <li>Calculate the ciphertext ct = (message ** e) % n.</li>
+              <li>For message=89, ct = (89 ** 3) % 3127 = 1394</li>
+            </ul>
+          </li>
+          <li>Decrypt the message:
+            <ul>
+              <li>Calculate the decrypted message mes = (ct ** d) % n.</li>
+              <li>For ct=1394, mes = (1394 ** 2011) % 3127 = 89</li>
+            </ul>
+          </li>
+        </ol>
+      </div>
+    </div>
+    
+    <!-- Sample Input/Output Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-exchange-alt section-icon"></i> Sample Input/Output
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <h6 class="theme-text"><i class="fas fa-sign-in-alt me-2"></i>Test Case 1:</h6>
+            <pre class="bg-light p-3 rounded">Input: p=53, q=59, message=89</pre>
+          </div>
+          <div class="col-md-6">
+            <h6 class="theme-text"><i class="fas fa-sign-out-alt me-2"></i>Output:</h6>
+            <pre class="bg-light p-3 rounded">Encrypted message is 1394
+Decrypted message is 89</pre>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-md-6">
+            <h6 class="theme-text"><i class="fas fa-sign-in-alt me-2"></i>Test Case 2:</h6>
+            <pre class="bg-light p-3 rounded">Input: p=3, q=7, message=12</pre>
+          </div>
+          <div class="col-md-6">
+            <h6 class="theme-text"><i class="fas fa-sign-out-alt me-2"></i>Output:</h6>
+            <pre class="bg-light p-3 rounded">Encrypted message is 3
+Decrypted message is 12</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Visualization Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-chart-bar section-icon"></i> Visualization
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <label for="prime-p" class="form-label theme-text">Prime Number p:</label>
+            <input type="number" class="form-control" id="prime-p" value="53" min="2">
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="prime-q" class="form-label theme-text">Prime Number q:</label>
+            <input type="number" class="form-control" id="prime-q" value="59" min="2">
+          </div>
+          <div class="col-md-4 mb-3">
+            <label for="message" class="form-label theme-text">Message (numeric):</label>
+            <input type="number" class="form-control" id="message" value="89" min="1">
+          </div>
+        </div>
+        
+        <button class="btn btn-primary" id="visualize-btn">
+          <i class="fas fa-play me-2"></i>Visualize RSA
+        </button>
+        
+        <div id="visualization-section" class="mt-4 d-none">
+          <ul class="nav nav-tabs" id="rsaVisualizationTabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="key-generation-tab" data-bs-toggle="tab" data-bs-target="#key-generation" type="button" role="tab" aria-controls="key-generation" aria-selected="true">Key Generation</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="encryption-tab" data-bs-toggle="tab" data-bs-target="#encryption" type="button" role="tab" aria-controls="encryption" aria-selected="false">Encryption</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="decryption-tab" data-bs-toggle="tab" data-bs-target="#decryption" type="button" role="tab" aria-controls="decryption" aria-selected="false">Decryption</button>
+            </li>
+          </ul>
+          
+          <div class="tab-content mt-3" id="rsaVisualizationTabContent">
+            <div class="tab-pane fade show active" id="key-generation" role="tabpanel" aria-labelledby="key-generation-tab">
+              <h6 class="mb-3 theme-text">RSA Key Generation Process:</h6>
+              <div class="table-responsive">
+                <table class="table table-bordered table-striped" id="key-generation-table">
+                  <thead>
+                    <tr>
+                      <th>Step</th>
+                      <th>Operation</th>
+                      <th>Result</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Will be populated by JavaScript -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            
+            <div class="tab-pane fade" id="encryption" role="tabpanel" aria-labelledby="encryption-tab">
+              <h6 class="mb-3 theme-text">RSA Encryption Process:</h6>
+              <div class="table-responsive">
+                <table class="table table-bordered table-striped" id="encryption-table">
+                  <thead>
+                    <tr>
+                      <th>Step</th>
+                      <th>Operation</th>
+                      <th>Result</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Will be populated by JavaScript -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            
+            <div class="tab-pane fade" id="decryption" role="tabpanel" aria-labelledby="decryption-tab">
+              <h6 class="mb-3 theme-text">RSA Decryption Process:</h6>
+              <div class="table-responsive">
+                <table class="table table-bordered table-striped" id="decryption-table">
+                  <thead>
+                    <tr>
+                      <th>Step</th>
+                      <th>Operation</th>
+                      <th>Result</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- Will be populated by JavaScript -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+          
+          <div class="mt-4">
+            <div class="card">
+              <div class="card-header bg-success text-white">
+                <h6 class="mb-0">Results</h6>
+              </div>
+              <div class="card-body">
+                <div class="row">
+                  <div class="col-md-6">
+                    <h6 class="theme-text">Public Key (n, e):</h6>
+                    <div class="bg-light p-3 rounded mb-3" id="public-key-display"></div>
+                    
+                    <h6 class="theme-text">Private Key (n, d):</h6>
+                    <div class="bg-light p-3 rounded mb-3" id="private-key-display"></div>
+                  </div>
+                  <div class="col-md-6">
+                    <h6 class="theme-text">Original Message:</h6>
+                    <div class="bg-light p-3 rounded mb-3" id="original-message-display"></div>
+                    
+                    <h6 class="theme-text">Encrypted Message:</h6>
+                    <div class="bg-light p-3 rounded mb-3" id="encrypted-message-display"></div>
+                    
+                    <h6 class="theme-text">Decrypted Message:</h6>
+                    <div class="bg-light p-3 rounded" id="decrypted-message-display"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      </div>
+    </div>
+    
+  <!-- Right Column - Code Editor and Output -->
+  <div class="experiment-right">
+    <!-- Code Editor Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-keyboard section-icon"></i> Code
+        </h5>
+      </div>
+      <div class="card-body">
+        <!-- Language Selection -->
+          <div class="mb-3">
+          <label for="language-select" class="form-label">Select Language:</label>
+          <select class="form-select" id="language-select">
+            <option value="javascript">JavaScript</option>
+            <option value="python">Python</option>
+            <option value="java">Java</option>
+            <option value="c">C</option>
+            <option value="cpp">C++</option>
+          </select>
+        </div>
+        
+        <div class="code-editor-container">
+          <div id="code-editor-wrapper">
+            <!-- Code Mirror editor will be initialized here -->
+            <textarea id="code-editor" class="form-control" rows="15">// RSA Asymmetric Key Encryption Implementation
+
+/**
+ * Calculates the greatest common divisor (GCD) of two numbers
+ * @param {number} a - First number
+ * @param {number} b - Second number
+ * @returns {number} - The GCD of a and b
+ */
+function gcd(a, b) {
+  if (b === 0) {
+    return a;
+  }
+  return gcd(b, a % b);
+}
+
+/**
+ * Performs modular exponentiation (base^exponent mod modulus)
+ * @param {number} base - The base
+ * @param {number} exponent - The exponent
+ * @param {number} modulus - The modulus
+ * @returns {number} - The result of (base^exponent) mod modulus
+ */
+function modPow(base, exponent, modulus) {
+  if (modulus === 1) return 0;
+  
+  let result = 1;
+  base = base % modulus;
+  
+  while (exponent > 0) {
+    // If exponent is odd, multiply result with base
+    if (exponent % 2 === 1) {
+      result = (result * base) % modulus;
+    }
+    
+    // Exponent is even, square the base
+    exponent = Math.floor(exponent / 2);
+    base = (base * base) % modulus;
+  }
+  
+  return result;
+}
+
+/**
+ * Implements the RSA algorithm
+ * @param {number} p - First prime number
+ * @param {number} q - Second prime number
+ * @param {number} message - Message to encrypt
+ * @returns {Object} - Object containing encryption and decryption results
+ */
+function rsa(p, q, message) {
+  // Calculate n
+  const n = p * q;
+  
+  // Calculate totient t
+  const t = (p - 1) * (q - 1);
+  
+  // Find e (public key exponent)
+  let e = 2;
+  while (e < t) {
+    if (gcd(e, t) === 1) {
+      break;
+    }
+    e++;
+  }
+  
+  // Find d (private key exponent)
+  let d = 0;
+  let j = 1;
+  while (true) {
+    if ((j * e) % t === 1) {
+      d = j;
+      break;
+    }
+    j++;
+    
+    // Safety check to prevent infinite loops
+    if (j > 100000) {
+      throw new Error("Could not find d (too large)");
+    }
+  }
+  
+  // Encrypt the message
+  const ciphertext = modPow(message, e, n);
+  
+  // Decrypt the message
+  const decrypted = modPow(ciphertext, d, n);
+  
+  return {
+    p: p,
+    q: q,
+    n: n,
+    t: t,
+    e: e,
+    d: d,
+    message: message,
+    ciphertext: ciphertext,
+    decrypted: decrypted
+  };
+}
+
+// Test cases
+function runTestCases() {
+  // Test Case 1
+  console.log("Test Case 1:");
+  const result1 = rsa(53, 59, 89);
+  console.log("Encrypted message is " + result1.ciphertext);
+  console.log("Decrypted message is " + result1.decrypted);
+  
+  // Test Case 2
+  console.log("\nTest Case 2:");
+  const result2 = rsa(3, 7, 12);
+  console.log("Encrypted message is " + result2.ciphertext);
+  console.log("Decrypted message is " + result2.decrypted);
+}
+
+// Run the test cases
+runTestCases();</textarea>
+          </div>
+        </div>
+        
+        <div class="mt-3 d-flex justify-content-between">
+          <button class="btn btn-secondary" id="clear-code-btn">
+            <i class="fas fa-eraser me-2"></i>Clear Code
+            </button>
+          <button class="btn btn-primary" id="run-code-btn">
+            <i class="fas fa-play me-2"></i>Run Code
+            </button>
+          </div>
+      </div>
+    </div>
+    
+    <!-- Output Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-terminal section-icon"></i> Output
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="code-output bg-dark text-light p-3 rounded" id="code-output">
+          <div class="text-muted">Run your code to see the output here...</div>
+        </div>
+        
+        <div class="mt-3 d-flex justify-content-end">
+          <button class="btn btn-success" id="submit-code-btn">
+            <i class="fas fa-paper-plane me-2"></i>Submit
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CodeMirror CSS and JS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/dracula.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/show-hint.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/show-hint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/javascript-hint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/anyword-hint.min.js"></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Set experiment type on body
+    document.body.setAttribute('data-experiment-type', 'asymmetric-key-encryption');
+    
+    // Helper function for notifications if not defined elsewhere
+    function showNotification(message, type) {
+      if (window.showNotification) {
+        window.showNotification(message, type);
+      } else {
+        alert(message);
+      }
+    }
+    
+    // Initialize CodeMirror
+    const codeEditorTextarea = document.getElementById('code-editor');
+    const codeEditor = CodeMirror.fromTextArea(codeEditorTextarea, {
+      lineNumbers: true,
+      mode: 'javascript',
+      theme: 'dracula',
+      indentUnit: 2,
+      smartIndent: true,
+      tabSize: 2,
+      indentWithTabs: false,
+      lineWrapping: true,
+      matchBrackets: true,
+      autoCloseBrackets: true,
+      extraKeys: {
+        "Ctrl-Space": "autocomplete",
+        "Tab": function(cm) {
+          if (cm.somethingSelected()) {
+            cm.indentSelection("add");
+          } else {
+            cm.replaceSelection("  ", "end");
+          }
+        }
+      }
+    });
+    
+    // Language selection
+    const languageSelect = document.getElementById('language-select');
+    languageSelect.addEventListener('change', function() {
+      const language = this.value;
+      let mode;
+      
+      switch(language) {
+        case 'javascript':
+          mode = 'javascript';
+          break;
+        case 'python':
+          mode = 'python';
+          break;
+        case 'java':
+          mode = 'text/x-java';
+          break;
+        case 'c':
+          mode = 'text/x-csrc';
+          break;
+        case 'cpp':
+          mode = 'text/x-c++src';
+          break;
+        default:
+          mode = 'javascript';
+      }
+      
+      codeEditor.setOption('mode', mode);
+      
+      // Update starter code based on language
+      if (confirm('Changing language will replace your current code. Continue?')) {
+        codeEditor.setValue(getStarterCode(language));
+      } else {
+        this.value = codeEditor.getOption('mode');
+      }
+    });
+    
+    // Helper function to get starter code for different languages
+    function getStarterCode(language) {
+      switch(language) {
+        case 'javascript':
+          return `// RSA Asymmetric Key Encryption Implementation
+
+/**
+ * Calculates the greatest common divisor (GCD) of two numbers
+ * @param {number} a - First number
+ * @param {number} b - Second number
+ * @returns {number} - The GCD of a and b
+ */
+function gcd(a, b) {
+  if (b === 0) {
+    return a;
+  }
+  return gcd(b, a % b);
+}
+
+/**
+ * Performs modular exponentiation (base^exponent mod modulus)
+ * @param {number} base - The base
+ * @param {number} exponent - The exponent
+ * @param {number} modulus - The modulus
+ * @returns {number} - The result of (base^exponent) mod modulus
+ */
+function modPow(base, exponent, modulus) {
+  if (modulus === 1) return 0;
+  
+  let result = 1;
+  base = base % modulus;
+  
+  while (exponent > 0) {
+    // If exponent is odd, multiply result with base
+    if (exponent % 2 === 1) {
+      result = (result * base) % modulus;
+    }
+    
+    // Exponent is even, square the base
+    exponent = Math.floor(exponent / 2);
+    base = (base * base) % modulus;
+  }
+  
+  return result;
+}
+
+/**
+ * Implements the RSA algorithm
+ * @param {number} p - First prime number
+ * @param {number} q - Second prime number
+ * @param {number} message - Message to encrypt
+ * @returns {Object} - Object containing encryption and decryption results
+ */
+function rsa(p, q, message) {
+  // Calculate n
+  const n = p * q;
+  
+  // Calculate totient t
+  const t = (p - 1) * (q - 1);
+  
+  // Find e (public key exponent)
+  let e = 2;
+  while (e < t) {
+    if (gcd(e, t) === 1) {
+      break;
+    }
+    e++;
+  }
+  
+  // Find d (private key exponent)
+  let d = 0;
+  let j = 1;
+  while (true) {
+    if ((j * e) % t === 1) {
+      d = j;
+      break;
+    }
+    j++;
+    
+    // Safety check to prevent infinite loops
+    if (j > 100000) {
+      throw new Error("Could not find d (too large)");
+    }
+  }
+  
+  // Encrypt the message
+  const ciphertext = modPow(message, e, n);
+  
+  // Decrypt the message
+  const decrypted = modPow(ciphertext, d, n);
+  
+  return {
+    p: p,
+    q: q,
+    n: n,
+    t: t,
+    e: e,
+    d: d,
+    message: message,
+    ciphertext: ciphertext,
+    decrypted: decrypted
+  };
+}
+
+// Test cases
+function runTestCases() {
+  // Test Case 1
+  console.log("Test Case 1:");
+  const result1 = rsa(53, 59, 89);
+  console.log("Encrypted message is " + result1.ciphertext);
+  console.log("Decrypted message is " + result1.decrypted);
+  
+  // Test Case 2
+  console.log("\nTest Case 2:");
+  const result2 = rsa(3, 7, 12);
+  console.log("Encrypted message is " + result2.ciphertext);
+  console.log("Decrypted message is " + result2.decrypted);
+}
+
+// Run the test cases
+runTestCases();`;
+        case 'python':
+          return `# RSA Asymmetric Key Encryption Implementation
+
+def gcd(a, b):
+    """
+    Calculate the Greatest Common Divisor of a and b.
+    
+    Args:
+        a (int): First number
+        b (int): Second number
+        
+    Returns:
+        int: The greatest common divisor
+    """
+    if b == 0:
+        return a
+    return gcd(b, a % b)
+
+def mod_pow(base, exponent, modulus):
+    """
+    Perform modular exponentiation (base^exponent mod modulus).
+    
+    Args:
+        base (int): The base
+        exponent (int): The exponent
+        modulus (int): The modulus
+        
+    Returns:
+        int: The result of (base^exponent) mod modulus
+    """
+    if modulus == 1:
+        return 0
+    
+    result = 1
+    base = base % modulus
+    
+    while exponent > 0:
+        # If exponent is odd, multiply result with base
+        if exponent % 2 == 1:
+            result = (result * base) % modulus
+        
+        # Exponent is even, square the base
+        exponent = exponent // 2
+        base = (base * base) % modulus
+    
+    return result
+
+def rsa(p, q, message):
+    """
+    Implement the RSA algorithm.
+    
+    Args:
+        p (int): First prime number
+        q (int): Second prime number
+        message (int): Message to encrypt
+        
+    Returns:
+        dict: Dictionary containing encryption and decryption results
+    """
+    # Calculate n
+    n = p * q
+    
+    # Calculate totient t
+    t = (p - 1) * (q - 1)
+    
+    # Find e (public key exponent)
+    e = 2
+    while e < t:
+        if gcd(e, t) == 1:
+            break
+        e += 1
+    
+    # Find d (private key exponent)
+    d = 0
+    j = 1
+    while True:
+        if (j * e) % t == 1:
+            d = j
+            break
+        j += 1
+        
+        # Safety check to prevent infinite loops
+        if j > 100000:
+            raise ValueError("Could not find d (too large)")
+    
+    # Encrypt the message
+    ciphertext = mod_pow(message, e, n)
+    
+    # Decrypt the message
+    decrypted = mod_pow(ciphertext, d, n)
+    
+    return {
+        'p': p,
+        'q': q,
+        'n': n,
+        't': t,
+        'e': e,
+        'd': d,
+        'message': message,
+        'ciphertext': ciphertext,
+        'decrypted': decrypted
+    }
+
+def run_test_cases():
+    """Run the test cases for the RSA algorithm."""
+    # Test Case 1
+    print("Test Case 1:")
+    result1 = rsa(53, 59, 89)
+    print(f"Encrypted message is {result1['ciphertext']}")
+    print(f"Decrypted message is {result1['decrypted']}")
+    
+    # Test Case 2
+    print("\nTest Case 2:")
+    result2 = rsa(3, 7, 12)
+    print(f"Encrypted message is {result2['ciphertext']}")
+    print(f"Decrypted message is {result2['decrypted']}")
+
+# Run the test cases
+run_test_cases()`;
+        case 'java':
+          return `// RSA Asymmetric Key Encryption Implementation in Java
+import java.math.BigInteger;
+
+public class RSA {
+    // Calculate the greatest common divisor (GCD) of two numbers
+    public static int gcd(int a, int b) {
+        if (b == 0) {
+            return a;
+        }
+        return gcd(b, a % b);
+    }
+    
+    // Perform modular exponentiation (base^exponent mod modulus)
+    public static int modPow(int base, int exponent, int modulus) {
+        if (modulus == 1) return 0;
+        
+        long result = 1;
+        long b = base % modulus;
+        
+        while (exponent > 0) {
+            // If exponent is odd, multiply result with base
+            if (exponent % 2 == 1) {
+                result = (result * b) % modulus;
+            }
+            
+            // Exponent is even, square the base
+            exponent = exponent / 2;
+            b = (b * b) % modulus;
+        }
+        
+        return (int) result;
+    }
+    
+    // Implement RSA algorithm
+    public static void rsa(int p, int q, int message) {
+        // Calculate n
+        int n = p * q;
+        
+        // Calculate totient t
+        int t = (p - 1) * (q - 1);
+        
+        // Find e (public key exponent)
+        int e = 2;
+        while (e < t) {
+            if (gcd(e, t) == 1) {
+                break;
+            }
+            e++;
+        }
+        
+        // Find d (private key exponent)
+        int d = 0;
+        int j = 1;
+        while (true) {
+            if ((j * e) % t == 1) {
+                d = j;
+                break;
+            }
+            j++;
+            
+            // Safety check to prevent infinite loops
+            if (j > 100000) {
+                System.out.println("Could not find d (too large)");
+                return;
+            }
+        }
+        
+        // Encrypt the message
+        int ciphertext = modPow(message, e, n);
+        
+        // Decrypt the message
+        int decrypted = modPow(ciphertext, d, n);
+        
+        // Print results
+        System.out.println("Public Key (n, e): (" + n + ", " + e + ")");
+        System.out.println("Private Key (n, d): (" + n + ", " + d + ")");
+        System.out.println("Original Message: " + message);
+        System.out.println("Encrypted message is " + ciphertext);
+        System.out.println("Decrypted message is " + decrypted);
+    }
+    
+    public static void main(String[] args) {
+        // Test Case 1
+        System.out.println("Test Case 1:");
+        rsa(53, 59, 89);
+        
+        // Test Case 2
+        System.out.println("\nTest Case 2:");
+        rsa(3, 7, 12);
+    }
+}`;
+        case 'c':
+          return `// RSA Asymmetric Key Encryption Implementation in C
+#include <stdio.h>
+#include <stdlib.h>
+
+// Calculate the greatest common divisor (GCD) of two numbers
+int gcd(int a, int b) {
+    if (b == 0) {
+        return a;
+    }
+    return gcd(b, a % b);
+}
+
+// Perform modular exponentiation (base^exponent mod modulus)
+int mod_pow(int base, int exponent, int modulus) {
+    if (modulus == 1) return 0;
+    
+    long long result = 1;
+    long long b = base % modulus;
+    
+    while (exponent > 0) {
+        // If exponent is odd, multiply result with base
+        if (exponent % 2 == 1) {
+            result = (result * b) % modulus;
+        }
+        
+        // Exponent is even, square the base
+        exponent = exponent / 2;
+        b = (b * b) % modulus;
+    }
+    
+    return (int) result;
+}
+
+// Implement RSA algorithm
+void rsa(int p, int q, int message) {
+    // Calculate n
+    int n = p * q;
+    
+    // Calculate totient t
+    int t = (p - 1) * (q - 1);
+    
+    // Find e (public key exponent)
+    int e = 2;
+    while (e < t) {
+        if (gcd(e, t) == 1) {
+            break;
+        }
+        e++;
+    }
+    
+    // Find d (private key exponent)
+    int d = 0;
+    int j = 1;
+    while (1) {
+        if ((j * e) % t == 1) {
+            d = j;
+            break;
+        }
+        j++;
+        
+        // Safety check to prevent infinite loops
+        if (j > 100000) {
+            printf("Could not find d (too large)\n");
+            return;
+        }
+    }
+    
+    // Encrypt the message
+    int ciphertext = mod_pow(message, e, n);
+    
+    // Decrypt the message
+    int decrypted = mod_pow(ciphertext, d, n);
+    
+    // Print results
+    printf("Public Key (n, e): (%d, %d)\n", n, e);
+    printf("Private Key (n, d): (%d, %d)\n", n, d);
+    printf("Original Message: %d\n", message);
+    printf("Encrypted message is %d\n", ciphertext);
+    printf("Decrypted message is %d\n", decrypted);
+}
+
+int main() {
+    // Test Case 1
+    printf("Test Case 1:\n");
+    rsa(53, 59, 89);
+    
+    // Test Case 2
+    printf("\nTest Case 2:\n");
+    rsa(3, 7, 12);
+    
+    return 0;
+}`;
+        case 'cpp':
+          return `// RSA Asymmetric Key Encryption Implementation in C++
+#include <iostream>
+#include <cmath>
+
+// Calculate the greatest common divisor (GCD) of two numbers
+int gcd(int a, int b) {
+    if (b == 0) {
+        return a;
+    }
+    return gcd(b, a % b);
+}
+
+// Perform modular exponentiation (base^exponent mod modulus)
+int mod_pow(int base, int exponent, int modulus) {
+    if (modulus == 1) return 0;
+    
+    long long result = 1;
+    long long b = base % modulus;
+    
+    while (exponent > 0) {
+        // If exponent is odd, multiply result with base
+        if (exponent % 2 == 1) {
+            result = (result * b) % modulus;
+        }
+        
+        // Exponent is even, square the base
+        exponent = exponent / 2;
+        b = (b * b) % modulus;
+    }
+    
+    return (int) result;
+}
+
+// Implement RSA algorithm
+void rsa(int p, int q, int message) {
+    // Calculate n
+    int n = p * q;
+    
+    // Calculate totient t
+    int t = (p - 1) * (q - 1);
+    
+    // Find e (public key exponent)
+    int e = 2;
+    while (e < t) {
+        if (gcd(e, t) == 1) {
+            break;
+        }
+        e++;
+    }
+    
+    // Find d (private key exponent)
+    int d = 0;
+    int j = 1;
+    while (true) {
+        if ((j * e) % t == 1) {
+            d = j;
+            break;
+        }
+        j++;
+        
+        // Safety check to prevent infinite loops
+        if (j > 100000) {
+            std::cout << "Could not find d (too large)" << std::endl;
+            return;
+        }
+    }
+    
+    // Encrypt the message
+    int ciphertext = mod_pow(message, e, n);
+    
+    // Decrypt the message
+    int decrypted = mod_pow(ciphertext, d, n);
+    
+    // Print results
+    std::cout << "Public Key (n, e): (" << n << ", " << e << ")" << std::endl;
+    std::cout << "Private Key (n, d): (" << n << ", " << d << ")" << std::endl;
+    std::cout << "Original Message: " << message << std::endl;
+    std::cout << "Encrypted message is " << ciphertext << std::endl;
+    std::cout << "Decrypted message is " << decrypted << std::endl;
+}
+
+int main() {
+    // Test Case 1
+    std::cout << "Test Case 1:" << std::endl;
+    rsa(53, 59, 89);
+    
+    // Test Case 2
+    std::cout << "\nTest Case 2:" << std::endl;
+    rsa(3, 7, 12);
+    
+    return 0;
+}`;
+        default:
+          return codeEditor.getValue(); // Keep existing code
+      }
+    }
+    
+    // Clear code button
+    const clearCodeBtn = document.getElementById('clear-code-btn');
+    if (clearCodeBtn) {
+      clearCodeBtn.addEventListener('click', function() {
+        if (confirm('Are you sure you want to clear your code? All changes will be lost.')) {
+          codeEditor.setValue('');
+        }
+      });
+    }
+    
+    // Run code button
+    const runCodeBtn = document.getElementById('run-code-btn');
+    const codeOutput = document.getElementById('code-output');
+    
+    if (runCodeBtn && codeOutput) {
+      runCodeBtn.addEventListener('click', function() {
+        const code = codeEditor.getValue();
+        const language = languageSelect.value;
+        
+        if (!code.trim()) {
+          codeOutput.innerHTML = '<span class="text-danger">Error: Please write some code before running.</span>';
+        return;
+      }
+      
+        // Show loading state
+        codeOutput.innerHTML = '<div class="text-info"><i class="fas fa-spinner fa-spin me-2"></i>Running code...</div>';
+        
+        // Send code to server for execution
+        fetch('/experiments/asymmetric-key-encryption/run', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ code, language })
+        })
+        .then(response => response.json())
+        .then(data => {
+          if (data.error) {
+            codeOutput.innerHTML = `<span class="text-danger">Error: ${data.error}</span>`;
+          } else {
+            codeOutput.innerHTML = `<pre>${data.output}</pre>`;
+          }
+        })
+        .catch(error => {
+          console.error('Run code error:', error);
+          codeOutput.innerHTML = '<span class="text-danger">An error occurred while running the code. Please try again.</span>';
+        });
+      });
+    }
+    
+    // Submit code button
+    const submitCodeBtn = document.getElementById('submit-code-btn');
+    
+    if (submitCodeBtn) {
+      submitCodeBtn.addEventListener('click', function() {
+        const code = codeEditor.getValue();
+        const language = languageSelect.value;
+        
+        if (!code.trim()) {
+          showNotification('Please write some code before submitting.', 'error');
+        return;
+      }
+      
+        // Show loading state
+        submitCodeBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
+        submitCodeBtn.disabled = true;
+        
+        // Send code to server for submission
+        fetch('/experiments/asymmetric-key-encryption/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+          body: JSON.stringify({ code, language })
+      })
+      .then(response => response.json())
+      .then(data => {
+          if (data.error) {
+            showNotification(data.error, 'error');
+        } else {
+            showNotification('Code submitted successfully!', 'success');
+            
+            // Mark experiment as completed in localStorage
+            const completedExperiments = JSON.parse(localStorage.getItem('completedExperiments')) || [];
+            if (!completedExperiments.includes('asymmetric-key-encryption')) {
+              completedExperiments.push('asymmetric-key-encryption');
+              localStorage.setItem('completedExperiments', JSON.stringify(completedExperiments));
+              
+              // Update sidebar and progress
+              if (typeof markCompletedExperiments === 'function') {
+                markCompletedExperiments();
+              }
+            }
+          }
+          
+          // Reset button state
+          submitCodeBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Submit';
+          submitCodeBtn.disabled = false;
+      })
+      .catch(error => {
+          console.error('Submit code error:', error);
+          showNotification('An error occurred while submitting the code. Please try again.', 'error');
+          
+          // Reset button state
+          submitCodeBtn.innerHTML = '<i class="fas fa-paper-plane me-2"></i>Submit';
+          submitCodeBtn.disabled = false;
+        });
+      });
+    }
+    
+    // Helper function to generate RSA steps
+    function generateRSASteps(message, p, q) {
+      return new Promise((resolve) => {
+        // Convert inputs to numbers
+        const messageInt = parseInt(message);
+        p = parseInt(p);
+        q = parseInt(q);
+        
+        // Calculate n
+        const n = p * q;
+        
+        // Calculate totient t
+        const t = (p - 1) * (q - 1);
+        
+        // Find e (public key exponent)
+        let e = 2;
+        while (e < t) {
+          if (gcd(e, t) === 1) {
+            break;
+          }
+          e++;
+        }
+        
+        // Find d (private key exponent)
+        let d = 0;
+        let j = 1;
+        while (true) {
+          if ((j * e) % t === 1) {
+            d = j;
+            break;
+          }
+          j++;
+          
+          // Safety check to prevent infinite loops
+          if (j > 100000) {
+            d = "Could not find d (too large)";
+            break;
+          }
+        }
+        
+        // Encrypt the message
+        const ciphertext = modPow(messageInt, e, n);
+        
+        // Decrypt the message
+        const decrypted = typeof d === 'number' ? modPow(ciphertext, d, n) : "Error: Could not decrypt";
+        
+        // Return the steps
+        resolve({
+          message: messageInt,
+          p: p,
+          q: q,
+          n: n,
+          t: t,
+          e: e,
+          d: d,
+          publicKey: `(${n}, ${e})`,
+          privateKey: `(${n}, ${d})`,
+          messageInt: messageInt,
+          ciphertext: ciphertext,
+          decrypted: decrypted
+        });
+      });
+    }
+    
+    // Helper function to calculate GCD
+    function gcd(a, b) {
+      if (b === 0) {
+        return a;
+      }
+      return gcd(b, a % b);
+    }
+    
+    // Helper function for modular exponentiation (m^e mod n)
+    function modPow(base, exponent, modulus) {
+      if (modulus === 1) return 0;
+      
+      // Handle negative exponents
+      if (exponent < 0) {
+        return modPow(modInverse(base, modulus), -exponent, modulus);
+      }
+      
+      // Use the square and multiply algorithm for efficiency
+      let result = 1;
+      base = base % modulus;
+      
+      while (exponent > 0) {
+        // If exponent is odd, multiply result with base
+        if (exponent % 2 === 1) {
+          result = (result * base) % modulus;
+        }
+        
+        // Exponent is even, square the base
+        exponent = Math.floor(exponent / 2);
+        base = (base * base) % modulus;
+      }
+      
+      return result;
+    }
+    
+    // Helper function for modular inverse
+    function modInverse(a, m) {
+      for (let x = 1; x < m; x++) {
+        if ((a * x) % m === 1) {
+          return x;
+        }
+      }
+      return 1; // Default fallback
+    }
+    
+    // Visualization button
+    const visualizeBtn = document.getElementById('visualize-btn');
+    const visualizationSection = document.getElementById('visualization-section');
+    const keyGenerationTable = document.getElementById('key-generation-table');
+    const encryptionTable = document.getElementById('encryption-table');
+    const decryptionTable = document.getElementById('decryption-table');
+    const publicKeyDisplay = document.getElementById('public-key-display');
+    const privateKeyDisplay = document.getElementById('private-key-display');
+    const originalMessageDisplay = document.getElementById('original-message-display');
+    const encryptedMessageDisplay = document.getElementById('encrypted-message-display');
+    const decryptedMessageDisplay = document.getElementById('decrypted-message-display');
+    
+    if (visualizeBtn && visualizationSection && keyGenerationTable && encryptionTable && decryptionTable && publicKeyDisplay && privateKeyDisplay && originalMessageDisplay && encryptedMessageDisplay && decryptedMessageDisplay) {
+      visualizeBtn.addEventListener('click', function() {
+        const p = document.getElementById('prime-p').value;
+        const q = document.getElementById('prime-q').value;
+        const message = document.getElementById('message').value;
+        
+        if (!p || !q || !message) {
+          if (typeof window.showNotification === 'function') {
+            window.showNotification('Error', 'Please fill in all fields before visualizing.', 'error');
+          } else {
+            alert('Please fill in all fields before visualizing.');
+          }
+          return;
+        }
+        
+        // Check if p and q are prime
+        if (!isPrime(parseInt(p)) || !isPrime(parseInt(q))) {
+          if (typeof window.showNotification === 'function') {
+            window.showNotification('Error', 'Both p and q must be prime numbers.', 'error');
+          } else {
+            alert('Both p and q must be prime numbers.');
+          }
+          return;
+        }
+        
+        // Show visualization section
+        visualizationSection.classList.remove('d-none');
+        
+        // Show loading state
+        keyGenerationTable.innerHTML = '<tr><td colspan="3" class="text-center"><i class="fas fa-spinner fa-spin me-2"></i>Processing...</td></tr>';
+        encryptionTable.innerHTML = '<tr><td colspan="3" class="text-center"><i class="fas fa-spinner fa-spin me-2"></i>Processing...</td></tr>';
+        decryptionTable.innerHTML = '<tr><td colspan="3" class="text-center"><i class="fas fa-spinner fa-spin me-2"></i>Processing...</td></tr>';
+        
+        try {
+          // Generate RSA encryption steps
+          generateRSASteps(message, p, q).then(steps => {
+            // Update key generation table
+            keyGenerationTable.innerHTML = `
+              <thead>
+                <tr>
+                  <th>Step</th>
+                  <th>Operation</th>
+                  <th>Result</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Input prime numbers p and q</td>
+                  <td>p = ${steps.p}, q = ${steps.q}</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Calculate n = p * q</td>
+                  <td>n = ${steps.p} * ${steps.q} = ${steps.n}</td>
+                </tr>
+                <tr>
+                  <td>3</td>
+                  <td>Calculate totient t = (p-1) * (q-1)</td>
+                  <td>t = (${steps.p}-1) * (${steps.q}-1) = ${steps.t}</td>
+                </tr>
+                <tr>
+                  <td>4</td>
+                  <td>Find public key e (smallest integer where gcd(e,t) = 1)</td>
+                  <td>e = ${steps.e}</td>
+                </tr>
+                <tr>
+                  <td>5</td>
+                  <td>Find private key d (where (d*e) mod t = 1)</td>
+                  <td>d = ${steps.d}</td>
+                </tr>
+              </tbody>
+            `;
+            
+            // Update encryption table
+            encryptionTable.innerHTML = `
+              <thead>
+                <tr>
+                  <th>Step</th>
+                  <th>Operation</th>
+                  <th>Result</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Input message</td>
+                  <td>${steps.message}</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Calculate ciphertext = (message^e) mod n</td>
+                  <td>(${steps.message}^${steps.e}) mod ${steps.n} = ${steps.ciphertext}</td>
+                </tr>
+              </tbody>
+            `;
+            
+            // Update decryption table
+            decryptionTable.innerHTML = `
+              <thead>
+                <tr>
+                  <th>Step</th>
+                  <th>Operation</th>
+                  <th>Result</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>1</td>
+                  <td>Input ciphertext</td>
+                  <td>${steps.ciphertext}</td>
+                </tr>
+                <tr>
+                  <td>2</td>
+                  <td>Calculate decrypted message = (ciphertext^d) mod n</td>
+                  <td>(${steps.ciphertext}^${steps.d}) mod ${steps.n} = ${steps.decrypted}</td>
+                </tr>
+              </tbody>
+            `;
+            
+            // Update results
+            publicKeyDisplay.innerHTML = `(${steps.n}, ${steps.e})`;
+            privateKeyDisplay.innerHTML = `(${steps.n}, ${steps.d})`;
+            originalMessageDisplay.innerHTML = `${steps.message}`;
+            encryptedMessageDisplay.innerHTML = `${steps.ciphertext}`;
+            decryptedMessageDisplay.innerHTML = `${steps.decrypted}`;
+            
+          }).catch(error => {
+            console.error('RSA Visualization Error:', error);
+            
+            if (typeof window.showNotification === 'function') {
+              window.showNotification('Error', `RSA operation failed: ${error.message}`, 'error');
+            } else {
+              alert(`RSA operation failed: ${error.message}`);
+            }
+          });
+        } catch (error) {
+          console.error('RSA Visualization Error:', error);
+          
+          if (typeof window.showNotification === 'function') {
+            window.showNotification('Error', `RSA operation failed: ${error.message}`, 'error');
+          } else {
+            alert(`RSA operation failed: ${error.message}`);
+          }
+        }
+      });
+    }
+    
+    // Helper function to check if a number is prime
+    function isPrime(num) {
+      if (num <= 1) return false;
+      if (num <= 3) return true;
+      if (num % 2 === 0 || num % 3 === 0) return false;
+      
+      let i = 5;
+      while (i * i <= num) {
+        if (num % i === 0 || num % (i + 2) === 0) return false;
+        i += 6;
+      }
+      return true;
+    }
+  });
+</script>
+
+<%- include('../partials/footer') %> 

@@ -1,0 +1,515 @@
+<%- include('../partials/header') %>
+
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="sidebar-user">
+            <div class="sidebar-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <div>
+                <% if (locals.user) { %>
+                    <div class="sidebar-username"><%= user.username %></div>
+                    <div class="sidebar-role"><%= user.role %></div>
+                <% } else { %>
+                    <div class="sidebar-username">Guest</div>
+                    <div class="sidebar-role">Not logged in</div>
+                <% } %>
+            </div>
+        </div>
+        <button class="sidebar-close" id="close-sidebar">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    
+    <div class="sidebar-content">
+        <div class="sidebar-title">
+            <i class="fas fa-flask"></i> Experiments
+        </div>
+        <ul class="sidebar-menu">
+            <li class="sidebar-menu-item">
+                <a href="/experiments/caesar-cipher" class="sidebar-menu-link">
+                    <div class="sidebar-menu-text">
+                        <i class="fas fa-lock"></i> Caesar Cipher
+                    </div>
+                    <i class="fas fa-check-circle sidebar-menu-check" id="check-1" style="display: none;"></i>
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="/experiments/mono-alphabetic-cipher" class="sidebar-menu-link">
+                    <div class="sidebar-menu-text">
+                        <i class="fas fa-key"></i> Monoalphabetic Cipher
+                    </div>
+                    <i class="fas fa-check-circle sidebar-menu-check" id="check-2" style="display: none;"></i>
+                </a>
+            </li>
+            <!-- Other experiments menu items -->
+        </ul>
+    </div>
+</div>
+
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<div class="nav-container">
+    <nav style="padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center;">
+            <button class="hamburger-button" id="toggle-sidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+            <img src="https://www.kalasalingam.ac.in/wp-content/uploads/2022/02/Logo.png" alt="University Logo" style="height: 40px; margin-left: 15px;">
+        </div>
+        <div style="display: flex; align-items: center;">
+            <div class="progress-container">
+                <div class="progress-circle">
+                    <svg viewBox="0 0 36 36">
+                        <circle class="progress-circle-bg" cx="18" cy="18" r="16"></circle>
+                        <circle class="progress-circle-fill" id="progress-circle" cx="18" cy="18" r="16" stroke-dasharray="100.53" stroke-dashoffset="100.53"></circle>
+                    </svg>
+                    <div class="progress-count" id="completed-count">0</div>
+                </div>
+                <div>
+                    <div class="progress-text">Progress</div>
+                    <div class="progress-label"><span id="progress-text">0/14</span> completed</div>
+                </div>
+            </div>
+            
+            <div class="user-profile">
+                <% if (locals.user) { %>
+                    <button class="user-button" id="profile-btn">
+                        <div class="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="user-info">
+                            <div class="user-name"><%= user.username %></div>
+                            <div class="user-role"><%= user.role %></div>
+                        </div>
+                        <i class="fas fa-chevron-down" style="margin-left: 10px; font-size: 12px; color: var(--medium-gray);"></i>
+                    </button>
+                    <div class="user-menu" id="profile-dropdown">
+                        <a href="/users/profile" class="user-menu-item">
+                            <i class="fas fa-user-circle"></i> Profile
+                        </a>
+                        <a href="/users/settings" class="user-menu-item">
+                            <i class="fas fa-cog"></i> Settings
+                        </a>
+                        <form action="/auth/logout" method="POST" style="margin: 0; padding: 0;">
+                            <button type="submit" class="user-menu-item" style="width: 100%; text-align: left; background: none; border: none;">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </button>
+                        </form>
+                    </div>
+                <% } else { %>
+                    <a href="/auth/login" class="btn btn-primary me-2">
+                        <i class="fas fa-sign-in-alt me-1"></i> Login
+                    </a>
+                    <a href="/auth/register" class="btn btn-outline-primary">
+                        <i class="fas fa-user-plus me-1"></i> Register
+                    </a>
+                <% } %>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<div class="container-fluid px-4 py-4">
+    <div class="row">
+        <!-- Profile Information -->
+        <div class="col-xl-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Profile Information</h6>
+                    <a href="/users/settings" class="btn btn-sm btn-outline-primary">
+                        <i class="fas fa-edit"></i>
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="text-center mb-4">
+                        <div style="width: 120px; height: 120px; background-color: var(--primary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto; color: white; font-size: 48px;">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <h4 class="mt-3"><%= locals.user ? user.username : 'Student Name' %></h4>
+                        <p class="text-muted">Student</p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6 class="text-primary">Email</h6>
+                        <p><%= locals.user ? user.email : 'student@example.com' %></p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6 class="text-primary">Joined On</h6>
+                        <p>January 15, 2025</p>
+                    </div>
+                    
+                    <div class="mb-3">
+                        <h6 class="text-primary">Overall Progress</h6>
+                        <div class="progress mb-2">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: 57%" aria-valuenow="57" aria-valuemin="0" aria-valuemax="100">57%</div>
+                        </div>
+                        <small class="text-muted">8 out of 14 experiments completed</small>
+                    </div>
+                    
+                    <div>
+                        <h6 class="text-primary">Average Score</h6>
+                        <div class="d-flex align-items-center">
+                            <div style="width: 60px; height: 60px; background-color: var(--secondary-color); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 20px;">
+                                85%
+                            </div>
+                            <div class="ms-3">
+                                <div class="text-success">
+                                    <i class="fas fa-arrow-up"></i> 5% improvement
+                                </div>
+                                <small class="text-muted">from last month</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Upcoming Tests -->
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Upcoming Tests</h6>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h5 class="text-dark">Mid Sem Practical</h5>
+                            <span class="badge bg-warning text-dark">Upcoming</span>
+                        </div>
+                        <p class="text-muted mb-2">March 20, 2025 • 9:00 AM</p>
+                        <p class="mb-2">Duration: 2 hours</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">5 experiments included</small>
+                            <a href="/tests/1" class="btn btn-sm btn-primary">View Details</a>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <h5 class="text-dark">End Sem Practical</h5>
+                            <span class="badge bg-warning text-dark">Upcoming</span>
+                        </div>
+                        <p class="text-muted mb-2">May 15, 2025 • 9:00 AM</p>
+                        <p class="mb-2">Duration: 3 hours</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">8 experiments included</small>
+                            <a href="/tests/2" class="btn btn-sm btn-primary">View Details</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Experiment Progress -->
+        <div class="col-xl-8">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Experiment Progress</h6>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Experiment</th>
+                                    <th>Status</th>
+                                    <th>Completed On</th>
+                                    <th>Score</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1. Caesar Cipher</td>
+                                    <td><span class="badge bg-success">Completed</span></td>
+                                    <td>Jan 20, 2025</td>
+                                    <td>90%</td>
+                                    <td>
+                                        <a href="/experiments/caesar-cipher" class="btn btn-sm btn-info">
+                                            <i class="fas fa-eye"></i> View
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>2. Monoalphabetic Cipher</td>
+                                    <td><span class="badge bg-success">Completed</span></td>
+                                    <td>Jan 22, 2025</td>
+                                    <td>85%</td>
+                                    <td>
+                                        <a href="/experiments/mono-alphabetic-cipher" class="btn btn-sm btn-info">
+                                            <i class="fas fa-eye"></i> View
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>3. Message Authentication</td>
+                                    <td><span class="badge bg-success">Completed</span></td>
+                                    <td>Jan 25, 2025</td>
+                                    <td>80%</td>
+                                    <td>
+                                        <a href="/experiments/message-authentication-code" class="btn btn-sm btn-info">
+                                            <i class="fas fa-eye"></i> View
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>4. Data Encryption Standard</td>
+                                    <td><span class="badge bg-success">Completed</span></td>
+                                    <td>Jan 28, 2025</td>
+                                    <td>75%</td>
+                                    <td>
+                                        <a href="/experiments/data-encryption-standard" class="btn btn-sm btn-info">
+                                            <i class="fas fa-eye"></i> View
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>5. Advanced Encryption Standard</td>
+                                    <td><span class="badge bg-success">Completed</span></td>
+                                    <td>Feb 2, 2025</td>
+                                    <td>88%</td>
+                                    <td>
+                                        <a href="/experiments/advanced-encryption-standard" class="btn btn-sm btn-info">
+                                            <i class="fas fa-eye"></i> View
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>6. Asymmetric Key Encryption</td>
+                                    <td><span class="badge bg-success">Completed</span></td>
+                                    <td>Feb 5, 2025</td>
+                                    <td>92%</td>
+                                    <td>
+                                        <a href="/experiments/asymmetric-key-encryption" class="btn btn-sm btn-info">
+                                            <i class="fas fa-eye"></i> View
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>7. Secure Key Exchange</td>
+                                    <td><span class="badge bg-success">Completed</span></td>
+                                    <td>Feb 8, 2025</td>
+                                    <td>85%</td>
+                                    <td>
+                                        <a href="/experiments/secure-key-exchange" class="btn btn-sm btn-info">
+                                            <i class="fas fa-eye"></i> View
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>8. Digital Signature Generation</td>
+                                    <td><span class="badge bg-success">Completed</span></td>
+                                    <td>Feb 12, 2025</td>
+                                    <td>90%</td>
+                                    <td>
+                                        <a href="/experiments/digital-signature-generation" class="btn btn-sm btn-info">
+                                            <i class="fas fa-eye"></i> View
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>9. Mobile Security</td>
+                                    <td><span class="badge bg-warning text-dark">In Progress</span></td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>
+                                        <a href="/experiments/mobile-security" class="btn btn-sm btn-primary">
+                                            <i class="fas fa-play"></i> Continue
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>10. Intrusion Detection System</td>
+                                    <td><span class="badge bg-secondary">Not Started</span></td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>
+                                        <a href="/experiments/intrusion-detection" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-play"></i> Start
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>11. Defeating Malware - Trojans</td>
+                                    <td><span class="badge bg-secondary">Not Started</span></td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>
+                                        <a href="/experiments/defeating-malware-trojan" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-play"></i> Start
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>12. Defeating Malware - Rootkit</td>
+                                    <td><span class="badge bg-secondary">Not Started</span></td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>
+                                        <a href="/experiments/defeating-malware-rootkit-hunter" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-play"></i> Start
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>13. Database Security</td>
+                                    <td><span class="badge bg-secondary">Not Started</span></td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>
+                                        <a href="/experiments/database-security" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-play"></i> Start
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>14. Encryption & Integrity Control</td>
+                                    <td><span class="badge bg-secondary">Not Started</span></td>
+                                    <td>-</td>
+                                    <td>-</td>
+                                    <td>
+                                        <a href="/experiments/encryption-integrity-control" class="btn btn-sm btn-outline-primary">
+                                            <i class="fas fa-play"></i> Start
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Recent Activity -->
+            <div class="card shadow">
+                <div class="card-header py-3">
+                    <h6 class="m-0 font-weight-bold text-primary">Recent Activity</h6>
+                </div>
+                <div class="card-body">
+                    <div class="timeline">
+                        <div class="timeline-item">
+                            <div class="timeline-item-marker">
+                                <div class="timeline-item-marker-text">Feb 12</div>
+                                <div class="timeline-item-marker-indicator bg-success"></div>
+                            </div>
+                            <div class="timeline-item-content">
+                                <p class="mb-0">Completed <strong>Digital Signature Generation</strong> experiment with a score of 90%</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-item-marker">
+                                <div class="timeline-item-marker-text">Feb 10</div>
+                                <div class="timeline-item-marker-indicator bg-primary"></div>
+                            </div>
+                            <div class="timeline-item-content">
+                                <p class="mb-0">Started working on <strong>Digital Signature Generation</strong> experiment</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-item-marker">
+                                <div class="timeline-item-marker-text">Feb 8</div>
+                                <div class="timeline-item-marker-indicator bg-success"></div>
+                            </div>
+                            <div class="timeline-item-content">
+                                <p class="mb-0">Completed <strong>Secure Key Exchange</strong> experiment with a score of 85%</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-item-marker">
+                                <div class="timeline-item-marker-text">Feb 5</div>
+                                <div class="timeline-item-marker-indicator bg-success"></div>
+                            </div>
+                            <div class="timeline-item-content">
+                                <p class="mb-0">Completed <strong>Asymmetric Key Encryption</strong> experiment with a score of 92%</p>
+                            </div>
+                        </div>
+                        <div class="timeline-item">
+                            <div class="timeline-item-marker">
+                                <div class="timeline-item-marker-text">Feb 2</div>
+                                <div class="timeline-item-marker-indicator bg-success"></div>
+                            </div>
+                            <div class="timeline-item-content">
+                                <p class="mb-0">Completed <strong>Advanced Encryption Standard</strong> experiment with a score of 88%</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .timeline {
+        position: relative;
+        padding-left: 1rem;
+        margin: 0 0 0 1rem;
+        border-left: 1px solid #e3e6ec;
+    }
+    .timeline-item {
+        position: relative;
+        padding-bottom: 1rem;
+    }
+    .timeline-item:last-child {
+        padding-bottom: 0;
+    }
+    .timeline-item-marker {
+        position: absolute;
+        left: -1.5rem;
+        width: 3rem;
+    }
+    .timeline-item-marker-text {
+        width: 100%;
+        text-align: center;
+        font-size: 0.875rem;
+        color: #a2acba;
+        margin-bottom: 0.25rem;
+    }
+    .timeline-item-marker-indicator {
+        display: block;
+        width: 1rem;
+        height: 1rem;
+        border-radius: 100%;
+        margin-left: 0.25rem;
+    }
+    .timeline-item-content {
+        padding-left: 2rem;
+        padding-bottom: 1rem;
+    }
+    .timeline-item:last-child .timeline-item-content {
+        padding-bottom: 0;
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Load completed experiments
+        const completedExperiments = JSON.parse(localStorage.getItem('completedExperiments')) || [];
+        const totalExperiments = 14;
+        
+        // Update progress display
+        const completedCount = document.getElementById('completed-count');
+        const progressText = document.getElementById('progress-text');
+        const progressCircle = document.getElementById('progress-circle');
+        
+        if (completedCount) completedCount.textContent = completedExperiments.length;
+        if (progressText) progressText.textContent = `${completedExperiments.length}/${totalExperiments}`;
+        
+        // Calculate and update the progress circle
+        if (progressCircle) {
+            const circumference = 2 * Math.PI * 16; // r = 16
+            const offset = circumference - (completedExperiments.length / totalExperiments) * circumference;
+            progressCircle.style.strokeDasharray = `${circumference}`;
+            progressCircle.style.strokeDashoffset = `${offset}`;
+        }
+        
+        // Mark completed experiments in sidebar
+        completedExperiments.forEach(id => {
+            const checkmark = document.getElementById(`check-${id}`);
+            if (checkmark) {
+                checkmark.style.display = 'block';
+            }
+        });
+    });
+</script>
+
+<%- include('../partials/footer') %> 

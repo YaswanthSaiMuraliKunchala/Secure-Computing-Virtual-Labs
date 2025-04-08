@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - Secured Computing Virtual Lab</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/auth.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <%- include('../partials/header') %>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-lg border-0">
+                    <div class="card-header bg-primary text-white text-center py-4">
+                        <img src="https://www.kalasalingam.ac.in/wp-content/uploads/2022/02/Logo.png" alt="University Logo" style="height: 60px; margin-bottom: 15px;">
+                        <h3 class="mb-0">Register for Secured Computing Lab</h3>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="alert alert-danger d-none" id="register-error" role="alert"></div>
+                        
+                        <div class="d-grid gap-2 mb-4">
+                            <a href="/auth/google" class="btn btn-outline-danger btn-lg">
+                                <i class="fab fa-google me-2"></i>Continue with Google
+                            </a>
+                            <small class="text-muted text-center mt-1">Only KLU domain emails (@klu.ac.in) are allowed</small>
+                        </div>
+                        
+                        <div class="text-center mb-4">
+                            <span class="divider-text">OR</span>
+                        </div>
+                        
+                        <form id="register-form">
+                            <div class="mb-3">
+                                <label for="username" class="form-label">Username</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-user"></i></span>
+                                    <input type="text" class="form-control" id="username" name="username" placeholder="Enter your username" required>
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="email" class="form-label">Email</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-envelope"></i></span>
+                                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter your KLU email" required>
+                                </div>
+                                <small class="text-muted">Only KLU domain emails (@klu.ac.in) are allowed</small>
+                                <div class="mt-2 d-none" id="role-display">
+                                    <span class="badge bg-primary">Role: <span id="detected-role">Not detected</span></span>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <label for="password" class="form-label">Password</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                    <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required>
+                                    <button class="btn btn-outline-secondary password-toggle" type="button">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                                <small class="text-muted">Password must be at least 8 characters long</small>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="confirm-password" class="form-label">Confirm Password</label>
+                                <div class="input-group">
+                                    <span class="input-group-text"><i class="fas fa-lock"></i></span>
+                                    <input type="password" class="form-control" id="confirm-password" name="confirmPassword" placeholder="Confirm your password" required>
+                                    <button class="btn btn-outline-secondary password-toggle" type="button">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3 form-check">
+                                <input type="checkbox" class="form-check-input" id="terms" name="terms" required>
+                                <label class="form-check-label" for="terms">I agree to the <a href="/terms" target="_blank">Terms and Conditions</a></label>
+                            </div>
+                            
+                            <div class="d-grid gap-2">
+                                <button type="submit" class="btn btn-primary btn-lg">
+                                    <i class="fas fa-user-plus me-2"></i>Create Account
+                                </button>
+                            </div>
+                        </form>
+                        
+                        <div class="text-center mt-4">
+                            <p>Already have an account? <a href="/auth/login" class="text-primary">Login here</a></p>
+                        </div>
+                    </div>
+                    <div class="card-footer bg-light text-center py-3">
+                        <p class="mb-0">Secure registration for Kalasalingam Academy of Research and Education</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .mt-5{
+            margin-top: 100px;
+            padding-top: 80px;
+        }
+        .divider-text {
+            position: relative;
+            display: inline-block;
+            width: 100%;
+            text-align: center;
+            color: var(--medium-gray);
+        }
+        
+        .divider-text::before,
+        .divider-text::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 45%;
+            height: 1px;
+            background-color: #dee2e6;
+        }
+        
+        .divider-text::before {
+            left: 0;
+        }
+        
+        .divider-text::after {
+            right: 0;
+        }
+    </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const registerForm = document.getElementById('register-form');
+            const registerError = document.getElementById('register-error');
+            const passwordToggles = document.querySelectorAll('.password-toggle');
+            const emailInput = document.getElementById('email');
+            const roleDisplay = document.getElementById('role-display');
+            const detectedRole = document.getElementById('detected-role');
+            
+            // Toggle password visibility
+            passwordToggles.forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    const passwordInput = this.previousElementSibling;
+                    const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+                    passwordInput.setAttribute('type', type);
+                    
+                    const icon = this.querySelector('i');
+                    icon.classList.toggle('fa-eye');
+                    icon.classList.toggle('fa-eye-slash');
+                });
+            });
+            
+            // Validate KLU email domain and detect role
+            function validateKLUEmail(email) {
+                return email.endsWith('@klu.ac.in');
+            }
+            
+            function detectRole(email) {
+                if (!validateKLUEmail(email)) return null;
+                
+                // Extract the part before @klu.ac.in
+                const username = email.split('@')[0];
+                
+                // Check if it starts with numbers (9-12 digits) for student
+                if (/^\d{9,12}$/.test(username)) {
+                    return 'student';
+                } else {
+                    return 'faculty';
+                }
+            }
+            
+            // Email input change handler
+            if (emailInput) {
+                emailInput.addEventListener('input', function() {
+                    const email = this.value.trim();
+                    
+                    if (email && validateKLUEmail(email)) {
+                        const role = detectRole(email);
+                        detectedRole.textContent = role.charAt(0).toUpperCase() + role.slice(1);
+                        roleDisplay.classList.remove('d-none');
+                    } else {
+                        roleDisplay.classList.add('d-none');
+                    }
+                });
+            }
+            
+            // Handle registration form submission
+            if (registerForm) {
+                registerForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const username = document.getElementById('username').value;
+                    const email = document.getElementById('email').value;
+                    const password = document.getElementById('password').value;
+                    const confirmPassword = document.getElementById('confirm-password').value;
+                    
+                    // Validate KLU email
+                    if (!validateKLUEmail(email)) {
+                        registerError.textContent = 'Only KLU domain emails (@klu.ac.in) are allowed';
+                        registerError.classList.remove('d-none');
+                        return;
+                    }
+                    
+                    // Detect role from email
+                    const role = detectRole(email);
+                    if (!role) {
+                        registerError.textContent = 'Could not determine role from email format';
+                        registerError.classList.remove('d-none');
+                        return;
+                    }
+                    
+                    // Validate passwords match
+                    if (password !== confirmPassword) {
+                        registerError.textContent = 'Passwords do not match';
+                        registerError.classList.remove('d-none');
+                        return;
+                    }
+                    
+                    // Show loading state
+                    const submitBtn = this.querySelector('button[type="submit"]');
+                    const originalBtnText = submitBtn.innerHTML;
+                    submitBtn.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Creating account...';
+                    submitBtn.disabled = true;
+                    
+                    // Send registration request
+                    fetch('/auth/register', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ username, email, password, role })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Show success notification
+                            const notification = document.createElement('div');
+                            notification.className = 'position-fixed bottom-0 end-0 p-3';
+                            notification.style.zIndex = '5';
+                            notification.innerHTML = `
+                                <div class="toast show" role="alert" aria-live="assertive" aria-atomic="true">
+                                    <div class="toast-header bg-success text-white">
+                                        <i class="fas fa-check-circle me-2"></i>
+                                        <strong class="me-auto">Success</strong>
+                                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                                    </div>
+                                    <div class="toast-body">
+                                        Registration successful! Redirecting to login...
+                                    </div>
+                                </div>
+                            `;
+                            document.body.appendChild(notification);
+                            
+                            // Redirect to login page
+                            setTimeout(() => {
+                                window.location.href = '/auth/login';
+                            }, 2000);
+                        } else {
+                            // Show error message
+                            registerError.textContent = data.message || 'Registration failed. Please try again.';
+                            registerError.classList.remove('d-none');
+                            
+                            // Reset button
+                            submitBtn.innerHTML = originalBtnText;
+                            submitBtn.disabled = false;
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Registration error:', error);
+                        registerError.textContent = 'An error occurred. Please try again.';
+                        registerError.classList.remove('d-none');
+                        
+                        // Reset button
+                        submitBtn.innerHTML = originalBtnText;
+                        submitBtn.disabled = false;
+                    });
+                });
+            }
+        });
+    </script>
+
+    <%- include('../partials/footer') %>
+</body>
+</html> 

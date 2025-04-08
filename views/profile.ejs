@@ -1,0 +1,292 @@
+<%- include('partials/header') %>
+
+<style>
+    /* Card styles */
+    .mt-4 {
+        margin-top: 20px;
+        padding: 80px;
+    }
+    .card {
+        border: none;
+        box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+    }
+
+    .card-header {
+        background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+        color: white;
+    }
+
+    .card-header i {
+        color: white;
+    }
+
+    /* Profile picture styles */
+    .img-thumbnail {
+        border: 3px solid #0d6efd;
+    }
+
+    /* Badge styles */
+    .badge {
+        font-weight: 500;
+        padding: 0.5em 1em;
+    }
+
+    /* Progress bar styles */
+    .progress {
+        background-color: #e9ecef;
+        border-radius: 0.5rem;
+    }
+
+    .progress-bar {
+        background: linear-gradient(135deg, #198754 0%, #146c43 100%);
+    }
+
+    /* Table styles */
+    .table {
+        margin-bottom: 0;
+    }
+
+    .table th {
+        color: #495057;
+        font-weight: 600;
+    }
+
+    .table td {
+        vertical-align: middle;
+    }
+
+    /* Button styles */
+    .btn-outline-primary {
+        color: #0d6efd;
+        border-color: #0d6efd;
+    }
+
+    .btn-outline-primary:hover {
+        background-color: #0d6efd;
+        color: white;
+    }
+
+    .btn-outline-danger {
+        color: #dc3545;
+        border-color: #dc3545;
+    }
+
+    .btn-outline-danger:hover {
+        background-color: #dc3545;
+        color: white;
+    }
+
+    /* Dark theme styles */
+    @media (prefers-color-scheme: dark) {
+        body {
+            background-color: #212529;
+            color: #f8f9fa;
+        }
+
+        .card {
+            background-color: #343a40;
+            border-color: #495057;
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #0a58ca 0%, #084298 100%);
+        }
+
+        .table {
+            color: #f8f9fa;
+        }
+
+        .table th {
+            color: #adb5bd;
+            border-color: #495057;
+        }
+
+        .table td {
+            border-color: #495057;
+        }
+
+        .progress {
+            background-color: #495057;
+        }
+
+        .progress-bar {
+            background: linear-gradient(135deg, #146c43 0%, #0f5132 100%);
+        }
+
+        .btn-outline-primary {
+            color: #0d6efd;
+            border-color: #0d6efd;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: #0d6efd;
+            color: white;
+        }
+
+        .btn-outline-danger {
+            color: #dc3545;
+            border-color: #dc3545;
+        }
+
+        .btn-outline-danger:hover {
+            background-color: #dc3545;
+            color: white;
+        }
+
+        .text-muted {
+            color: #adb5bd !important;
+        }
+    }
+</style>
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- Profile Sidebar -->
+        <div class="col-md-4">
+            <div class="card shadow-sm mb-4">
+                <div class="card-body text-center">
+                    <div class="mb-3">
+                        <img src="https://www.gravatar.com/avatar/<%= user.email.toLowerCase().trim() %>?s=150&d=identicon" 
+                             alt="Profile Picture" 
+                             class="rounded-circle img-thumbnail"
+                             style="width: 150px; height: 150px; object-fit: cover;">
+                    </div>
+                    <h4 class="mb-1"><%= user.username %></h4>
+                    <p class="text-muted mb-3"><%= user.email %></p>
+                    <span class="badge bg-<%= user.role === 'faculty' ? 'primary' : 'success' %> mb-3">
+                        <%= user.role.charAt(0).toUpperCase() + user.role.slice(1) %>
+                    </span>
+                    <div class="d-grid gap-2">
+                        <a href="/settings" class="btn btn-outline-primary">
+                            <i class="fas fa-cog me-2"></i>Settings
+                        </a>
+                        <form action="/auth/logout" method="POST" class="d-grid">
+                            <button type="submit" class="btn btn-outline-danger">
+                                <i class="fas fa-sign-out-alt me-2"></i>Logout
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Progress Card -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-chart-line me-2"></i>Progress Overview
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="progress mb-3" style="height: 25px;">
+                        <div class="progress-bar bg-success" 
+                             role="progressbar" 
+                             style="width: <%= progressPercentage %>%" 
+                             aria-valuenow="<%= progressPercentage %>" 
+                             aria-valuemin="0" 
+                             aria-valuemax="100">
+                            <%= progressPercentage %>%
+                        </div>
+                    </div>
+                    <p class="mb-0">
+                        <i class="fas fa-check-circle text-success me-2"></i>
+                        <%= completedCount %> of <%= totalExperiments %> experiments completed
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-8">
+            <!-- Profile Information -->
+            <div class="card shadow-sm mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-user me-2"></i>Profile Information
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-muted">Username</label>
+                            <p class="mb-0"><%= user.username %></p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-muted">Email</label>
+                            <p class="mb-0"><%= user.email %></p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-muted">Role</label>
+                            <p class="mb-0"><%= user.role.charAt(0).toUpperCase() + user.role.slice(1) %></p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-muted">Member Since</label>
+                            <p class="mb-0"><%= new Date(user.createdAt).toLocaleDateString() %></p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-muted">Last Login</label>
+                            <p class="mb-0"><%= user.lastLogin ? new Date(user.lastLogin).toLocaleString() : 'Never' %></p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label class="form-label text-muted">Account Status</label>
+                            <p class="mb-0">
+                                <span class="badge bg-success">Active</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Completed Experiments -->
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-flask me-2"></i>Completed Experiments
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <% if (completedExperiments.length > 0) { %>
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Experiment</th>
+                                        <th>Title</th>
+                                        <th>Completed On</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% completedExperiments.forEach(exp => { %>
+                                        <tr>
+                                            <td>#<%= exp.number %></td>
+                                            <td><%= exp.title %></td>
+                                            <td><%= new Date(exp.completedAt).toLocaleDateString() %></td>
+                                            <td>
+                                                <a href="/experiments/<%= exp._id %>" class="btn btn-sm btn-outline-primary">
+                                                    <i class="fas fa-eye me-1"></i>View
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    <% }); %>
+                                </tbody>
+                            </table>
+                        </div>
+                    <% } else { %>
+                        <div class="text-center py-4">
+                            <i class="fas fa-flask fa-3x text-muted mb-3"></i>
+                            <p class="text-muted mb-0">No experiments completed yet.</p>
+                        </div>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Add any profile-specific JavaScript here
+});
+</script>
+
+<%- include('partials/footer') %>

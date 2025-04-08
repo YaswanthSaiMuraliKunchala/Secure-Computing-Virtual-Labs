@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %> - Secured Computing Virtual Lab</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <%- include('partials/header') %>
+
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-lg border-0 text-center">
+                    <div class="card-body p-5">
+                        <% if (locals.statusCode === 404) { %>
+                            <div class="error-icon mb-4">
+                                <i class="fas fa-search fa-5x text-secondary"></i>
+                            </div>
+                            <h1 class="display-4 text-secondary mb-4">404</h1>
+                            <h2 class="mb-4">Page Not Found</h2>
+                            <p class="lead text-muted mb-4"><%= message %></p>
+                        <% } else { %>
+                            <div class="error-icon mb-4">
+                                <i class="fas fa-exclamation-triangle fa-5x text-danger"></i>
+                            </div>
+                            <h1 class="display-4 text-danger mb-4">Error</h1>
+                            <h2 class="mb-4">Something Went Wrong</h2>
+                            <p class="lead text-muted mb-4"><%= message %></p>
+                        <% } %>
+                        
+                        <div class="mt-4">
+                            <a href="/" class="btn btn-primary btn-lg">
+                                <i class="fas fa-home me-2"></i>Return to Home
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <%- include('partials/footer') %>
+</body>
+</html> 

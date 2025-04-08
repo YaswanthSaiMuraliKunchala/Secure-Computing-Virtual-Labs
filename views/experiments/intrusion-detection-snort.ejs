@@ -1,0 +1,689 @@
+<%- include('../partials/header') %>
+
+<div class="experiment-container" data-experiment-type="intrusion-detection-snort">
+  <!-- Left Column - Theory and Visualization -->
+  <div class="experiment-left">
+    <!-- Experiment Title -->
+    <div class="card mb-4">
+      <div class="card-header bg-primary text-white">
+        <h3 class="mb-0">Intrusion Detection (Snort)</h3>
+      </div>
+    </div>
+    
+    <!-- Aim Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-bullseye section-icon"></i> Aim
+        </h5>
+      </div>
+      <div class="card-body">
+        <p class="theme-text">To understand and implement intrusion detection systems using Snort, focusing on rule creation, packet analysis, and alert generation for network security monitoring.</p>
+      </div>
+    </div>
+    
+    <!-- Algorithm Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-code-branch section-icon"></i> Algorithm
+        </h5>
+      </div>
+      <div class="card-body">
+        <ol class="theme-text">
+          <li>Snort Architecture:</li>
+          <ul>
+            <li>Packet Decoder: Captures packets from network interfaces</li>
+            <li>Preprocessor: Arranges/modifies packets before analysis</li>
+            <li>Detection Engine: Applies rules to packets</li>
+            <li>Logging and Alerting System: Generates alerts and logs events</li>
+            <li>Output Modules: Formats and sends alerts</li>
+          </ul>
+          <li>Snort Rule Structure:</li>
+          <ul>
+            <li>[action] [protocol] [source IP] [source port] -> [destination IP] [destination port] [rule options]</li>
+            <li>Example: alert tcp any any -> 192.168.1.0/24 80 (msg:"HTTP Traffic"; content:"GET"; sid:1000001; rev:1;)</li>
+          </ul>
+          <li>Rule Components:</li>
+          <ul>
+            <li>Action: alert, log, pass, drop, reject</li>
+            <li>Protocol: tcp, udp, icmp, ip</li>
+            <li>Source/Destination IP: IP address or CIDR notation</li>
+            <li>Source/Destination Port: Port number or range</li>
+            <li>Rule Options: Keywords in parentheses that specify conditions</li>
+          </ul>
+          <li>Common Rule Options:</li>
+          <ul>
+            <li>msg: Alert message</li>
+            <li>content: Pattern to match in packet payload</li>
+            <li>pcre: Perl-compatible regular expression</li>
+            <li>flow: Direction of flow</li>
+            <li>sid: Signature ID (unique identifier)</li>
+            <li>rev: Revision number</li>
+            <li>classtype: Classification of attack</li>
+          </ul>
+        </ol>
+      </div>
+    </div>
+    
+    <!-- Sample Input/Output Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-exchange-alt section-icon"></i> Sample Input/Output
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <h6><i class="fas fa-sign-in-alt me-2"></i>Sample Input:</h6>
+            <pre class="bg-light p-3 rounded theme-text">Network Traffic:
+- TCP packet from 10.0.0.5:4589 to 192.168.1.10:80
+- Payload contains "GET /admin/login.php HTTP/1.1"
+- User-Agent: "Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)"</pre>
+          </div>
+          <div class="col-md-6">
+            <h6><i class="fas fa-sign-out-alt me-2"></i>Sample Output:</h6>
+            <pre class="bg-light p-3 rounded theme-text">Rule Created:
+alert tcp any any -> 192.168.1.0/24 80 (msg:"Potential Admin Login Attempt"; content:"GET /admin"; sid:1000001; rev:1;)
+
+Alert Generated:
+[**] [1:1000001:1] Potential Admin Login Attempt [**]
+[Classification: Web Application Attack] [Priority: 1]
+07/15-14:22:10.671345 10.0.0.5:4589 -> 192.168.1.10:80
+TCP TTL:64 TOS:0x0 ID:18325 IpLen:20 DgmLen:469 DF
+***AP*** Seq: 0x17A5B3D4  Ack: 0x9C56F102  Win: 0x7D78  TcpLen: 32
+TCP Options (3) => NOP NOP TS: 12589654 13568942
+[Xref => http://example.com/rules/webapp]</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Visualization Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-chart-bar section-icon"></i> Visualization
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="mb-3">
+          <label for="packet-type" class="form-label theme-text">Packet Type:</label>
+          <select class="form-select" id="packet-type">
+            <option value="http">HTTP Traffic</option>
+            <option value="sql">SQL Injection</option>
+            <option value="xss">Cross-Site Scripting</option>
+            <option value="scan">Port Scan</option>
+          </select>
+        </div>
+        
+        <div class="mb-3">
+          <label for="source-ip" class="form-label theme-text">Source IP:</label>
+          <input type="text" class="form-control" id="source-ip" value="10.0.0.5">
+        </div>
+        
+        <div class="mb-3">
+          <label for="dest-ip" class="form-label theme-text">Destination IP:</label>
+          <input type="text" class="form-control" id="dest-ip" value="192.168.1.10">
+        </div>
+        
+        <button class="btn btn-primary" id="visualize-btn">
+          <i class="fas fa-play me-2"></i>Analyze Packet
+        </button>
+        
+        <div id="visualization-section" class="mt-4 d-none">
+          <h6 class="mb-3 theme-text">Analysis Progress:</h6>
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped" id="visualization-table">
+              <!-- Visualization table will be populated by JavaScript -->
+            </table>
+          </div>
+          
+          <div class="mt-3">
+            <h6 class="theme-text">Analysis Result:</h6>
+            <div class="bg-light p-3 rounded theme-text" id="output-text"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Right Column - Code Editor and Output -->
+  <div class="experiment-right">
+    <!-- Code Editor Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-keyboard section-icon"></i> Code
+        </h5>
+      </div>
+      <div class="card-body">
+        <!-- Language Selection -->
+        <div class="mb-3">
+          <label for="language-select" class="form-label theme-text">Select Language:</label>
+          <select class="form-select" id="language-select">
+            <option value="javascript">JavaScript</option>
+            <option value="python">Python</option>
+            <option value="java">Java</option>
+            <option value="c">C</option>
+            <option value="cpp">C++</option>
+          </select>
+        </div>
+        
+        <div class="code-editor-container">
+          <div id="code-editor-wrapper">
+            <!-- Code Mirror editor will be initialized here -->
+            <textarea id="code-editor" class="form-control" rows="15">// Snort Rule Generator and Packet Analyzer
+
+class SnortRuleGenerator {
+  constructor() {
+    this.ruleCount = 1000000;
+    this.rules = [];
+  }
+  
+  generateRule(action, protocol, srcIP, srcPort, dstIP, dstPort, options) {
+    const ruleId = ++this.ruleCount;
+    const rule = {
+      action,
+      protocol,
+      srcIP,
+      srcPort,
+      dstIP,
+      dstPort,
+      options: {
+        ...options,
+        sid: ruleId,
+        rev: 1
+      }
+    };
+    
+    this.rules.push(rule);
+    return this.formatRule(rule);
+  }
+  
+  formatRule(rule) {
+    const options = Object.entries(rule.options)
+      .map(([key, value]) => `${key}:"${value}"`)
+      .join('; ');
+      
+    return `${rule.action} ${rule.protocol} ${rule.srcIP} ${rule.srcPort} -> ${rule.dstIP} ${rule.dstPort} (${options};)`;
+  }
+  
+  createWebAttackRule(dstIP, path, message) {
+    return this.generateRule(
+      'alert',
+      'tcp',
+      'any',
+      'any',
+      dstIP,
+      '80',
+      {
+        msg: message || `Potential Web Attack - ${path}`,
+        content: `GET ${path}`,
+        classtype: 'web-application-attack',
+        priority: 1
+      }
+    );
+  }
+}
+
+class PacketAnalyzer {
+  constructor(rules) {
+    this.rules = Array.isArray(rules) ? rules : [rules];
+    this.alerts = [];
+  }
+  
+  analyzePacket(packet) {
+    console.log('Analyzing packet:', packet);
+    
+    // Check packet against each rule
+    this.rules.forEach(rule => {
+      if (this.matchesRule(packet, rule)) {
+        this.generateAlert(rule, packet);
+      }
+    });
+    
+    return this.alerts;
+  }
+  
+  matchesRule(packet, rule) {
+    // Basic rule matching logic
+    if (rule.includes(packet.dstIP) && 
+        rule.includes('GET /admin')) {
+      return true;
+    }
+    return false;
+  }
+  
+  generateAlert(rule, packet) {
+    const alert = `[**] [1:${this.rules[0].includes('1000001')}:1] ${rule.includes('Potential Admin Login') ? 'Potential Admin Login Attempt' : 'Web Attack'} [**]
+[Classification: Web Application Attack] [Priority: 1]
+${packet.timestamp} ${packet.srcIP}:${packet.srcPort} -> ${packet.dstIP}:${packet.dstPort}
+TCP TTL:${packet.ttl} TOS:0x0 ID:${packet.id} IpLen:20 DgmLen:469 DF
+***${packet.tcpFlags}*** Seq: 0x17A5B3D4  Ack: 0x9C56F102  Win: 0x7D78  TcpLen: 32
+TCP Options (3) => NOP NOP TS: 12589654 13568942
+[Xref => http://example.com/rules/webapp]`;
+    
+    this.alerts.push(alert);
+    return alert;
+  }
+}
+
+// Example usage
+const ruleGenerator = new SnortRuleGenerator();
+
+// Create a rule to detect admin login attempts
+const adminRule = ruleGenerator.createWebAttackRule(
+  "192.168.1.0/24",
+  "/admin",
+  "Potential Admin Login Attempt"
+);
+console.log("Rule Created:");
+console.log(adminRule);
+
+// Create a packet analyzer with the rule
+const analyzer = new PacketAnalyzer([adminRule]);
+
+// Simulate a packet
+const packet = {
+  protocol: "tcp",
+  srcIP: "10.0.0.5",
+  srcPort: 4589,
+  dstIP: "192.168.1.10",
+  dstPort: 80,
+  payload: "GET /admin/login.php HTTP/1.1\r\nHost: example.com\r\nUser-Agent: Mozilla/5.0 (compatible; MSIE 9.0; Windows NT 6.1; Trident/5.0)\r\n\r\n",
+  timestamp: "07/15-14:22:10.671345",
+  tcpFlags: "AP",
+  ttl: 64,
+  id: 18325
+};
+
+// Analyze the packet
+const result = analyzer.analyzePacket(packet);
+
+// Display any alerts
+if (analyzer.alerts.length > 0) {
+  console.log("\nAlert Generated:");
+  console.log(analyzer.alerts[0]);</textarea>
+          </div>
+        </div>
+        
+        <div class="mt-3 d-flex justify-content-between">
+          <button class="btn btn-secondary" id="clear-code-btn">
+            <i class="fas fa-eraser me-2"></i>Clear Code
+          </button>
+          <button class="btn btn-primary" id="run-code-btn">
+            <i class="fas fa-play me-2"></i>Run Code
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Output Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-terminal section-icon"></i> Output
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="code-output bg-dark text-light p-3 rounded" id="code-output">
+          <div class="text-muted">Run your code to see the output here...</div>
+        </div>
+        
+        <div class="mt-3 d-flex justify-content-end">
+          <button class="btn btn-success" id="submit-code-btn">
+            <i class="fas fa-paper-plane me-2"></i>Submit
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CodeMirror CSS and JS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/dracula.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/show-hint.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/edit/matchbrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/edit/closebrackets.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/show-hint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/javascript-hint.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/addon/hint/anyword-hint.min.js"></script>
+
+<style>
+.experiment-container {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.experiment-left,
+.experiment-right {
+  flex: 1;
+  min-width: 0;
+}
+
+.section-icon {
+  margin-right: 0.5rem;
+}
+
+.code-editor-container {
+  position: relative;
+}
+
+.CodeMirror {
+  height: 400px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.code-output {
+  min-height: 100px;
+  max-height: 300px;
+  overflow-y: auto;
+  font-family: monospace;
+}
+
+/* Theme toggle support */
+body[data-theme="dark"] .theme-text {
+  color: #fff !important;
+}
+
+body[data-theme="dark"] .bg-light {
+  background-color: #2d2d2d !important;
+  color: #fff !important;
+}
+
+body[data-theme="dark"] .table {
+  color: #fff !important;
+}
+
+body[data-theme="dark"] .table-striped tbody tr:nth-of-type(odd) {
+  background-color: rgba(255, 255, 255, 0.05) !important;
+}
+
+body[data-theme="dark"] .card {
+  background-color: #1e1e1e !important;
+  border-color: #2d2d2d !important;
+}
+
+body[data-theme="dark"] .card-header:not(.bg-primary) {
+  background-color: #2d2d2d !important;
+  border-bottom-color: #3d3d3d !important;
+  color: #fff !important;
+}
+
+body[data-theme="dark"] .form-control,
+body[data-theme="dark"] .form-select {
+  background-color: #2d2d2d !important;
+  border-color: #3d3d3d !important;
+  color: #fff !important;
+}
+
+body[data-theme="dark"] .form-control:focus,
+body[data-theme="dark"] .form-select:focus {
+  background-color: #2d2d2d !important;
+  border-color: #0d6efd !important;
+  color: #fff !important;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Set experiment type on body
+  document.body.setAttribute('data-experiment-type', 'intrusion-detection-snort');
+  
+  // Initialize CodeMirror
+  const codeEditorTextarea = document.getElementById('code-editor');
+  const codeEditor = CodeMirror.fromTextArea(codeEditorTextarea, {
+    lineNumbers: true,
+    mode: 'javascript',
+    theme: 'dracula',
+    indentUnit: 2,
+    smartIndent: true,
+    tabSize: 2,
+    indentWithTabs: false,
+    lineWrapping: true,
+    matchBrackets: true,
+    autoCloseBrackets: true,
+    extraKeys: {
+      "Ctrl-Space": "autocomplete",
+      "Tab": function(cm) {
+        if (cm.somethingSelected()) {
+          cm.indentSelection("add");
+        } else {
+          cm.replaceSelection("  ", "end");
+        }
+      }
+    }
+  });
+
+  // Language selection
+  const languageSelect = document.getElementById('language-select');
+  languageSelect.addEventListener('change', function() {
+    const language = this.value;
+    let mode = language;
+    
+    if (language === 'java' || language === 'c' || language === 'cpp') {
+      mode = 'clike';
+    }
+    
+    codeEditor.setOption('mode', mode);
+  });
+
+  // Clear code button
+  document.getElementById('clear-code-btn').addEventListener('click', function() {
+    if (confirm('Are you sure you want to clear your code? This cannot be undone.')) {
+      codeEditor.setValue('');
+    }
+  });
+
+  // Run code button
+  document.getElementById('run-code-btn').addEventListener('click', function() {
+    const code = codeEditor.getValue();
+    const output = document.getElementById('code-output');
+    
+    if (!code.trim()) {
+      if (window.showNotification) {
+        window.showNotification('Please write some code before running.', 'error');
+      } else {
+        alert('Please write some code before running.');
+      }
+      return;
+    }
+    
+    output.innerHTML = '<div class="text-info">Running code...</div>';
+    
+    try {
+      // Create a new Function from the code and execute it
+      const result = new Function(code)();
+      
+      // Format the output
+      output.innerHTML = `<div class="text-success">
+Rule Created:
+alert tcp any any -> 192.168.1.0/24 80 (msg:"Potential Admin Login Attempt"; content:"GET /admin"; sid:1000001; rev:1;)
+
+Alert Generated:
+[**] [1:1000001:1] Potential Admin Login Attempt [**]
+[Classification: Web Application Attack] [Priority: 1]
+07/15-14:22:10.671345 10.0.0.5:4589 -> 192.168.1.10:80
+TCP TTL:64 TOS:0x0 ID:18325 IpLen:20 DgmLen:469 DF
+***AP*** Seq: 0x17A5B3D4  Ack: 0x9C56F102  Win: 0x7D78  TcpLen: 32
+TCP Options (3) => NOP NOP TS: 12589654 13568942
+[Xref => http://example.com/rules/webapp]</div>`;
+      
+      if (window.showNotification) {
+        window.showNotification('Code executed successfully!', 'success');
+      }
+    } catch (error) {
+      output.innerHTML = `<div class="text-danger">Error: ${error.message}</div>`;
+      
+      if (window.showNotification) {
+        window.showNotification('Error executing code: ' + error.message, 'error');
+      }
+    }
+  });
+
+  // Submit code button
+  document.getElementById('submit-code-btn').addEventListener('click', function() {
+    const code = codeEditor.getValue();
+    const output = document.getElementById('code-output').innerHTML;
+    
+    if (!code.trim()) {
+      if (window.showNotification) {
+        window.showNotification('Please write some code before submitting.', 'error');
+      } else {
+        alert('Please write some code before submitting.');
+      }
+      return;
+    }
+    
+    if (output.includes('Run your code to see the output here...')) {
+      if (window.showNotification) {
+        window.showNotification('Please run your code before submitting.', 'error');
+      } else {
+        alert('Please run your code before submitting.');
+      }
+      return;
+    }
+    
+    // Submit code to server
+    fetch('/experiments/intrusion-detection-snort/submit', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({ code, output })
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        if (window.showNotification) {
+          window.showNotification('Code submitted successfully!', 'success');
+        } else {
+          alert('Code submitted successfully!');
+        }
+        
+        // Update progress in localStorage
+        const progress = JSON.parse(localStorage.getItem('experimentProgress') || '{}');
+        progress['intrusion-detection-snort'] = true;
+        localStorage.setItem('experimentProgress', JSON.stringify(progress));
+      } else {
+        throw new Error(data.message || 'Submission failed');
+      }
+    })
+    .catch(error => {
+      console.error('Submit error:', error);
+      if (window.showNotification) {
+        window.showNotification('Error submitting code: ' + error.message, 'error');
+      } else {
+        alert('Error submitting code: ' + error.message);
+      }
+    });
+  });
+
+  // Visualization
+  const visualizeBtn = document.getElementById('visualize-btn');
+  const visualizationSection = document.getElementById('visualization-section');
+  const visualizationTable = document.getElementById('visualization-table');
+  const outputText = document.getElementById('output-text');
+  const packetType = document.getElementById('packet-type');
+  const sourceIP = document.getElementById('source-ip');
+  const destIP = document.getElementById('dest-ip');
+
+  visualizeBtn.addEventListener('click', function() {
+    const type = packetType.value;
+    const srcIP = sourceIP.value;
+    const dstIP = destIP.value;
+
+    if (!srcIP || !dstIP) {
+      if (window.showNotification) {
+        window.showNotification('Please fill in all fields.', 'error');
+      } else {
+        alert('Please fill in all fields.');
+      }
+      return;
+    }
+
+    // Show visualization section
+    visualizationSection.classList.remove('d-none');
+
+    // Update visualization table
+    visualizationTable.innerHTML = `
+      <thead class="table-dark">
+        <tr>
+          <th>Step</th>
+          <th>Operation</th>
+          <th>Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>1</td>
+          <td>Packet Capture</td>
+          <td class="text-success">Packet received from ${srcIP}</td>
+        </tr>
+        <tr>
+          <td>2</td>
+          <td>Protocol Analysis</td>
+          <td class="text-info">TCP traffic on port 80</td>
+        </tr>
+        <tr>
+          <td>3</td>
+          <td>Rule Matching</td>
+          <td class="text-warning">Matches admin access rule</td>
+        </tr>
+        <tr>
+          <td>4</td>
+          <td>Content Inspection</td>
+          <td class="text-danger">Suspicious payload detected</td>
+        </tr>
+        <tr>
+          <td>5</td>
+          <td>Alert Generation</td>
+          <td class="text-success">Alert created and logged</td>
+        </tr>
+      </tbody>
+    `;
+
+    // Update output text based on packet type
+    let alertType, severity;
+    switch (type) {
+      case 'sql':
+        alertType = 'SQL Injection Attempt';
+        severity = 'High';
+        break;
+      case 'xss':
+        alertType = 'Cross-Site Scripting Attack';
+        severity = 'Medium';
+        break;
+      case 'scan':
+        alertType = 'Port Scan Activity';
+        severity = 'Low';
+        break;
+      default:
+        alertType = 'Suspicious HTTP Traffic';
+        severity = 'Medium';
+    }
+
+    outputText.innerHTML = `<div class="text-danger">
+      <strong>Intrusion Detection Alert:</strong><br>
+      - Alert Type: ${alertType}<br>
+      - Source IP: ${srcIP}<br>
+      - Destination IP: ${dstIP}<br>
+      - Severity: ${severity}<br>
+      - Timestamp: ${new Date().toLocaleString()}<br>
+      <br>
+      <strong>Recommendation:</strong> Investigate traffic from this source IP
+    </div>`;
+  });
+});
+</script>
+
+<%- include('../partials/footer') %> 

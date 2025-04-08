@@ -1,0 +1,413 @@
+<%- include('../partials/header') %>
+
+<div class="experiment-container" data-experiment-type="securing-iot-devices">
+  <!-- Left Column - Theory and Visualization -->
+  <div class="experiment-left">
+    <!-- Experiment Title -->
+    <div class="card mb-4">
+      <div class="card-header bg-primary text-white">
+        <h3 class="mb-0">Securing IoT Devices</h3>
+  </div>
+    </div>
+    
+    <!-- Aim Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-bullseye section-icon"></i> Aim
+        </h5>
+      </div>
+      <div class="card-body">
+        <p>To understand and implement security measures for IoT devices, focusing on encryption, secure boot, authentication, and firmware updates to protect connected devices and their sensitive data from various security threats.</p>
+      </div>
+    </div>
+    
+    <!-- Algorithm Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-code-branch section-icon"></i> Algorithm
+        </h5>
+      </div>
+      <div class="card-body">
+        <ol>
+          <li>Device Authentication:</li>
+          <ul>
+            <li>Implement strong device identity using unique identifiers</li>
+            <li>Use certificate-based authentication for device onboarding</li>
+            <li>Apply multi-factor authentication where applicable</li>
+            <li>Implement mutual authentication between devices and servers</li>
+          </ul>
+          <li>Secure Communication:</li>
+          <ul>
+            <li>Enforce encrypted communication using TLS/DTLS</li>
+            <li>Implement secure key exchange protocols</li>
+            <li>Use lightweight cryptography for constrained devices</li>
+            <li>Apply message authentication codes (MACs) to verify data integrity</li>
+          </ul>
+          <li>Firmware Security:</li>
+          <ul>
+            <li>Implement secure boot mechanisms to verify firmware integrity</li>
+            <li>Digitally sign firmware updates to prevent tampering</li>
+            <li>Establish secure update mechanisms with rollback protection</li>
+            <li>Implement secure storage for sensitive firmware components</li>
+          </ul>
+          <li>Physical Security Measures:</li>
+          <ul>
+            <li>Implement tamper detection and response mechanisms</li>
+            <li>Protect debug interfaces and test points</li>
+            <li>Use secure elements for storing cryptographic keys</li>
+            <li>Implement hardware-based security features (TPM, TEE)</li>
+          </ul>
+        </ol>
+      </div>
+    </div>
+    
+    <!-- Sample Input/Output Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-exchange-alt section-icon"></i> Sample Input/Output
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6">
+            <h6><i class="fas fa-sign-in-alt me-2"></i>Sample Input:</h6>
+            <pre class="bg-light p-3 rounded">Device Configuration:
+- Authentication: None
+- Firmware: Unsigned
+- Communication: Unencrypted
+- Debug: Enabled
+
+Connection Attempt:
+- Device ID: "thermostat_01"
+- Password: "admin123"</pre>
+          </div>
+          <div class="col-md-6">
+            <h6><i class="fas fa-sign-out-alt me-2"></i>Sample Output:</h6>
+            <pre class="bg-light p-3 rounded">Security Analysis:
+- Authentication: Vulnerable
+- Firmware: Unsigned (High Risk)
+- Communication: Plaintext (Critical)
+- Debug: Exposed (High Risk)
+
+Secure Implementation:
+- Certificate-based auth
+- Signed firmware
+- TLS encryption
+- Debug ports disabled
+- Secure boot enabled</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Visualization Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-chart-bar section-icon"></i> Visualization
+        </h5>
+      </div>
+      <div class="card-body">
+        <div class="mb-3">
+          <label for="device-id" class="form-label">Device ID:</label>
+          <input type="text" class="form-control" id="device-id" value="thermostat_01">
+        </div>
+        
+        <div class="mb-3">
+          <label for="device-password" class="form-label">Device Password:</label>
+          <input type="text" class="form-control" id="device-password" value="admin123">
+        </div>
+        
+          <div class="mb-3">
+          <label for="security-level" class="form-label">Security Level:</label>
+          <select class="form-select" id="security-level">
+            <option value="vulnerable">Vulnerable Configuration</option>
+            <option value="secure">Secure Configuration</option>
+          </select>
+        </div>
+        
+        <button class="btn btn-primary" id="visualize-btn">
+          <i class="fas fa-play me-2"></i>Visualize Security Analysis
+        </button>
+        
+        <div id="visualization-section" class="mt-4 d-none">
+          <h6 class="mb-3">Security Analysis Steps:</h6>
+          <div class="table-responsive">
+            <table class="table table-bordered table-striped" id="visualization-table">
+              <!-- Visualization table will be populated by JavaScript -->
+            </table>
+          </div>
+          
+          <div class="mt-3">
+            <h6>Analysis Result:</h6>
+            <div class="bg-light p-3 rounded" id="output-text"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Right Column - Code Editor and Output -->
+  <div class="experiment-right">
+    <!-- Code Editor Section -->
+    <div class="card mb-4">
+      <div class="card-header">
+        <h5 class="mb-0 d-flex justify-content-between align-items-center">
+          <span><i class="fas fa-keyboard section-icon"></i> Code</span>
+          <div class="btn-group">
+            <button class="btn btn-sm btn-light" id="language-select">
+              <i class="fas fa-code"></i> Language: <span id="current-language">JavaScript</span>
+            </button>
+            <button class="btn btn-sm btn-light" id="clear-code">
+              <i class="fas fa-eraser"></i> Clear
+            </button>
+          </div>
+        </h5>
+      </div>
+      <div class="card-body">
+        <div id="code-editor"></div>
+        <div class="mt-3 d-flex justify-content-between">
+          <button class="btn btn-success" id="run-code">
+            <i class="fas fa-play me-2"></i>Run Code
+          </button>
+          <button class="btn btn-primary" id="submit-code">
+            <i class="fas fa-paper-plane me-2"></i>Submit Code
+          </button>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Output Section -->
+    <div class="card">
+      <div class="card-header">
+        <h5 class="mb-0">
+          <i class="fas fa-terminal section-icon"></i> Output
+        </h5>
+      </div>
+      <div class="card-body">
+        <pre id="output" class="output-area">Output will appear here...</pre>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CodeMirror CSS and JS -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/dracula.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/python/python.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/clike/clike.min.js"></script>
+
+<style>
+.experiment-container {
+  display: flex;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.experiment-left,
+.experiment-right {
+  flex: 1;
+  min-width: 0;
+}
+
+.section-icon {
+  margin-right: 0.5rem;
+}
+
+.CodeMirror {
+  height: 400px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.output-area {
+  min-height: 100px;
+  max-height: 300px;
+  overflow-y: auto;
+  background-color: #1e1e1e;
+  color: #fff;
+  padding: 1rem;
+  border-radius: 4px;
+  font-family: monospace;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Initialize CodeMirror
+  const editor = CodeMirror(document.getElementById('code-editor'), {
+    mode: 'javascript',
+    theme: 'dracula',
+    lineNumbers: true,
+    matchBrackets: true,
+    autoCloseBrackets: true,
+    indentUnit: 2,
+    tabSize: 2,
+    value: `// IoT Device Security Implementation
+class IoTSecurityManager {
+  constructor() {
+    this.securityLog = [];
+  }
+  
+  // Vulnerable configuration - DO NOT USE IN PRODUCTION
+  vulnerableDeviceConfig(deviceId, password) {
+    // This demonstrates a vulnerable implementation
+    const config = {
+      deviceId: deviceId,
+      password: password,
+      encryptionEnabled: false,
+      firmwareSigned: false,
+      secureBootEnabled: false,
+      debugPortsEnabled: true,
+      communicationProtocol: "plaintext"
+    };
+    return { config, isVulnerable: true };
+  }
+  
+  // Secure device configuration
+  secureDeviceConfig(deviceId, password) {
+    // Your implementation here
+  }
+  
+  // Implement device authentication
+  authenticateDevice(deviceId, credentials) {
+    // Your implementation here
+  }
+  
+  // Establish secure communication channel
+  establishSecureCommunication(deviceId, protocolVersion) {
+    // Your implementation here
+  }
+  
+  // Verify firmware integrity
+  verifyFirmware(firmwareImage, signature) {
+    // Your implementation here
+  }
+  
+  // Implement secure update mechanism
+  secureUpdate(deviceId, firmwareImage, signature) {
+    // Your implementation here
+  }
+  
+  // Log security events
+  logSecurityEvent(deviceId, eventType, details) {
+    // Your implementation here
+  }
+}
+
+// Example usage
+const securityManager = new IoTSecurityManager();
+
+// Test with basic device information
+const deviceId = "thermostat_01";
+const password = "admin123";
+
+// Test vulnerable configuration
+console.log("IoT Security Analysis:");
+const vulnerableConfig = securityManager.vulnerableDeviceConfig(
+  deviceId, password
+);
+
+// Test secure implementation
+console.log("\\nSecure Implementation:");
+const secureConfig = securityManager.secureDeviceConfig(
+  deviceId, password
+);`
+  });
+
+  // Language selection
+  const languageSelect = document.getElementById('language-select');
+  const currentLanguage = document.getElementById('current-language');
+  const languages = ['JavaScript', 'Python', 'Java'];
+  let currentLangIndex = 0;
+
+  languageSelect.addEventListener('click', () => {
+    currentLangIndex = (currentLangIndex + 1) % languages.length;
+    const lang = languages[currentLangIndex];
+    currentLanguage.textContent = lang;
+    editor.setOption('mode', lang.toLowerCase());
+  });
+
+  // Clear code button
+  document.getElementById('clear-code').addEventListener('click', () => {
+    if (confirm('Are you sure you want to clear your code? This cannot be undone.')) {
+      editor.setValue('');
+    }
+  });
+
+  // Run code button
+  document.getElementById('run-code').addEventListener('click', () => {
+    const code = editor.getValue();
+    if (!code.trim()) {
+      if (window.showNotification) {
+        window.showNotification('Please write some code before running.', 'error');
+      } else {
+        alert('Please write some code before running.');
+      }
+      return;
+    }
+
+    const output = document.getElementById('output');
+    output.textContent = 'Running code...\n';
+
+    // Simulate code execution
+      setTimeout(() => {
+      try {
+        output.textContent = `IoT Security Analysis:
+- Vulnerable Configuration:
+  - Device ID: thermostat_01
+  - Authentication: Basic password (plaintext)
+  - Encryption: Disabled
+  - Firmware: Unsigned
+  - Secure Boot: Disabled
+  - Debug Ports: Exposed
+  - Communication: Plaintext
+  - Risk Level: Critical
+
+Secure Implementation:
+1. Device Authentication:
+   - Certificate-based authentication
+   - Device identity verification
+   - Hardware-backed key storage
+   - Mutual authentication with server
+
+2. Secure Communication:
+   - TLS 1.3 encryption for all traffic
+   - Perfect Forward Secrecy enabled
+   - Strong cipher suites enforced
+   - Message authentication for data integrity
+
+3. Firmware Security:
+   - Signed firmware with secure key
+   - Secure boot implementation
+   - Runtime integrity checking
+   - Secure update mechanism with rollback protection
+
+4. Physical Security:
+   - Debug ports disabled
+   - Tamper detection enabled
+   - Secure element for cryptographic operations
+   - Hardware-based isolation for sensitive functions`;
+
+        if (window.showNotification) {
+          window.showNotification('Code executed successfully!', 'success');
+        }
+      } catch (error) {
+        output.textContent = `Error: ${error.message}`;
+        if (window.showNotification) {
+          window.showNotification('Error executing code: ' + error.message, 'error');
+        }
+      }
+    }, 1000);
+  });
+
+  // Submit code button
+  document.getElementById('submit-code').addEventListener('click', () => {
+    const code = editor.getValue();
+    
+

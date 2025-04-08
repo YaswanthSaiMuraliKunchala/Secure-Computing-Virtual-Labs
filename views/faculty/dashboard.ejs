@@ -1,0 +1,461 @@
+<%- include('../partials/header') %>
+
+<div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+        <div class="sidebar-user">
+            <div class="sidebar-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <div>
+                <% if (locals.user) { %>
+                    <div class="sidebar-username"><%= user.username %></div>
+                    <div class="sidebar-role"><%= user.role %></div>
+                <% } else { %>
+                    <div class="sidebar-username">Guest</div>
+                    <div class="sidebar-role">Not logged in</div>
+                <% } %>
+            </div>
+        </div>
+        <button class="sidebar-close" id="close-sidebar">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+    
+    <div class="sidebar-content">
+        <div class="sidebar-title">
+            <i class="fas fa-tachometer-alt"></i> Faculty Dashboard
+        </div>
+        <ul class="sidebar-menu">
+            <li class="sidebar-menu-item">
+                <a href="/faculty/dashboard" class="sidebar-menu-link">
+                    <div class="sidebar-menu-text">
+                        <i class="fas fa-home"></i> Overview
+                    </div>
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="/faculty/students" class="sidebar-menu-link">
+                    <div class="sidebar-menu-text">
+                        <i class="fas fa-user-graduate"></i> Students
+                    </div>
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="/faculty/tests" class="sidebar-menu-link">
+                    <div class="sidebar-menu-text">
+                        <i class="fas fa-clipboard-check"></i> Lab Tests
+                    </div>
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="/faculty/submissions" class="sidebar-menu-link">
+                    <div class="sidebar-menu-text">
+                        <i class="fas fa-tasks"></i> Submissions
+                    </div>
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="/faculty/reports" class="sidebar-menu-link">
+                    <div class="sidebar-menu-text">
+                        <i class="fas fa-chart-bar"></i> Reports
+                    </div>
+                </a>
+            </li>
+            <li class="sidebar-menu-item">
+                <a href="/faculty/settings" class="sidebar-menu-link">
+                    <div class="sidebar-menu-text">
+                        <i class="fas fa-cog"></i> Settings
+                    </div>
+                </a>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+<div class="nav-container">
+    <nav style="padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;">
+        <div style="display: flex; align-items: center;">
+            <button class="hamburger-button" id="toggle-sidebar">
+                <i class="fas fa-bars"></i>
+            </button>
+            <img src="https://www.kalasalingam.ac.in/wp-content/uploads/2022/02/Logo.png" alt="University Logo" style="height: 40px; margin-left: 15px;">
+        </div>
+        <div style="display: flex; align-items: center;">
+            <div class="user-profile">
+                <% if (locals.user) { %>
+                    <button class="user-button" id="profile-btn">
+                        <div class="user-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="user-info">
+                            <div class="user-name"><%= user.username %></div>
+                            <div class="user-role"><%= user.role %></div>
+                        </div>
+                        <i class="fas fa-chevron-down" style="margin-left: 10px; font-size: 12px; color: var(--medium-gray);"></i>
+                    </button>
+                    <div class="user-menu" id="profile-dropdown">
+                        <a href="/users/profile" class="user-menu-item">
+                            <i class="fas fa-user-circle"></i> Profile
+                        </a>
+                        <a href="/users/settings" class="user-menu-item">
+                            <i class="fas fa-cog"></i> Settings
+                        </a>
+                        <form action="/auth/logout" method="POST" style="margin: 0; padding: 0;">
+                            <button type="submit" class="user-menu-item" style="width: 100%; text-align: left; background: none; border: none;">
+                                <i class="fas fa-sign-out-alt"></i> Logout
+                            </button>
+                        </form>
+                    </div>
+                <% } else { %>
+                    <a href="/auth/login" class="btn btn-primary me-2">
+                        <i class="fas fa-sign-in-alt me-1"></i> Login
+                    </a>
+                <% } %>
+            </div>
+        </div>
+    </nav>
+</div>
+
+<div class="container-fluid px-4 py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="h3 mb-0 text-gray-800">Faculty Dashboard</h1>
+            <p class="text-muted">Welcome back, <%= locals.user ? user.username : 'Faculty' %>!</p>
+        </div>
+    </div>
+    
+    <!-- Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-primary shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                                Total Students</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">45</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-user-graduate fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-success shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                                Active Tests</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">2</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-clipboard-check fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-info shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-info text-uppercase mb-1">
+                                Pending Evaluations</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">18</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-tasks fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-xl-3 col-md-6 mb-4">
+            <div class="card border-left-warning shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                            <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                                Average Score</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">78%</div>
+                        </div>
+                        <div class="col-auto">
+                            <i class="fas fa-chart-line fa-2x text-gray-300"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Upcoming Tests and Recent Submissions -->
+    <div class="row mb-4">
+        <!-- Upcoming Tests -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Upcoming Tests</h6>
+                    <a href="/faculty/tests/create" class="btn btn-sm btn-primary">
+                        <i class="fas fa-plus"></i> Create Test
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Test Name</th>
+                                    <th>Date</th>
+                                    <th>Duration</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Mid Sem Practical</td>
+                                    <td>Mar 20, 2025</td>
+                                    <td>2 hours</td>
+                                    <td><span class="badge bg-warning text-dark">Scheduled</span></td>
+                                    <td>
+                                        <a href="/faculty/tests/1" class="btn btn-sm btn-info">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="/faculty/tests/1/edit" class="btn btn-sm btn-primary">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>End Sem Practical</td>
+                                    <td>May 15, 2025</td>
+                                    <td>3 hours</td>
+                                    <td><span class="badge bg-warning text-dark">Scheduled</span></td>
+                                    <td>
+                                        <a href="/faculty/tests/2" class="btn btn-sm btn-info">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="/faculty/tests/2/edit" class="btn btn-sm btn-primary">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Recent Submissions -->
+        <div class="col-lg-6 mb-4">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Recent Submissions</h6>
+                    <a href="/faculty/submissions" class="btn btn-sm btn-primary">
+                        View All
+                    </a>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Student</th>
+                                    <th>Experiment</th>
+                                    <th>Submitted</th>
+                                    <th>Status</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>John Doe</td>
+                                    <td>Caesar Cipher</td>
+                                    <td>2 hours ago</td>
+                                    <td><span class="badge bg-warning">Pending</span></td>
+                                    <td>
+                                        <a href="/faculty/submissions/1" class="btn btn-sm btn-primary">
+                                            <i class="fas fa-check"></i> Evaluate
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Jane Smith</td>
+                                    <td>Monoalphabetic Cipher</td>
+                                    <td>3 hours ago</td>
+                                    <td><span class="badge bg-warning">Pending</span></td>
+                                    <td>
+                                        <a href="/faculty/submissions/2" class="btn btn-sm btn-primary">
+                                            <i class="fas fa-check"></i> Evaluate
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Mike Johnson</td>
+                                    <td>Message Authentication</td>
+                                    <td>5 hours ago</td>
+                                    <td><span class="badge bg-success">Evaluated</span></td>
+                                    <td>
+                                        <a href="/faculty/submissions/3" class="btn btn-sm btn-info">
+                                            <i class="fas fa-eye"></i> View
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Student Progress -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card shadow mb-4">
+                <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                    <h6 class="m-0 font-weight-bold text-primary">Student Progress</h6>
+                    <div class="dropdown no-arrow">
+                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                            <div class="dropdown-header">Export Options:</div>
+                            <a class="dropdown-item" href="#"><i class="fas fa-file-csv mr-2"></i>CSV</a>
+                            <a class="dropdown-item" href="#"><i class="fas fa-file-excel mr-2"></i>Excel</a>
+                            <a class="dropdown-item" href="#"><i class="fas fa-file-pdf mr-2"></i>PDF</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="studentsTable" width="100%" cellspacing="0">
+                            <thead>
+                                <tr>
+                                    <th>Student</th>
+                                    <th>Email</th>
+                                    <th>Completed</th>
+                                    <th>Progress</th>
+                                    <th>Average Score</th>
+                                    <th>Last Activity</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>John Doe</td>
+                                    <td>john.doe@example.com</td>
+                                    <td>8/14</td>
+                                    <td>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 57%" aria-valuenow="57" aria-valuemin="0" aria-valuemax="100">57%</div>
+                                        </div>
+                                    </td>
+                                    <td>85%</td>
+                                    <td>Today, 10:30 AM</td>
+                                    <td>
+                                        <a href="/faculty/students/1" class="btn btn-sm btn-info">
+                                            <i class="fas fa-eye"></i> View
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Jane Smith</td>
+                                    <td>jane.smith@example.com</td>
+                                    <td>12/14</td>
+                                    <td>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 86%" aria-valuenow="86" aria-valuemin="0" aria-valuemax="100">86%</div>
+                                        </div>
+                                    </td>
+                                    <td>92%</td>
+                                    <td>Today, 9:15 AM</td>
+                                    <td>
+                                        <a href="/faculty/students/2" class="btn btn-sm btn-info">
+                                            <i class="fas fa-eye"></i> View
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Mike Johnson</td>
+                                    <td>mike.johnson@example.com</td>
+                                    <td>5/14</td>
+                                    <td>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-warning" role="progressbar" style="width: 36%" aria-valuenow="36" aria-valuemin="0" aria-valuemax="100">36%</div>
+                                        </div>
+                                    </td>
+                                    <td>78%</td>
+                                    <td>Yesterday, 3:45 PM</td>
+                                    <td>
+                                        <a href="/faculty/students/3" class="btn btn-sm btn-info">
+                                            <i class="fas fa-eye"></i> View
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Sarah Williams</td>
+                                    <td>sarah.williams@example.com</td>
+                                    <td>3/14</td>
+                                    <td>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-danger" role="progressbar" style="width: 21%" aria-valuenow="21" aria-valuemin="0" aria-valuemax="100">21%</div>
+                                        </div>
+                                    </td>
+                                    <td>65%</td>
+                                    <td>2 days ago</td>
+                                    <td>
+                                        <a href="/faculty/students/4" class="btn btn-sm btn-info">
+                                            <i class="fas fa-eye"></i> View
+                                        </a>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>David Brown</td>
+                                    <td>david.brown@example.com</td>
+                                    <td>10/14</td>
+                                    <td>
+                                        <div class="progress">
+                                            <div class="progress-bar bg-success" role="progressbar" style="width: 71%" aria-valuenow="71" aria-valuemin="0" aria-valuemax="100">71%</div>
+                                        </div>
+                                    </td>
+                                    <td>88%</td>
+                                    <td>Today, 11:20 AM</td>
+                                    <td>
+                                        <a href="/faculty/students/5" class="btn btn-sm btn-info">
+                                            <i class="fas fa-eye"></i> View
+                                        </a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Initialize DataTable for student progress
+        if (typeof $.fn.DataTable !== 'undefined') {
+            $('#studentsTable').DataTable({
+                responsive: true,
+                order: [[2, 'desc']]
+            });
+        }
+    });
+</script>
+
+<%- include('../partials/footer') %> 

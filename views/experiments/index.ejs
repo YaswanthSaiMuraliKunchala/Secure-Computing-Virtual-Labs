@@ -1,0 +1,131 @@
+<%- include('../partials/header') %>
+
+<div class="experiments-page">
+  <div class="experiments-header">
+    <h1 class="text-center mb-4">Security Experiments</h1>
+    <p class="text-center text-muted mb-5">Explore and learn various security concepts through hands-on experiments</p>
+  </div>
+
+  <div class="experiments-grid">
+    <% const experiments = [
+      { id: 1, title: 'Caesar Cipher', icon: 'fas fa-lock', slug: 'caesar-cipher', description: 'Learn classical encryption techniques through Caesar Cipher implementation' },
+      { id: 2, title: 'Monoalphabetic Cipher', icon: 'fas fa-key', slug: 'mono-alphabetic-cipher', description: 'Explore substitution ciphers with Monoalphabetic encryption' },
+      { id: 3, title: 'Message Authentication', icon: 'fas fa-shield-alt', slug: 'message-authentication-code', description: 'Understand message integrity and authentication codes' },
+      { id: 4, title: 'Data Encryption Standard', icon: 'fas fa-database', slug: 'data-encryption-standard', description: 'Implement the classic DES encryption algorithm' },
+      { id: 5, title: 'Advanced Encryption Standard', icon: 'fas fa-lock', slug: 'advanced-encryption-standard', description: 'Master modern encryption with AES implementation' },
+      { id: 6, title: 'Asymmetric Key Encryption', icon: 'fas fa-key', slug: 'asymmetric-key-encryption', description: 'Learn public-key cryptography principles' },
+      { id: 7, title: 'Secure Key Exchange', icon: 'fas fa-exchange-alt', slug: 'secure-key-exchange', description: 'Implement secure key exchange protocols' },
+      { id: 8, title: 'Digital Signature Generation', icon: 'fas fa-signature', slug: 'digital-signature-generation', description: 'Create and verify digital signatures' },
+      { id: 9, title: 'Mobile Security', icon: 'fas fa-mobile-alt', slug: 'mobile-security', description: 'Explore mobile device security concepts' },
+      { id: 10, title: 'Intrusion Detection', icon: 'fas fa-search', slug: 'intrusion-detection-snort', description: 'Learn network security with Snort IDS' },
+      { id: 11, title: 'Defeating Trojans', icon: 'fas fa-bug', slug: 'defeating-malware-trojans', description: 'Detect and analyze Trojan malware' },
+      { id: 12, title: 'Rootkit Hunter', icon: 'fas fa-search', slug: 'defeating-malware-rootkit-hunter', description: 'Find and remove rootkit infections' },
+      { id: 13, title: 'Database Security', icon: 'fas fa-database', slug: 'database-security', description: 'Implement secure database practices' },
+      { id: 14, title: 'Encryption Integrity', icon: 'fas fa-shield-alt', slug: 'encryption-integrity-control', description: 'Control and verify encryption integrity' },
+    ] %>
+
+    <% experiments.forEach(experiment => { %>
+      <div class="experiment-box">
+        <div class="experiment-content">
+          <div class="experiment-icon">
+            <i class="<%= experiment.icon %>"></i>
+          </div>
+          <h3 class="experiment-title"><%= experiment.id %>. <%= experiment.title %></h3>
+          <p class="experiment-description"><%= experiment.description %></p>
+          <a href="/experiments/<%= experiment.slug %>" class="btn btn-primary">Start Experiment</a>
+          <% if (locals.user && user.progress && user.progress[experiment.id] && user.progress[experiment.id].completed) { %>
+            <div class="completion-badge">
+              <i class="fas fa-check-circle"></i>
+            </div>
+          <% } %>
+        </div>
+      </div>
+    <% }); %>
+  </div>
+</div>
+
+<style>
+  .experiments-page {
+    padding: 2rem;
+    margin-top: 60px;
+  }
+
+  .experiments-header {
+    max-width: 800px;
+    margin: 0 auto;
+  }
+
+  .experiments-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 2rem;
+    padding: 1rem;
+  }
+
+  .experiment-box {
+    background: var(--white);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .experiment-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .experiment-content {
+    padding: 2rem;
+    text-align: center;
+  }
+
+  .experiment-icon {
+    font-size: 2.5rem;
+    color: var(--primary-color);
+    margin-bottom: 1rem;
+  }
+
+  .experiment-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: var(--dark-color);
+  }
+
+  .experiment-description {
+    font-size: 0.9rem;
+    color: var(--dark-gray);
+    margin-bottom: 1.5rem;
+    min-height: 40px;
+  }
+
+  .completion-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    color: var(--success-color);
+    font-size: 1.5rem;
+  }
+
+  [data-theme="dark"] .experiment-box {
+    background: var(--dark-color);
+  }
+
+  [data-theme="dark"] .experiment-title {
+    color: #ffffff;
+  }
+
+  [data-theme="dark"] .experiment-description {
+    color: #a4b0be;
+  }
+
+  @media (max-width: 768px) {
+    .experiments-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
+
+<%- include('../partials/footer') %> 

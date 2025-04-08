@@ -1,0 +1,99 @@
+<!-- Code Editor Section -->
+<div class="code-section">
+    <div class="code-editor-container">
+        <!-- Code Editor -->
+        <div class="code-editor">
+            <div class="editor-header">
+                <div class="editor-title">Code Editor</div>
+                <div class="editor-controls">
+                    <button class="editor-button" id="run-code">Run Code</button>
+                    <button class="editor-button" id="clear-code">Clear</button>
+                </div>
+            </div>
+            <div class="editor-content">
+                <textarea id="code-editor" placeholder="Write your code here..."><%= experiment.defaultCode || '' %></textarea>
+            </div>
+        </div>
+
+        <!-- Output Section -->
+        <div class="output-section">
+            <div class="output-header">Output</div>
+            <div class="output-content" id="output-content">
+                <div class="output-message">Output will appear here...</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Include CodeMirror -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/theme/monokai.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/javascript/javascript.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/xml/xml.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/css/css.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.2/mode/htmlmixed/htmlmixed.min.js"></script>
+
+<script>
+    // Initialize CodeMirror
+    const editor = CodeMirror.fromTextArea(document.getElementById('code-editor'), {
+        mode: 'javascript',
+        theme: 'monokai',
+        lineNumbers: true,
+        autoCloseBrackets: true,
+        matchBrackets: true,
+        indentUnit: 4,
+        tabSize: 4,
+        lineWrapping: true,
+        extraKeys: {
+            "Ctrl-Space": "autocomplete"
+        }
+    });
+
+    // Set editor size
+    editor.setSize('100%', '100%');
+
+    // Handle window resize
+    window.addEventListener('resize', () => {
+        editor.refresh();
+    });
+
+    // Run Code Button
+    document.getElementById('run-code').addEventListener('click', async () => {
+        const outputContent = document.getElementById('output-content');
+        const code = editor.getValue();
+
+        try {
+            // Show loading state
+            outputContent.innerHTML = '<div class="output-message">Running code...</div>';
+
+            // Send code to server for execution
+            const response = await fetch('/api/run-code', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    code: code,
+                    experimentId: '<%= experiment._id %>'
+                })
+            });
+
+            const result = await response.json();
+
+            if (result.error) {
+                outputContent.innerHTML = `<div class="output-error">${result.error}</div>`;
+            } else {
+                outputContent.innerHTML = `<div class="output-success">${result.output}</div>`;
+            }
+        } catch (error) {
+            outputContent.innerHTML = `<div class="output-error">Error: ${error.message}</div>`;
+        }
+    });
+
+    // Clear Code Button
+    document.getElementById('clear-code').addEventListener('click', () => {
+        editor.setValue('');
+        document.getElementById('output-content').innerHTML = '<div class="output-message">Output will appear here...</div>';
+    });
+</script> 
