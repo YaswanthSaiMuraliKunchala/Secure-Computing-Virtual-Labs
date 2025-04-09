@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Experiment = require('../models/experiment');
+const Experiment = require('../models/Experiment');
 const Submission = require('../models/Submission');
 const User = require('../models/User');
 const path = require('path');

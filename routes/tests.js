@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Test = require('../models/Test');
 const User = require('../models/User');
-const Experiment = require('../models/experiment');
+const Experiment = require('../models/Experiment');
 const Submission = require('../models/Submission');
 
 // Middleware to check if user is authenticated

@@ -7,7 +7,7 @@ const dotenv = require('dotenv');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const LocalStrategy = require('passport-local').Strategy;
-const Experiment = require('./models/experiment');
+const Experiment = require('./models/Experiment');
 const User = require('./models/User');
 const flash = require('connect-flash');
 
