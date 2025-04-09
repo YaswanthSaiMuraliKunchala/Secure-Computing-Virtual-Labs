@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const User = require('../models/User');
 const Submission = require('../models/Submission');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 // Middleware to check if user is authenticated
 const isAuthenticated = (req, res, next) => {
