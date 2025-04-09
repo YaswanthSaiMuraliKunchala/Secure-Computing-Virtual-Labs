@@ -69,7 +69,7 @@ main {
 }
 
 .feature-card {
-    background: var(--card-bg);
+    background: #e1e1e1;
     padding: 2rem;
     border-radius: 10px;
     text-align: center;
