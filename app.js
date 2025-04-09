@@ -28,7 +28,18 @@ mongoose.connect(MONGODB_URI)
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+
+// Static file middleware with logging for debugging
+app.use('/css', express.static(path.join(__dirname, 'public/css')));
+app.use('/js', express.static(path.join(__dirname, 'public/js')));
+app.use('/images', express.static(path.join(__dirname, 'public/images')));
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Log all requests for debugging
+app.use((req, res, next) => {
+  console.log(`${req.method} ${req.url}`);
+  next();
+});
 
 // Set up EJS as the view engine
 app.set('view engine', 'ejs');
