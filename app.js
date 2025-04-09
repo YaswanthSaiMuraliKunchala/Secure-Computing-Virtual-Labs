@@ -29,16 +29,41 @@ mongoose.connect(MONGODB_URI)
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Static file middleware with logging for debugging
-app.use('/css', express.static(path.join(__dirname, 'public/css')));
-app.use('/js', express.static(path.join(__dirname, 'public/js')));
-app.use('/images', express.static(path.join(__dirname, 'public/images')));
-app.use(express.static(path.join(__dirname, 'public')));
+// Enhanced static file middleware with better error handling
+const staticOptions = {
+  etag: true,
+  lastModified: true,
+  setHeaders: (res, path) => {
+    // Set cache control headers
+    if (path.endsWith('.css')) {
+      res.setHeader('Content-Type', 'text/css');
+    } else if (path.endsWith('.js')) {
+      res.setHeader('Content-Type', 'application/javascript');
+    } else if (path.endsWith('.png') || path.endsWith('.jpg') || path.endsWith('.jpeg') || path.endsWith('.gif')) {
+      res.setHeader('Cache-Control', 'public, max-age=86400'); // 1 day for images
+    }
+    res.setHeader('X-Content-Type-Options', 'nosniff');
+  }
+};
+
+// Serve static files with specific routes first
+app.use('/css', express.static(path.join(__dirname, 'public/css'), staticOptions));
+app.use('/js', express.static(path.join(__dirname, 'public/js'), staticOptions));
+app.use('/images', express.static(path.join(__dirname, 'public/images'), staticOptions));
+
+// Fallback to general static file serving
+app.use(express.static(path.join(__dirname, 'public'), staticOptions));
 
 // Log all requests for debugging
 app.use((req, res, next) => {
   console.log(`${req.method} ${req.url}`);
   next();
+});
+
+// Add a specific route to serve the main CSS file directly
+app.get('/style.css', (req, res) => {
+  res.setHeader('Content-Type', 'text/css');
+  res.sendFile(path.join(__dirname, 'public/css/style.css'));
 });
 
 // Set up EJS as the view engine
